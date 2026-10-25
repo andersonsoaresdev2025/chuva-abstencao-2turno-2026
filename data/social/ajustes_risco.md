@@ -104,5 +104,5 @@
 ## 2026-10-25 16:45 BRT
 - Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b), Campinas (a, média) e Belo Horizonte (b, alta) mantidos; 7 ativos. Nenhuma nova mudança de local por chuva desde a de BH (Itatiaia, 15h09); g1/CBN mantêm 6 locais alterados em SP.
 - Monitorando sem ajuste: Varginha (MG), chuva a manhã toda e trégua à tarde, expectativa de mais eleitores na reta final (98 News); sem mudança de local.
-- Fora do escopo (transporte, não chuva): TSE ainda sem decisão sobre prorrogação até 19h (Salvador e região, capital paulista); vale o horário oficial das 17h para quem estiver na fila.
+- Fora do escopo (transporte, não chuva): nenhuma decisão do TSE sobre prorrogação até 19h (Salvador e região, capital paulista) localizada até 16h45; vale o horário oficial das 17h para quem estiver na fila.
 - Descartados: 6 (relatos anedóticos sem local, alegações partidárias genéricas, campanha por hashtag).
