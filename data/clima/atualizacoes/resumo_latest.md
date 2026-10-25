@@ -1,26 +1,25 @@
-# Risco de chuva – atualização automática (2026-10-25 15:11 BRT)
+# Risco de chuva – atualização automática (2026-10-25 15:13 BRT)
 
 Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de votação 08h–17h BRT.
 
 - Open-Meteo: **ok** (302 séries)
 - INMET: **ok** – https://apiprevmet3.inmet.gov.br/avisos/ativos
-- Municípios classificados: 302 · ajustes por notícias ativos: 6
+- Municípios classificados: 302 · ajustes por notícias ativos: 7
 
 ## Contagem por nível
 
 - **a) Torrencial / Tempestade / Risco de alagamento**: 120 municípios, 40.538.831 aptos
-- **b) Moderada**: 27 municípios, 5.308.086 aptos
-- **c) Sem chuva relevante**: 155 municípios, 40.020.761 aptos
+- **b) Moderada**: 28 municípios, 7.275.052 aptos
+- **c) Sem chuva relevante**: 154 municípios, 38.053.795 aptos
 
 ## Mudanças vs classificação da manhã (Bot 2, 06:35 BRT)
 
 - São José dos Campos/SP: subiu b→a (55.1 mm na janela; manhã 12.0 mm)
 - Ribeirão Preto/SP: subiu b→a (14.1 mm na janela; manhã 10.0 mm)
 - Londrina/PR: subiu b→a (9.2 mm na janela; manhã 14.0 mm)
-- Belo Horizonte/MG: desceu b→c (1.1 mm na janela; manhã 5.0 mm)
 - Joinville/SC: desceu b→c (3.4 mm na janela; manhã 10.0 mm)
 - Florianópolis/SC: desceu b→c (0.3 mm na janela; manhã 8.0 mm)
-- Iguais: 23 de 29
+- Iguais: 24 de 29
 
 ### Estados com mudança
 
@@ -33,6 +32,7 @@ Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de vo
 - Campinas/SP: a (confiança media) – https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml ; https://www.acidadeon.com/campinas/cotidiano/chuva-alaga-escola-em-sousas-com-mais-de-2-mil-eleitores/ ; https://x.com/eptvoficial/status/2114363181263188134
 - Itapevi/SP: a (confiança alta) – https://g1.globo.com/sp/sao-paulo/eleicoes/2026/noticia/2026/10/25/eleicoes-em-sp-veja-locais-de-votacao-que-mudaram-horarios-documentos-necessarios-e-como-justificar-ausencia.ghtml ; Terra e Band (via Google News: "TSE altera local de votação em Itapevi devido a alagamento na madrugada"; "Itapevi altera locais de votação após chuvas")
 - Guaratuba/PR: b (confiança media) – https://www.band.com.br/politica/eleicoes/chuva-no-dia-da-eleicao-muda-locais-de-votacao-e-poe-estados-em-alerta ; https://x.com/pluraljorbr/status/2114109501603267015
+- Belo Horizonte/MG: b (confiança media) – https://www1.folha.uol.com.br/poder/2026/10/temporais-deixam-bairros-sem-luz-em-belo-horizonte-e-interditam-rodovias-no-parana.shtml ; https://www.hojeemdia.com.br/geral/tempestade-provoca-queda-de-energia-na-puc-minas-mas-n-o-interrompe-votac-o-1.1138261 ; https://www.otempo.com.br/eleicoes/2026/presidentes/2026/10/25/urna-eletronica-funciona-sem-energia-veja-o-que-acontece-se-faltar-luz-na-votacao ; https://x.com/Metropoles/status/2114419207685407205
 - Barracão/PR: b (confiança media) – https://www.tre-pr.jus.br/comunicacao/noticias/2026/Outubro/evento-meteorologico-causa-alteracao-de-local-de-votacao-em-barracao ; https://www.cnnbrasil.com.br/nacional/chuvas-no-pr-fazem-32-mil-eleitores-mudarem-de-local-no-2o-turno-entenda/
 - São Domingos/SC: b (confiança alta) – https://www.nsctotal.com.br/politica/justica-eleitoral-muda-local-de-votacao-em-cidade-no-oeste-de-sc-na-vespera-da-eleicao ; https://ocp.news/cotidiano/justica-eleitoral-altera-locais-de-votacao-em-municipios-de-sc ; https://oglobo.globo.com/brasil/noticia/2026/10/25/eleicoes-chuva-forte-ameaca-areas-do-sul-e-do-sudeste-neste-domingo-veja-a-previsao.ghtml
 
