@@ -23,7 +23,7 @@ from common import dados as D  # noqa: E402
 # ---------------------------------------------------------------------------
 # PREENCHER APÓS A PUBLICAÇÃO (ou exportar as variáveis de ambiente)
 # ---------------------------------------------------------------------------
-STREAMLIT_URL = os.environ.get("STREAMLIT_URL", "https://STREAMLIT_URL_A_DEFINIR.streamlit.app")
+STREAMLIT_URL = os.environ.get("STREAMLIT_URL", "https://chuva-abstencao-2026.streamlit.app/")
 REPO_URL = os.environ.get("REPO_URL", "https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026")
 
 OUT = ROOT / "docs" / "index.html"
