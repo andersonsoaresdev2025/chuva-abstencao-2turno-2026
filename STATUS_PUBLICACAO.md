@@ -1,6 +1,6 @@
 # Status de Publicação – Chuva × Abstenção Eleitoral (2º Turno 2026)
 
-Última atualização: **2026-10-25 10:12 UTC / 2026-10-25 07:12 BRT**
+Última atualização: **2026-10-25 10:55 UTC / 2026-10-25 07:55 BRT**
 
 | Entregável | Status | URL | Atualizado (UTC / BRT) | Observações |
 |---|---|---|---|---|
@@ -11,6 +11,9 @@
 | MCP (stdio) | pronto local | – (roda localmente: `python mcp/chuva_mcp_server.py`) | 2026-10-25 09:51 UTC / 2026-10-25 06:51 BRT | 6 ferramentas (inclui `impacto_agora`); teste ponta a ponta passa |
 | Sinais sociais (data/social) | integrado | página "Sinais Sociais" do dashboard e seção do site | 2026-10-25 09:51 UTC / 2026-10-25 06:51 BRT | Coleta 2026-10-25 09:45 UTC (35 sinais) |
 | Monitoramento de notícias (data/noticias) | publicado | página "Notícias" do dashboard + quadro "Principais notícias agora" na Visão Geral + seção #noticias do site | 2026-10-25 10:22 UTC / 2026-10-25 07:22 BRT | 44 portais verificados (13 nacionais, 31 regionais); coletor `scripts/coletar_noticias.py` (RSS + Google Notícias), roda em `scripts/update_and_publish.sh` |
+
+## Rodadas do Grok Bot (30 min, dia da eleição)
+- 2026-10-25 10:55 UTC / 07:55 BRT: notícias coletadas (92 no consolidado), verificação X (5 buscas), 4 sinais novos + 5 descartados, ajustes por notícias ativos para Curitiba (a) e Guaratuba (b), impacto recalculado. Pipeline completo não rodado nesta rodada: código de atualização automática (atualizar_tudo.sh, workflow) estava sendo editado e ainda não commitado; só os arquivos de dados foram publicados.
 
 ## Configuração do Streamlit Community Cloud
 - Repository: `andersonsoaresdev2025/chuva-abstencao-2turno-2026`

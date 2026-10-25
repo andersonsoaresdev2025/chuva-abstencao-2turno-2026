@@ -1,0 +1,58 @@
+[
+ {
+  "timestamp_coleta_utc": "2026-10-25T10:50:00Z",
+  "timestamp_post": "2026-10-25T10:34:00Z",
+  "cidade": "Curitiba (CIC)",
+  "uf": "PR",
+  "cidade_risco_previsto": "a",
+  "tipo": "eleitoral",
+  "nivel_risco_implicito": "alto",
+  "confianca": "alta",
+  "fonte": "CNN Brasil",
+  "tipo_fonte": "imprensa",
+  "resumo": "Escola Municipal Prof. Dario Persiano de Castro Vellozo (CIC) alagada; TRE-PR transferiu 3.523 eleitores (seções 190, 234, 254, 280, 295, 324, 349, 370, 398, 421) para o CEI Hugo Peretti, a 450 m. Simepar: acumulados acima de 100 mm em várias cidades no sábado; alertas seguem no domingo.",
+  "link": "https://www.cnnbrasil.com.br/eleicoes/chuva-alaga-escola-no-pr-e-provoca-mudanca-no-local-votacao-veja/"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T10:50:00Z",
+  "timestamp_post": "2026-10-24T21:39:18Z",
+  "cidade": "Guaratuba",
+  "uf": "PR",
+  "cidade_risco_previsto": "n/d",
+  "tipo": "eleitoral",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@pluraljorbr (Plural)",
+  "tipo_fonte": "imprensa",
+  "resumo": "TRE-PR remaneja 3,7 mil eleitores após chuvas: 3.523 em Curitiba (CIC) e 222 em Guaratuba, que passam a votar em salão paroquial. Confirma reportagem da Band.",
+  "link": "https://x.com/pluraljorbr/status/2114109501603267015"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T10:50:00Z",
+  "timestamp_post": "2026-10-25T10:30:21Z",
+  "cidade": "Paraná (vários municípios)",
+  "uf": "PR",
+  "cidade_risco_previsto": "n/d",
+  "tipo": "eleitoral",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@portalbemparana (Bem Paraná)",
+  "tipo_fonte": "imprensa",
+  "resumo": "Bem Paraná: 'Chuva muda local de votação de vários municípios no Paraná' (07h30 BRT); municípios não listados no post.",
+  "link": "https://x.com/portalbemparana/status/2114303543637320092"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T10:50:00Z",
+  "timestamp_post": "2026-10-25T09:28:40Z",
+  "cidade": "São Paulo (RMSP, centro e leste do estado)",
+  "uf": "SP",
+  "cidade_risco_previsto": "n/d",
+  "tipo": "alerta_oficial",
+  "nivel_risco_implicito": "medio",
+  "confianca": "alta",
+  "fonte": "@defesacivilsp",
+  "tipo_fonte": "oficial",
+  "resumo": "Defesa Civil SP: domingo de eleição com chuva moderada a forte, raios, rajadas, risco de granizo; atenção para alagamentos e enxurradas no centro, leste e RMSP. Chuva persistente de madrugada em Vale do Paraíba, Campinas, Sorocaba, Piracicaba, Bauru.",
+  "link": "https://x.com/defesacivilsp/status/2114288021990408487"
+ }
+]
