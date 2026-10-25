@@ -1,0 +1,36 @@
+Atualização automática 20261025_1711UTC (2026-10-25 14:11 BRT) — log em data/logs/atualizacao_20261025_1711UTC.log
+===== [17:11:51Z] etapa: clima — .venv/bin/python scripts/atualizar_clima.py
+OK clima: 302 municípios · Open-Meteo ok · INMET ok
+  - universo: 302 municípios ({'maiores_colegios': 270, 'bot2': 29, 'ajuste_noticias': 3}); ajustes ativos: 6
+  - Open-Meteo ok: 302 séries
+  - INMET: ok (https://apiprevmet3.inmet.gov.br/avisos/ativos); 7 avisos; erros=[]
+----- clima: OK (5s)
+===== [17:11:56Z] etapa: impacto — .venv/bin/python scripts/atualizar_impacto.py
+OK impacto: 302 municípios · 120 Alta · agora (estimativa agora (chuva acumulada desde 08h)): Flávio -0.0199 pp (+notícias -0.0217); abstenção nacional +0.220 pp; ajustes 6
+----- impacto: OK (1s)
+===== [17:11:57Z] etapa: social — .venv/bin/python scripts/coletar_social.py
+OK social: 0 relevantes, 0 novos → None
+  - x/api_v2: pulado (0 res., 0 relev.) sem credencial X_BEARER_TOKEN/TWITTER_BEARER_TOKEN
+  - instagram/duckduckgo_html: erro (0 res., 0 relev.) SSLError: HTTPSConnectionPool(host='html.duckduckgo.com', port=443): Max retries exceeded with url: /html/?q=site%3Ainstagram.com+
+  - instagram/duckduckgo_lite: bloqueado (0 res., 0 relev.) duckduckgo_lite: HTTP 202 (limite/anti-robô)
+  - instagram/brave: bloqueado (0 res., 0 relev.) brave: HTTP 429 (limite/anti-robô)
+  - instagram/duckduckgo_html: bloqueado (0 res., 0 relev.) duckduckgo_html: HTTP 202 (limite/anti-robô)
+  - instagram/todos: pulado (0 res., 0 relev.) todos os buscadores bloquearam nesta execução
+  - todas/-: nada_encontrado (0 res., 0 relev.) nenhum sinal relevante nesta execução
+----- social: OK (10s)
+===== [17:12:07Z] etapa: noticias — .venv/bin/python scripts/coletar_noticias.py
+Coleta 2026-10-25 17:12 UTC: 81 fontes consultadas, 0 falhas; 297 notícias nesta coleta; 350 no consolidado.
+----- noticias: OK (22s)
+===== [17:12:29Z] etapa: site — .venv/bin/python scripts/build_site.py
+OK: docs/index.html (131.6 KB)
+----- site: OK (0s)
+===== [17:12:29Z] etapa: consistencia — .venv/bin/python scripts/verificar_consistencia.py
+OK: site = snapshot 2026-10-25 14:11 BRT · 194.600 / 140.200
+----- consistencia: OK (1s)
+===== [17:12:30Z] etapa: testes — .venv/bin/python -m pytest -q tests mcp/test_mcp_server.py
+......................................                                   [100%]
+38 passed in 15.25s
+----- testes: OK (16s)
+STATUS_PUBLICACAO.md atualizado
+Resumo: clima=ok(5s) impacto=ok(1s) social=ok(10s) noticias=ok(22s) site=ok(0s) consistencia=ok(1s) testes=ok(16s)
+git: commit → pull --rebase --autostash → push (saída em data/logs/git_ultimo.txt)
