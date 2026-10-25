@@ -1,0 +1,58 @@
+[
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:45:00Z",
+  "timestamp_post": "2026-10-25T13:20:55Z",
+  "cidade": "Itupeva",
+  "uf": "SP",
+  "cidade_risco_previsto": "não",
+  "tipo": "local_afetado",
+  "nivel_risco_implicito": "alto",
+  "confianca": "alta",
+  "fonte": "@CNNBrasil",
+  "tipo_fonte": "imprensa",
+  "resumo": "CNN Brasil (citando TRE-SP): chuva alterou dois locais de votação em Itupeva (Cemeb Monteiro Lobato e Cemeb Thereza Angelina Lourençon → Centro de Convivência do Idoso), inacessíveis por alagamento.",
+  "link": "https://x.com/CNNBrasil/status/2114346468647858287"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:45:00Z",
+  "timestamp_post": "2026-10-25T13:35:43Z",
+  "cidade": "Campinas",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim (a)",
+  "tipo": "local_afetado",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@RegressoNaciona",
+  "tipo_fonte": "perfil",
+  "resumo": "Repercute rua de colégio eleitoral com 2,3 mil eleitores alagada em Campinas e quedas de árvores (mesmo fato já registrado pelo TRE-SP/g1; votação normal).",
+  "link": "https://x.com/RegressoNaciona/status/2114350195513139671"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:45:00Z",
+  "timestamp_post": "2026-10-25T13:32:11Z",
+  "cidade": "Guarulhos",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim",
+  "tipo": "comparecimento",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "media",
+  "fonte": "@grudiario",
+  "tipo_fonte": "imprensa",
+  "resumo": "GRU Diário: votação em Guarulhos sem filas, com bastante chuva e problemas no aeroporto de Guarulhos.",
+  "link": "https://x.com/grudiario/status/2114349305846993266"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:45:00Z",
+  "timestamp_post": "2026-10-25T13:19:51Z",
+  "cidade": "Rio de Janeiro",
+  "uf": "RJ",
+  "cidade_risco_previsto": "sim",
+  "tipo": "comparecimento",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "baixa",
+  "fonte": "@atcorrea1",
+  "tipo_fonte": "cidadao",
+  "resumo": "Zona Oeste do RJ: chuva passou e seção com pequena fila; eleitores parecem ter esperado a chuva diminuir (relato individual).",
+  "link": "https://x.com/atcorrea1/status/2114346199406764402"
+ }
+]

@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 13:39 UTC (10:39 BRT) · **Notícias no consolidado:** 218 (nesta coleta: 202) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 13:40 UTC (10:40 BRT) · **Notícias no consolidado:** 220 (nesta coleta: 202) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -11,7 +11,7 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 - **Local de votação em Itapevi é alterado de forma emergencial após chuvas** — Metrópoles (09:37 BRT, São Paulo; tema: locais de votação) — [link](https://www.metropoles.com/sao-paulo/local-de-votacao-em-itapevi-e-alterado-de-forma-emergencial-apos-chuvas)
 - **Eleições 2026: Chuva altera local de votação em Itapevi e Itupeva (SP)** — CNN Brasil (09:57 BRT, São Paulo; tema: locais de votação) — [link](https://www.cnnbrasil.com.br/eleicoes/eleicoes-2026-chuva-altera-local-de-votacao-em-itapevi-sp-para-2o-turno/)
 - **No pódio do voto, eleitores chegam antes das 5h, por medo da chuva** — Campo Grande News (08:10 BRT, Campo Grande; tema: locais de votação) — [link](https://www.campograndenews.com.br/politica/no-podio-do-voto-eleitores-chegam-antes-das-5h-por-medo-da-chuva)
-- **Chuva alaga rua de colégio eleitoral em Campinas e mobiliza bombeiros em Sumaré; veja estragos na região** — g1 (11:20 BRT, Campinas; tema: alagamento) — [link](https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml)
+- **Chuva alaga rua de colégio eleitoral e mobiliza bombeiros em Sumaré; veja estragos na região** — g1 (11:20 BRT, Campinas; tema: alagamento) — [link](https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml)
 - **Rua de colégio eleitoral fica alagada em Campinas; ACOMPANHE a votação** — g1 (12:20 BRT, Campinas; tema: alagamento) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
 - **Chuva alaga escola no PR e provoca mudança no local votação; veja** — CNN Brasil (07:34 BRT/PR; tema: locais de votação) — [link](https://www.cnnbrasil.com.br/eleicoes/chuva-alaga-escola-no-pr-e-provoca-mudanca-no-local-votacao-veja/)
 - **Chuva altera local de votação em escola de Itapevi (SP); veja onde votar** — Band (10:02 BRT/SP; tema: locais de votação) — [link](https://news.google.com/rss/articles/CBMisAFBVV95cUxNWlNsRDNfQnMtYmliTjhPVUZ6V0J3LXZTQnd3S25hckZ0R3VMSU1lbGU1d3VwdV9DWEhaTVpVN1lHN3Aza25QUVVvZjdObHhnQ1YyN0h4aExZblFNazhKRncxTDlDNmZTdHpjenRwRW5YWEZlamNBSTlKbE9QdGp4WktodTlROWhFckZEaElDWWlURThndWZOTUw5c1RHN1VRY2pvTjNTcEkwM1dzOHlZNg?oc=5)
@@ -19,9 +19,9 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 
 ## Distribuição
 
-Por tema: geral 71, alerta 65, locais de votação 44, alagamento 25, mobilidade 13
+Por tema: geral 72, alerta 66, locais de votação 44, alagamento 25, mobilidade 13
 
-Por UF: n 90, d 90, SP 47, PR 35, MS 15, SC 12, RJ 7, MG 4, MT 3, GO 2, RS 2, DF 1, AM 1
+Por UF: n 91, d 91, SP 47, PR 35, MS 15, SC 12, RJ 7, MG 5, MT 3, GO 2, RS 2, DF 1, AM 1
 
 ## Itens sinalizados (não verificados ou a checar)
 

@@ -29,3 +29,9 @@
 - Sem novos ajustes nem revogações. Curitiba (a), Guaratuba (b), Barracão (b, confiança média) e Itapevi (a) mantidos; Itapevi agora confirmado também por CNN Brasil e Exame.
 - Monitorando sem ajuste (já "a" pela previsão): Campinas (SP), TRE-SP confirma que a rua do Colégio Notre Dame (Sousas, 2.354 eleitores) está alagada, mas diz que a votação flui normalmente e há local de contingência; 83 mm em 12 h. Ribeirão Preto (SP), CBN Ribeirão relata escola alagada no Jardim Antártica e queda de energia já restabelecida em outra, sem mudança de local; Matão (SP) com escolas sem energia e urnas em bateria. Vira ajuste se o TRE-SP acionar contingência/transferir seções ou se houver segunda fonte independente de efeito na votação.
 - Descartados: 5 (relatos sem local, opinião partidária, e um post dizendo que eleitores do 22 podem votar "amanhã", desinformação).
+
+## 2026-10-25 10:45 BRT
+- **Itupeva (SP), 3524006 – novo ajuste ativo, nível a, confiança média.** CNN Brasil (atualização das 10:30, citando o TRE-SP) informa que dois locais de votação de Itupeva ficaram inacessíveis por alagamento e os eleitores do Cemeb Monteiro Lobato e do Cemeb Profª Thereza Angelina Lourençon foram transferidos para o Centro de Convivência do Idoso (Jd. Nova Tuiuti). Itupeva não estava entre os destaques da previsão. Fonte única por enquanto; sobe para alta com segunda fonte. 1º turno: Flávio 60,4% × Lula 29,9% (Flávio mais exposto).
+- Curitiba (a), Guaratuba (b), Barracão (b, média) e Itapevi (a) mantidos; sem evidência contrária.
+- Monitorando sem ajuste: Guarulhos (SP), votação sem filas com bastante chuva e problemas no aeroporto (GRU Diário); Rio, zona oeste com chuva passando e filas pequenas (relato individual).
+- Descartados: 4 (números sem fonte, ironia/desinformação, humor, relato sem local).
