@@ -1,15 +1,15 @@
-# Risco de chuva – atualização automática (2026-10-25 08:10 BRT)
+# Risco de chuva – atualização automática (2026-10-25 08:11 BRT)
 
 Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de votação 08h–17h BRT.
 
-- Open-Meteo: **ok** (300 séries)
+- Open-Meteo: **ok** (301 séries)
 - INMET: **ok** – https://apiprevmet3.inmet.gov.br/avisos/ativos
-- Municípios classificados: 300 · ajustes por notícias ativos: 2
+- Municípios classificados: 301 · ajustes por notícias ativos: 3
 
 ## Contagem por nível
 
 - **a) Torrencial / Tempestade / Risco de alagamento**: 121 municípios, 40.821.249 aptos
-- **b) Moderada**: 26 municípios, 5.433.766 aptos
+- **b) Moderada**: 27 municípios, 5.441.366 aptos
 - **c) Sem chuva relevante**: 153 municípios, 39.597.720 aptos
 
 ## Mudanças vs classificação da manhã (Bot 2, 06:35 BRT)
@@ -31,6 +31,7 @@ Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de vo
 
 - Curitiba/PR: a (confiança alta) – https://www.cnnbrasil.com.br/eleicoes/chuva-alaga-escola-no-pr-e-provoca-mudanca-no-local-votacao-veja/ ; https://www.gazetadopovo.com.br/parana/chuvas-no-parana-recordes-sabado-24-outubro/ ; https://www.bemparana.com.br/noticias/parana/chuva-recorde-causa-alagamentos-risco-de-desabamento-e-muda-local-de-votacao-em-curitiba/ ; https://x.com/tribunapr/status/2114145173470900636
 - Guaratuba/PR: b (confiança media) – https://www.band.com.br/politica/eleicoes/chuva-no-dia-da-eleicao-muda-locais-de-votacao-e-poe-estados-em-alerta ; https://x.com/pluraljorbr/status/2114109501603267015
+- Barracão/PR: b (confiança alta) – https://www.tre-pr.jus.br/comunicacao/noticias/2026/Outubro/evento-meteorologico-causa-alteracao-de-local-de-votacao-em-barracao ; https://www.cnnbrasil.com.br/nacional/chuvas-no-pr-fazem-32-mil-eleitores-mudarem-de-local-no-2o-turno-entenda/
 
 ## Avisos INMET considerados
 
