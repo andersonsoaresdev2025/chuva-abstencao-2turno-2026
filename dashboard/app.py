@@ -34,17 +34,33 @@ VERSAO_CODIGO_ESPERADA = "2026-10-25-auto30"
 
 
 def _recarregar_se_mudou():
-    mods = [R, D, IA, NOT]
-    mudou = getattr(D, "VERSAO_CODIGO", None) != VERSAO_CODIGO_ESPERADA
-    for m in mods:
-        mt = os.path.getmtime(m.__file__)
-        if getattr(m, "_mtime_carregado", mt) != mt:
-            mudou = True
-    if mudou:
+    """Recarrega common/* e dashboard/noticias quando o código mudou.
+
+    O Streamlit pode remover módulos do usuário de sys.modules entre execuções; por isso
+    os módulos são buscados pelo nome (importados de novo se sumiram) e nunca recarregados
+    a partir de uma referência antiga. Qualquer falha aqui não derruba o app.
+    """
+    global R, D, IA, NOT
+    nomes = ["common.regras", "common.dados", "common.impacto_agora", "dashboard.noticias"]
+    try:
+        mods = [sys.modules.get(n) for n in nomes]
+        mudou = any(m is None for m in mods)
+        if not mudou:
+            mudou = getattr(mods[1], "VERSAO_CODIGO", None) != VERSAO_CODIGO_ESPERADA
+            for m in mods:
+                mt = os.path.getmtime(m.__file__)
+                if getattr(m, "_mtime_carregado", mt) != mt:
+                    mudou = True
+        if mudou:
+            mods = []
+            for n in nomes:
+                m = sys.modules.get(n)
+                mods.append(importlib.reload(m) if m is not None else importlib.import_module(n))
         for m in mods:
-            importlib.reload(m)
-    for m in mods:
-        m._mtime_carregado = os.path.getmtime(m.__file__)
+            m._mtime_carregado = os.path.getmtime(m.__file__)
+        R, D, IA, NOT = mods
+    except Exception:  # noqa: BLE001 – recarga é só otimização; segue com os módulos já importados
+        pass
 
 
 _recarregar_se_mudou()
