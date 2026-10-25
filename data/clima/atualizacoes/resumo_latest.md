@@ -1,4 +1,4 @@
-# Risco de chuva – atualização automática (2026-10-25 15:13 BRT)
+# Risco de chuva – atualização automática (2026-10-25 15:37 BRT)
 
 Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de votação 08h–17h BRT.
 

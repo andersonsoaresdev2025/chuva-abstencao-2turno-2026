@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 18:13 UTC (15:13 BRT) · **Notícias no consolidado:** 379 (nesta coleta: 307) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 18:37 UTC (15:37 BRT) · **Notícias no consolidado:** 395 (nesta coleta: 329) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -19,9 +19,9 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 
 ## Distribuição
 
-Por tema: geral 122, alerta 105, locais de votação 77, alagamento 45, mobilidade 30
+Por tema: geral 127, alerta 108, locais de votação 79, alagamento 46, mobilidade 35
 
-Por UF: n 144, d 144, SP 97, PR 57, MS 19, MG 19, SC 16, RJ 15, MT 4, DF 3, GO 3, BA 2, RS 2, AM 1
+Por UF: n 151, d 151, SP 99, PR 60, MG 21, MS 19, RJ 17, SC 16, MT 4, GO 3, DF 2, BA 2, RS 2, AM 1
 
 ## Itens sinalizados (não verificados ou a checar)
 
@@ -35,11 +35,11 @@ Por UF: n 144, d 144, SP 97, PR 57, MS 19, MG 19, SC 16, RJ 15, MT 4, DF 3, GO 3
 - Chuva forte alaga escola em Curitiba e 3.523 eleitores têm local de votação alterado no 2º turno — www.bra1.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMi0gFBVV95cUxNbl9qRTRTODdkMVBfdFJmS1RzR3JESjc5cFRTbERIVDd0UGpPR19pdlFTTjRFMWZDV1lqb3NLX0dzbDkwS2Q2Vm1yZGRSQmVEZE9mSjJiX1pLSWFzamNkaVZzNEk5YXl4V1ZwSXVDTE92Y1c3R3d0cDE1Y2taRjctc2xCUHc2a2JoOHE2eTZTVUFPTjNtQ01aSWtUOVZrdGZOaHdxREdSYXVxRmV5VXRpZWNOSGJGLTFKa1kwdW9VNl9Oc2NfTWJNc1JZclVwbDlaWVE?oc=5)
 - Chuva altera local de votação em Itapevi para o 2º turno; veja onde votar — Tribunal Regional Eleitoral de São Paulo — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMizAFBVV95cUxQQWJzNzFFMmxFdlA4Tlc4d2VRY0kyMmgzMzNCRnlpNWxLVVpZVzRLOTZhdk1pN1NhOTh6N0FjYWtPUmVVbTdaWnJwOExKREpBVFpzTnhJNGJON0hLbzdWREo1NGRnOS1Zb2NEY2hGZjBDWS1vOU5SbTN4Wl9CT3NYcXlqczN0THN4UWxwbW0yWXplMFJFN3IyTWZXUlJ4LVBZcmFMMVBmeUxiaElJRkxWazNYR0doODh2UmprMWdOeU5vWS1UYmNTNlJNcUc?oc=5)
 - São Paulo registra mudança de local de votação por causa das fortes chuvas; alagamentos atingem ao menos 11 cidades — CBN — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMiiAJBVV95cUxOZmVmeHpTckE1ek5XWEp4bHpfMnoxc2QxaVo3cEhad2ZOZGFBRmxWc1dKVHhqT1pvMlBHTFBkVmZMSmQyMG5aNVpDd29LckJUdDV4ZldMdThiMkFqU1pfbzBaNjFmaS1XdEVfSWgtcGkwa2l4MTJLNm1SalZWcDM3VDFKMDBDRjc0V1lZTFloMUFtVVBQMUhxNU51bUhUd2F2M3RPWnpPNnR5VERqeEdRSjlyOXhVa0owMDZRZXRiNjlKblJJa0NNN2puVFpBWlIzVDdCLWg4Ym9vTGRabGZwSmFmRFFPQzV4ZmR6SmM2T3pXUzRhQzlORzlOZkxQUGUxSXVYYU51ZGPSAZcCQVVfeXFMUHZRckZXSFk3WDJMSUw3d2RZZDBhdlNGQnZNZjRZam9qa2k1bTZTWXh3b1gzOHhIU2dmYTNua2RvMHpFbWRhRUVmdk03UzNYNWV0RWp3MmNuS1JUeUJWZGhBRlE5NEVzTzViZmY4N21JS0d0eWh6c2xLdGFZZGdnTmdjV3BweG1SLUpwZi1KUFlRM0pzNVMtSnU3aHRrWWI4d2gzdjQ2ZHVDMnlGc1J5dTVyUFl2b2Z0MFp2NDNMTnIwcG1xN3J6ZjlweWtkOTBLcXNTMkZsZ3ZBQ3FwRlVIQWhlSUxIbnItSTNta2ZMSGNBMC04a3l4aEw3bW5XTzhGLV9MY1p0MFRiOTM5T0U4U01lSGY0RllB?oc=5)
+- Chuva alaga escola eleitoral de Curitiba e provoca a mudança de 10 seções — O POVO — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMizwFBVV95cUxOSDY3WlQ2ejlxRnhkQzdULXRKUDA3Z0xXekVKWUoyUXQyREpCMnlnLURlZFp2N0FqeW5ETXNFZ25mSHQxa2VhUXFGaTFBZ01lbjJ5QW8zektqR1UtamFHR0hVNmx3T2ozRUdrcmZPbGpJek5XTnpoYjRielZWV3lLamFIZEJYYm00c3hNSmc0RUpNVnh0YlI1Yk1kTGo5VDdsbEo3c1IzOThUUXRIX2RGR3pJLTJaQ0NrT1lDUWdsWGUxc19lUHFmZEFGMTJveGs?oc=5)
 - Sete locais de votação são alterados em São Paulo por causa das chuvas; confira mudanças — CBN — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMi8AFBVV95cUxQSERMYjZEVFFOc0xHNVU3MUVRWVNSWmxudkV4SG8xZkZkcTRDQU01QklsN2FjNnNhQV9iYW8tQ0kyYmFBMlEwb2RrZ1lmclJCRkF6aXRmcUhJXzlFcmZVekR3WTg3UlR5Rlp5OW1PZW4yczk5SHpUZXJ5VExCNmZyb3c5V3FRLVlXbmlETTdPTHBsbUtOeHYtN19QSzRkWjZ2MUFud25kbDQ4QW1oQXRURnJwNWhpYmhZc281NWRBZ3M5YUxOMW9JT3A5MUR4Ty1vYTY1d0tDV1MwM2ZXTk5ZZllJb2x2YWgxS0RlUFpZTkbSAf8BQVVfeXFMT1NZRFVHUkJUVmpWcDkzeVhWejZndXhkYW5xaHlRdjN0eHBLdTRtM0hPMVJDZ0I0VVZUa05HVmpMV25EUFJPWDJ0dWt4azdpWnVqTFdzRmktd2F6dURfZGp0b1pkQklxNEdNdzBSems0LTM5VmlfOUlWY2NIOXZzeUtqZ2lxbUdRNm56ejh6YXZyNThlSThDVW5DRXFkZ1pOUXlyeUM1RUpOOS1FcTAtMUFjRTFKVF94SDdDSS0wdmloUlZBbXlnOEU1d21iNktvaHZEUW4yXzIzeUtlS25IRlE0dERycHdmNmZPWGRqRVV2TzRDbHlCc3RoWW84dFY0?oc=5)
 - Sorocaba sofre com enchentes na madrugada, mas locais de votação são mantidos — www.portalporque.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYVBqbjdfSDZXbTV5Y2NTcFFySDJteFh3WGhoUTVyamFmMWNlN0s0ZjkzeHY3STI2RUdpZDVBeE93OERqVjVBeWdLNVQzVWRhOVNJeEtMMVhZUVlWeUZMcmlHcUk1UDdPa1lxQVBGMXR6eUlWWFJPSk5HS244eDZQei1yeXNsQ2xrMUd3Z19ENXJaUzhEbFdiWm90Zzk3T1BLa252MDMtb1E3RzZwUEpub1JIbXEybmk5Z19vR3pVOUwxbHc?oc=5)
 - Chuvas alteram locais de votação em três cidades de SP — SBT News — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMimAFBVV95cUxPZDY4UG9xaEZKV3JYTllFVmdqZWluYnlkYzltb1IwOER6cWdQMFJEZ25EbzMteGNrY3NIakljVEQzTnpqdDU2RTRuTVJvYWNKdWgzbmtMcnNadlZodFdGb2RrMVNTQl9vcGxFZXRYOVBqX25YQWtZNGgwTkNRRG9QZGtzY0ZHdGR5NWVJSTNENWh3Y2dQeGV4QQ?oc=5)
 - Alagamento em colégio eleitoral altera local de votação para 3,5 mil eleitores no Paraná — boca.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMijAFBVV95cUxQQ19fV1BheTRQSlpjVFdNbEZzTTFvTWRqdUFiR2Fva2wyaEFSenk2dzRXMmNBU3lpd1hLTDJwemZ0bEppUF83SGZJS0lrSnlzWWJlZXcyT1lENVE3cXBCY0ZwdUZYZ2V5OW1wWWdLOVlKS1pZM2QxQ21IODNneVlqd0pRcExPbzhlTHVoRw?oc=5)
-- Chuva forte causa transferência de local de votação em Itapevi (SP) — VEJA — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMioAFBVV95cUxQSlRfWExDTkZ5UDVzTUJiU0NkLTdseG82dzY3OFV0YndhcUw5dmpfNW85VjJLWi1DLUkxWXdzUklIbDRKdDl5dlZJLUYwOTVRLTc1T2s5NF9IMnVjTDF3eXlobVFsQ0Y4a054X2NubnlCeVNvMk96NmJWZ0o5N2VLMTJnNWZ1SDF1MlB1akRJMnpnMU9fQ0prWm1FY0NTb1Ja?oc=5)
 
 ## Limitações
 
