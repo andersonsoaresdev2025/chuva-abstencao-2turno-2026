@@ -1,0 +1,72 @@
+[
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:15:00Z",
+  "timestamp_post": "2026-10-25T12:40:48Z",
+  "cidade": "Ribeirão Preto",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim (a)",
+  "tipo": "local_afetado",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@cbnribeirao",
+  "tipo_fonte": "imprensa",
+  "resumo": "CBN Ribeirão: escola de votação alagada no Jardim Antártica e outra com queda de energia já restabelecida; em Matão, escolas sem energia com urnas em bateria. Sem mudança de local relatada.",
+  "link": "https://x.com/cbnribeirao/status/2114336374732304462"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:15:00Z",
+  "timestamp_post": "2026-10-25T13:03:57Z",
+  "cidade": "Ribeirão Preto",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim (a)",
+  "tipo": "transporte",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@cbnribeirao",
+  "tipo_fonte": "imprensa",
+  "resumo": "Trecho da Via Norte alagado; chuva causa transtornos em diversos pontos, inclusive em locais de votação. g1 Ribeirão publicou 'Locais de votação enfrentam problemas por conta da chuva' (mesmo grupo de mídia).",
+  "link": "https://x.com/cbnribeirao/status/2114342197898457160"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:15:00Z",
+  "timestamp_post": "2026-10-25T12:21:38Z",
+  "cidade": "Campinas",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim (a)",
+  "tipo": "local_afetado",
+  "nivel_risco_implicito": "medio",
+  "confianca": "media",
+  "fonte": "@g1campinas / @eptvoficial (citando TRE-SP e Defesa Civil SP)",
+  "tipo_fonte": "imprensa",
+  "resumo": "Rua do Colégio Notre Dame (Sousas, 2.354 eleitores) totalmente alagada; TRE-SP confirma o alagamento mas diz que a votação flui normalmente e há local de contingência; 83 mm em 12 h (Defesa Civil SP). Sumaré com bombeiros usando bote.",
+  "link": "https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:15:00Z",
+  "timestamp_post": "2026-10-25T12:57:00Z",
+  "cidade": "Itapevi",
+  "uf": "SP",
+  "cidade_risco_previsto": "sim (a)",
+  "tipo": "local_alterado",
+  "nivel_risco_implicito": "alto",
+  "confianca": "alta",
+  "fonte": "CNN Brasil + Exame (citando TRE-SP)",
+  "tipo_fonte": "imprensa",
+  "resumo": "CNN e Exame confirmam a transferência emergencial das seções 439 e 474 do Cemeb Prof. Edevaldo Caramez, inacessível por alagamento, para a Escola do Futuro (~1,4 km).",
+  "link": "https://www.cnnbrasil.com.br/eleicoes/eleicoes-2026-chuva-altera-local-de-votacao-em-itapevi-sp-para-2o-turno/"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T13:15:00Z",
+  "timestamp_post": "2026-10-25T12:54:50Z",
+  "cidade": "Rio de Janeiro",
+  "uf": "RJ",
+  "cidade_risco_previsto": "",
+  "tipo": "observacao_chuva",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "media",
+  "fonte": "@JornalOGlobo",
+  "tipo_fonte": "imprensa",
+  "resumo": "Sob chuva, eleitores chegam cedo e formam filas nos locais de votação do Rio (sem sinal de abstenção elevada).",
+  "link": "https://x.com/JornalOGlobo/status/2114339905295843398"
+ }
+]
