@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 17:12 UTC (14:12 BRT) · **Notícias no consolidado:** 350 (nesta coleta: 297) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 17:39 UTC (14:39 BRT) · **Notícias no consolidado:** 358 (nesta coleta: 295) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -8,7 +8,7 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 
 - **Eleições 2026: chuva altera locais de votação para mais de 7 mil eleitores no Paraná e em SC; veja a previsão no país** — O Globo (12:30 BRT, Guaratuba; Curitiba; tema: locais de votação) — [link](https://oglobo.globo.com/brasil/noticia/2026/10/25/eleicoes-chuva-forte-ameaca-areas-do-sul-e-do-sudeste-neste-domingo-veja-a-previsao.ghtml)
 - **Chuva forte causa danos em oito cidades paulistas e altera local de votação em Itapevi** — O Globo (12:58 BRT, São Paulo; tema: locais de votação) — [link](https://oglobo.globo.com/brasil/noticia/2026/10/25/chuva-forte-causa-danos-em-oito-cidades-paulistas-e-altera-local-de-votacao-em-itapevi.ghtml)
-- **Urnas substituídas, chuva e voto já registrado: SIGA o 2º turno na região de Campinas** — g1 (16:21 BRT, Campinas; tema: locais de votação) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
+- **Urnas substituídas, chuva e voto já registrado: SIGA o 2º turno na região de Campinas** — g1 (17:15 BRT, Campinas; tema: locais de votação) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
 - **Local de votação em Itapevi é alterado de forma emergencial após chuvas** — Metrópoles (09:37 BRT, São Paulo; tema: locais de votação) — [link](https://www.metropoles.com/sao-paulo/local-de-votacao-em-itapevi-e-alterado-de-forma-emergencial-apos-chuvas)
 - **Eleições 2026: Chuva altera local de votação em Itapevi e Itupeva (SP)** — CNN Brasil (09:57 BRT, São Paulo; tema: locais de votação) — [link](https://www.cnnbrasil.com.br/eleicoes/eleicoes-2026-chuva-altera-local-de-votacao-em-itapevi-sp-para-2o-turno/)
 - **Chuva provoca alagamentos, derruba árvores e dificulta acesso a locais de votação na região de Campinas** — g1 Campinas (EPTV) (11:20 BRT, Campinas; tema: locais de votação) — [link](https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml)
@@ -19,9 +19,9 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 
 ## Distribuição
 
-Por tema: geral 114, alerta 100, locais de votação 70, alagamento 44, mobilidade 22
+Por tema: geral 117, alerta 101, locais de votação 70, alagamento 44, mobilidade 26
 
-Por UF: n 131, d 131, SP 93, PR 57, MS 18, MG 14, RJ 13, SC 12, MT 4, GO 3, DF 2, BA 2, RS 2, AM 1
+Por UF: n 137, d 137, SP 94, PR 57, MS 18, RJ 14, MG 14, SC 12, MT 4, GO 3, DF 2, BA 2, RS 2, AM 1
 
 ## Itens sinalizados (não verificados ou a checar)
 
