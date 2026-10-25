@@ -9,7 +9,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 SERVER = Path(__file__).resolve().parent / "chuva_mcp_server.py"
-ESPERADAS = {"risco_chuva", "impacto_abstencao", "ranking_risco", "sinais_sociais_recentes", "metodologia_e_limitacoes"}
+ESPERADAS = {"risco_chuva", "impacto_abstencao", "ranking_risco", "sinais_sociais_recentes", "metodologia_e_limitacoes", "impacto_agora"}
 
 
 def _json(res):
@@ -51,6 +51,11 @@ async def _rodar():
 
             x = _json(await s.call_tool("sinais_sociais_recentes", {"cidade": "São Paulo", "n": 3}))
             assert "disclaimer" in x and isinstance(x["resultados"], list)
+
+            x = _json(await s.call_tool("impacto_agora", {}))
+            for k in ("flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp"):
+                assert x[k]["min"] <= x[k]["mid"] <= x[k]["max"] and abs(x[k]["mid"]) < 0.5
+            assert x["calculado_em"] and x["fonte_precipitacao"] and len(x["municipios"]) == 15
 
             x = _json(await s.call_tool("metodologia_e_limitacoes", {}))
             assert len(x["limitacoes"]) >= 5

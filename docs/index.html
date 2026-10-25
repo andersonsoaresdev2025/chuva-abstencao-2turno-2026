@@ -27,12 +27,26 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <header>
 <h1>🌧️ Chuva × Abstenção Eleitoral</h1>
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
-<p><b>Dados atualizados em:</b> impacto (Bot 4) 2026-10-25 09:24 BRT · risco a/b/c (Bot 2) 2026-10-25 06:35 BRT · página gerada 2026-10-25 09:58 UTC / 2026-10-25 06:58 BRT</p>
+<p><b>Dados atualizados em:</b> impacto (Bot 4) 2026-10-25 09:24 BRT · risco a/b/c (Bot 2) 2026-10-25 06:35 BRT · página gerada 2026-10-25 10:12 UTC / 2026-10-25 07:12 BRT</p>
 <a class="cta" href="https://chuva-abstencao-2026.streamlit.app/" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
+
+<section id="agora">
+<h2>⏱️ Impacto estimado agora — projeção (votação ainda não começou)</h2>
+<div class="kpis">
+<div class="kpi"><b>−0,0002 p.p.</b>Flávio Bolsonaro (votos válidos) · faixa −0,0003 a −0,0001 · votos perdidos ≈ 128.300 (73.300–183.400)</div>
+<div class="kpi"><b>+0,0002 p.p.</b>Lula (votos válidos) · faixa +0,0001 a +0,0003 · votos perdidos ≈ 122.800 (70.200–175.500)</div>
+<div class="kpi"><b>+0,0004 p.p.</b>Efeito na margem (Lula − Flávio) · faixa +0,0002 a +0,0005 · abstenção nacional +0,18 p.p.</div>
+<div class="kpi"><b>20,0%</b>do eleitorado coberto (15 maiores colégios; demais = 0)</div>
+</div>
+<p class="muted">🕒 Calculado em 07:12 BRT (2026-10-25 10:12 UTC) no momento da geração desta página; janela: dia inteiro 08h–17h (previsão) · Precipitação: Open-Meteo (previsão horária atual para 08h–17h). Versão ao vivo (recalculada a cada poucos minutos) no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
+
+<p class="muted"><b>Como é calculado:</b> Para cada um dos 15 maiores colégios com previsão horária, somamos a chuva desde 08h até agora (Open-Meteo; se a API falhar, a previsão do Bot 0 pró-rata pelas horas decorridas) e aplicamos o coeficiente do Bot 1: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0). As abstenções extras (aptos × efeito) são divididas entre Flávio e Lula pela votação de cada um no município no 1º turno (mesma suposição do Bot 4), e o resultado é comparado com os votos nacionais dos dois no 1º turno. Municípios fora da cobertura contam como zero. Antes das 08h mostramos a projeção do dia; após 17h, a estimativa final.</p>
+<p class="alert">Estimativa baseada em modelo — não é contagem de votos, apuração nem pesquisa de boca de urna. Mostra apenas o efeito estimado da chuva, com grande incerteza.</p>
+</section>
 
 <section id="mensagem">
 <h2>Mensagem principal</h2>
@@ -103,7 +117,7 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 
 <section id="limitacoes">
 <h2>Limitações e incerteza</h2>
-<ol><li>Cobertura climática incompleta: previsão horária detalhada (Open-Meteo) só para os 15 maiores colégios; a classificação a/b/c do Bot 2 cobre 29 municípios; interior e municípios menores têm classificação agregada ou extrapolada.</li><li>Coeficientes com incerteza: a análise do 1º turno é cross-sectional (30 maiores colégios); parte da associação chuva × abstenção é explicada por diferenças regionais estruturais. O efeito após controles é positivo, porém impreciso.</li><li>Impacto diferencial simplificado: proporcional à base de votos do 1º turno; não modela renda, transporte público, idade ou motivação partidária.</li><li>O comportamento no 2º turno pode diferir do 1º (mobilização, polarização, transferência de votos).</li><li>Chuva ≠ alagamento: eventos extremos podem ter efeitos discretos (seções fechadas, transporte interrompido) não capturados por uma relação linear média.</li><li>No Brasil o voto é obrigatório; a literatura internacional (voto facultativo) pode superestimar o efeito.</li><li>As camadas foram geradas em horários diferentes (Bot 2 às 06:35 BRT; Bot 4 às 09:24 BRT com previsão Open-Meteo coletada às ~09:01). Há divergências de classificação entre elas para alguns locais (ex.: Curitiba, MS, MG, região Sudeste). Ambas são exibidas com seus timestamps.</li><li>Correlação não é causalidade. Todos os efeitos são estimativas com faixa de incerteza, não previsões eleitorais.</li></ol>
+<ol><li>Cobertura climática incompleta: previsão horária detalhada (Open-Meteo) só para os 15 maiores colégios; a classificação a/b/c do Bot 2 cobre 29 municípios; interior e municípios menores têm classificação agregada ou extrapolada.</li><li>Coeficientes com incerteza: a análise do 1º turno é cross-sectional (30 maiores colégios); parte da associação chuva × abstenção é explicada por diferenças regionais estruturais. O efeito após controles é positivo, porém impreciso.</li><li>Impacto diferencial simplificado: proporcional à base de votos do 1º turno; não modela renda, transporte público, idade ou motivação partidária.</li><li>O comportamento no 2º turno pode diferir do 1º (mobilização, polarização, transferência de votos).</li><li>Chuva ≠ alagamento: eventos extremos podem ter efeitos discretos (seções fechadas, transporte interrompido) não capturados por uma relação linear média.</li><li>No Brasil o voto é obrigatório; a literatura internacional (voto facultativo) pode superestimar o efeito.</li><li>As camadas foram geradas em horários diferentes (Bot 2 às 06:35 BRT; Bot 4 às 09:24 BRT com previsão Open-Meteo coletada às ~09:01). Há divergências de classificação entre elas para alguns locais (ex.: Curitiba, MS, MG, região Sudeste). Ambas são exibidas com seus timestamps.</li><li>Impacto estimado agora: cobre apenas os 15 maiores colégios (~20% do eleitorado); o resto do país conta como zero. A chuva das horas decorridas vem do modelo horário Open-Meteo (não de pluviômetros) e a faixa lo–hi reflete só a incerteza do coeficiente do Bot 1.</li><li>Correlação não é causalidade. Todos os efeitos são estimativas com faixa de incerteza, não previsões eleitorais.</li></ol>
 </section>
 
 <section id="fontes">
@@ -119,6 +133,6 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <p class="muted">Código sob licença MIT; dados de análise sob CC BY 4.0; dados de origem pública mantêm os termos originais.</p>
 </section>
 </main>
-<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 09:58 UTC / 2026-10-25 06:58 BRT por scripts/build_site.py</footer>
+<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 10:12 UTC / 2026-10-25 07:12 BRT por scripts/build_site.py</footer>
 </body>
 </html>

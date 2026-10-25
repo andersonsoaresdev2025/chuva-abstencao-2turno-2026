@@ -221,6 +221,9 @@ LIMITACOES = [
     "As camadas foram geradas em horários diferentes (Bot 2 às 06:35 BRT; Bot 4 às 09:24 BRT com "
     "previsão Open-Meteo coletada às ~09:01). Há divergências de classificação entre elas para alguns "
     "locais (ex.: Curitiba, MS, MG, região Sudeste). Ambas são exibidas com seus timestamps.",
+    "Impacto estimado agora: cobre apenas os 15 maiores colégios (~20% do eleitorado); o resto do país "
+    "conta como zero. A chuva das horas decorridas vem do modelo horário Open-Meteo (não de pluviômetros) "
+    "e a faixa lo–hi reflete só a incerteza do coeficiente do Bot 1.",
     "Correlação não é causalidade. Todos os efeitos são estimativas com faixa de incerteza, "
     "não previsões eleitorais.",
 ]

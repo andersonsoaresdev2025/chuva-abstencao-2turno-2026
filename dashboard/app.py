@@ -21,6 +21,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from common import dados as D  # noqa: E402
+from common import impacto_agora as IA  # noqa: E402
 
 # -----------------------------------------------------------------------------
 # Configuração da página
@@ -62,6 +63,109 @@ def carregar_social():
 @st.cache_data(ttl=300)
 def load_md(path_str: str) -> str:
     return D.read_md(Path(path_str))
+
+
+
+# -----------------------------------------------------------------------------
+# Impacto estimado AGORA (chuva acumulada desde 08h -> p.p. por candidato)
+# -----------------------------------------------------------------------------
+@st.cache_data(ttl=900, show_spinner=False)
+def _series_open_meteo(lats: tuple, lons: tuple):
+    """Cache de ~15 min da série horária Open-Meteo. Falhas não são cacheadas (exceção propaga)."""
+    return D.agora_utc().isoformat(), IA.buscar_open_meteo(list(lats), list(lons))
+
+
+def _fmt_pp(x: float, sinal: bool = True) -> str:
+    casas = 4 if abs(x) < 0.01 else 2
+    s = f"{x:+.{casas}f}" if sinal else f"{x:.{casas}f}"
+    return s.replace("-", "−").replace(".", ",")
+
+
+def _fmt_int(x: float) -> str:
+    return f"{int(round(x, -2)):,}".replace(",", ".")
+
+
+def impacto_agora_calc():
+    obtido = {}
+
+    def buscar(lats, lons):
+        ts, series = _series_open_meteo(tuple(lats), tuple(lons))
+        obtido["ts"] = ts
+        return series
+
+    r = IA.calcular_com_api(buscar=buscar)
+    if obtido.get("ts") and not r["usou_fallback"]:
+        from datetime import datetime as _dt
+        r["precip_obtida_em_brt"] = _dt.fromisoformat(obtido["ts"]).astimezone(D.TZ_BRT).strftime("%H:%M BRT")
+    return r
+
+
+@st.fragment(run_every="5m")
+def bloco_impacto_agora():
+    try:
+        r = impacto_agora_calc()
+    except Exception as e:  # noqa: BLE001 – o card nunca deve derrubar a página
+        st.warning(f"Impacto estimado agora indisponível no momento ({type(e).__name__}).")
+        return
+    st.subheader(f"⏱️ Impacto estimado agora — {r['rotulo']}")
+    f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
+    vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        st.metric("Flávio Bolsonaro (p.p. dos votos válidos)", _fmt_pp(f["mid"]),
+                  help="Variação estimada na participação de Flávio nos votos válidos (Flávio+Lula) por causa "
+                       "da chuva, ponto central (coeficiente médio do Bot 1).")
+        st.caption(f"Faixa {_fmt_pp(f['min'])} a {_fmt_pp(f['max'])} p.p. · "
+                   f"votos perdidos ≈ {_fmt_int(vf['mid'])} ({_fmt_int(vf['min'])}–{_fmt_int(vf['max'])})")
+    with c2:
+        st.metric("Lula (p.p. dos votos válidos)", _fmt_pp(l["mid"]),
+                  help="Variação estimada na participação de Lula nos votos válidos (Flávio+Lula).")
+        st.caption(f"Faixa {_fmt_pp(l['min'])} a {_fmt_pp(l['max'])} p.p. · "
+                   f"votos perdidos ≈ {_fmt_int(vl['mid'])} ({_fmt_int(vl['min'])}–{_fmt_int(vl['max'])})")
+    with c3:
+        st.metric("Efeito na margem (Lula − Flávio)", f"{_fmt_pp(m['mid'])} p.p.",
+                  help="Positivo = a chuva favorece Lula na margem; negativo = favorece Flávio.")
+        st.caption(f"Faixa {_fmt_pp(m['min'])} a {_fmt_pp(m['max'])} p.p. · abstenção nacional "
+                   f"{_fmt_pp(ab['mid'])} p.p. ({_fmt_pp(ab['min'], False)}–{_fmt_pp(ab['max'], False)})")
+    with c4:
+        st.metric("Cobertura do eleitorado", f"{r['cobertura_pct_eleitorado']:.1f}%".replace(".", ","),
+                  help="Parcela dos eleitores aptos do país nos municípios com chuva medida; o restante conta como zero.")
+        st.caption(f"{r['n_municipios_cobertos']} maiores colégios · demais municípios = 0")
+    obtida = f" (dados obtidos às {r['precip_obtida_em_brt']})" if r.get("precip_obtida_em_brt") else ""
+    janela = ("dia inteiro 08h–17h (previsão)" if r["modo"] == "projecao" else
+              f"{r['horas_decorridas']:.1f} h desde 08h".replace(".", ","))
+    st.caption(
+        f"🕒 Calculado em {r['calculado_em_brt']} ({r['calculado_em_utc']}) · janela considerada: "
+        f"{janela} · Precipitação: {r['fonte_precipitacao']}{obtida}."
+    )
+    if r["usou_fallback"]:
+        st.warning("Open-Meteo indisponível agora: usando a previsão do Bot 0 (CSV) pró-rata pelas horas decorridas.")
+    st.caption("⚠️ " + IA.DISCLAIMER)
+    cb, ce = st.columns([1, 3])
+    with cb:
+        if st.button("🔄 Atualizar", help="Busca de novo a precipitação no Open-Meteo (cache de 15 min)"):
+            _series_open_meteo.clear()
+            st.rerun(scope="fragment")
+    with ce:
+        with st.expander("Como este número é calculado"):
+            st.markdown(IA.METODO_TXT)
+            st.markdown(
+                "- Coeficiente: **0,07 p.p. de abstenção por mm** (faixa 0,04–0,10), do Bot 1.  \n"
+                "- A faixa reflete só a incerteza do coeficiente; não inclui erro da precipitação nem efeitos de "
+                "alagamento/transporte. O **sinal** pode mudar conforme onde chove (SP pesa a favor de Flávio na "
+                "margem; RJ, Guarulhos e Campinas a favor de Lula).  \n"
+                "- Base nacional: votos de Flávio e Lula no 1º turno (TSE). Valores muito pequenos são esperados: "
+                "a chuva reduz votos dos dois lados quase na mesma proporção."
+            )
+            mun = r["municipios"].rename(columns={
+                "municipio": "Município", "uf": "UF", "aptos": "Aptos", "pct_flavio_1t": "% Flávio 1ºT",
+                "pct_lula_1t": "% Lula 1ºT", "precip_acum_mm": "Chuva acumulada (mm)",
+                "efeito_abst_pp_lo": "Abst. lo (p.p.)", "efeito_abst_pp_mid": "Abst. mid (p.p.)",
+                "efeito_abst_pp_hi": "Abst. hi (p.p.)", "abst_extras_mid": "Abstenções extras (mid)"})
+            st.dataframe(mun.sort_values("Chuva acumulada (mm)", ascending=False), width="stretch",
+                         hide_index=True)
+            if r.get("erro_api"):
+                st.caption(f"Erro da API Open-Meteo: {r['erro_api']}")
 
 
 d = carregar()
@@ -132,6 +236,9 @@ if pagina == "Visão Geral":
         "Acompanhe o risco de chuva durante o horário de votação "
         "(08h–17h) e a estimativa de impacto sobre a abstenção e sobre cada candidato."
     )
+
+    bloco_impacto_agora()
+    st.markdown("---")
 
     col1, col2, col3, col4 = st.columns(4)
     n_alta = n_media = 0
@@ -504,6 +611,10 @@ elif pagina == "Metodologia e Limitações":
         tabela(d["faixas_chuva"], {
             "faixa_chuva": "Faixa de chuva", "n_municipios": "N", "media_precip_mm": "Precip. média (mm)",
             "pct_abst_ponderada": "Abstenção ponderada (%)", "mediana_pct_abst": "Mediana (%)"})
+
+    st.subheader("Impacto estimado agora (cards da Visão Geral)")
+    st.markdown(IA.METODO_TXT)
+    st.caption(" · ".join(IA.COEF_FONTE.split("; ")))
 
     st.subheader("Principais limitações (declaradas)")
     st.markdown("\n".join(f"{i}. {t}" for i, t in enumerate(D.LIMITACOES, 1)))

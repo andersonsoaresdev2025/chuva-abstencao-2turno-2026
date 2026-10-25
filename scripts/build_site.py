@@ -19,6 +19,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from common import dados as D  # noqa: E402
+from common import impacto_agora as IA  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # PREENCHER APÓS A PUBLICAÇÃO (ou exportar as variáveis de ambiente)
@@ -108,6 +109,37 @@ def secao_social() -> str:
     return t + extra
 
 
+def pp(x: float) -> str:
+    casas = 4 if abs(x) < 0.01 else 2
+    return f"{x:+.{casas}f}".replace("-", "−").replace(".", ",")
+
+
+def secao_agora() -> str:
+    """Card 'Impacto estimado agora' calculado no momento do build (com timestamp)."""
+    try:
+        r = IA.calcular_com_api()
+    except Exception as e:  # noqa: BLE001
+        return (f'<section id="agora"><h2>Impacto estimado agora</h2><p class="muted">Indisponível neste build '
+                f'({esc(type(e).__name__)}).</p></section>')
+    f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
+    vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
+    fb = ('<p class="alert">Open-Meteo indisponível no build: usada a previsão do Bot 0 (CSV) pró-rata.</p>'
+          if r["usou_fallback"] else "")
+    return f"""<section id="agora">
+<h2>⏱️ Impacto estimado agora — {esc(r['rotulo'])}</h2>
+<div class="kpis">
+<div class="kpi"><b>{pp(f['mid'])} p.p.</b>Flávio Bolsonaro (votos válidos) · faixa {pp(f['min'])} a {pp(f['max'])} · votos perdidos ≈ {num(round(vf['mid'], -2))} ({num(round(vf['min'], -2))}–{num(round(vf['max'], -2))})</div>
+<div class="kpi"><b>{pp(l['mid'])} p.p.</b>Lula (votos válidos) · faixa {pp(l['min'])} a {pp(l['max'])} · votos perdidos ≈ {num(round(vl['mid'], -2))} ({num(round(vl['min'], -2))}–{num(round(vl['max'], -2))})</div>
+<div class="kpi"><b>{pp(m['mid'])} p.p.</b>Efeito na margem (Lula − Flávio) · faixa {pp(m['min'])} a {pp(m['max'])} · abstenção nacional {pp(ab['mid'])} p.p.</div>
+<div class="kpi"><b>{num(r['cobertura_pct_eleitorado'], 1)}%</b>do eleitorado coberto ({r['n_municipios_cobertos']} maiores colégios; demais = 0)</div>
+</div>
+<p class="muted">🕒 Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) no momento da geração desta página; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão ao vivo (recalculada a cada poucos minutos) no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
+{fb}
+<p class="muted"><b>Como é calculado:</b> {esc(IA.METODO_TXT)}</p>
+<p class="alert">{esc(IA.DISCLAIMER.replace('**', ''))}</p>
+</section>"""
+
+
 def build() -> str:
     d = D.carregar_tudo()
     ts = D.timestamps_dados(d)
@@ -186,8 +218,10 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <a class="cta" href="{html.escape(STREAMLIT_URL, quote=True)}" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="{html.escape(REPO_URL, quote=True)}">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
+
+{secao_agora()}
 
 <section id="mensagem">
 <h2>Mensagem principal</h2>

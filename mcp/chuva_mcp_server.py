@@ -201,6 +201,24 @@ def sinais_sociais_recentes(cidade: str | None = None, n: int = 10) -> dict:
 
 
 @mcp.tool()
+def impacto_agora() -> dict:
+    """Impacto estimado AGORA da chuva acumulada desde 08h (BRT) sobre cada candidato, em p.p. dos votos
+    válidos (Flávio+Lula), com faixa (coeficiente Bot 1 lo/mid/hi), votos perdidos, efeito na margem
+    (Lula − Flávio) e cobertura do eleitorado. Precipitação: Open-Meteo (fallback: previsão Bot 0).
+    Antes das 08h = projeção do dia; após 17h = estimativa final. Não é contagem de votos nem boca de urna."""
+    from common import impacto_agora as IA
+    r = IA.calcular_com_api()
+    out = {k: _limpo(v) if not isinstance(v, dict) else {kk: _limpo(vv) for kk, vv in v.items()}
+           for k, v in r.items() if k not in ("municipios", "fontes", "coeficiente")}
+    out["municipios"] = _registros(r["municipios"])
+    out["coeficiente_pp_por_mm"] = r["coeficiente"]
+    out["metodo"] = IA.METODO_TXT
+    out["aviso"] = IA.DISCLAIMER.replace("**", "")
+    out["fonte"] = r["fontes"]
+    return out
+
+
+@mcp.tool()
 def metodologia_e_limitacoes() -> dict:
     """Metodologia do projeto (classificação de risco, coeficientes, impacto) e limitações declaradas."""
     return {

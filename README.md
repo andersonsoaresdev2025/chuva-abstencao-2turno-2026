@@ -70,7 +70,23 @@ Os timestamps exibidos no dashboard e no site são lidos **de dentro dos arquivo
    Regra prática: moderada **+0,5 a +1,2 pp**; torrencial **+1,2 a +3,0 pp**.
 3. **Impacto (Bot 4)** – regra aplicada a cada local; impacto diferencial proporcional à base de votos do
    1º turno (quem tem maior base local tende a perder mais votos absolutos).
-4. **Sinais sociais** – exibidos separadamente; não alteram automaticamente as estimativas.
+4. **Impacto estimado agora** (cards no topo da Visão Geral, `common/impacto_agora.py`, também no site e no
+   MCP `impacto_agora()`):
+   - Chuva acumulada de 08h até o instante do cálculo nos 15 maiores colégios com coordenadas (Open-Meteo
+     `hourly=precipitation`, `timezone=America/Sao_Paulo`, cache de 15 min; o valor rotulado HH:00 é o total da
+     hora anterior, então 08h–17h = rótulos 09..17 e a hora em curso entra pró-rata). Para horas já decorridas o
+     Open-Meteo entrega a estimativa do modelo/nowcast, **não** medição de pluviômetro. Se a API falhar, usa-se a
+     previsão do Bot 0 (CSV) pró-rata pelas horas decorridas (manhã 08–12h, tarde 12–17h).
+   - Efeito na abstenção = coeficiente do Bot 1 para simulações, **0,07 p.p. por mm** (0,7 p.p./cm; faixa
+     0,04–0,10) × mm acumulados. Nenhum coeficiente novo.
+   - Abstenções extras = aptos × efeito; divididas entre Flávio e Lula pela votação de cada um no município no
+     1º turno (suposição do Bot 4). Base nacional = votos de Flávio e Lula no 1º turno (TSE, todo o país +
+     exterior). Resultado: Δ participação de cada um nos votos válidos dos dois (p.p.), efeito na margem
+     (Lula − Flávio), votos perdidos e abstenção nacional extra. Municípios não cobertos = 0 (cobertura ≈ 20%
+     do eleitorado).
+   - Antes das 08h: projeção do dia inteiro; após 17h: estimativa final do dia. A faixa lo–hi reflete só a
+     incerteza do coeficiente. **Não** é contagem de votos nem boca de urna.
+5. **Sinais sociais** – exibidos separadamente; não alteram automaticamente as estimativas.
 
 ## Limitações e incerteza (explícitas)
 - Cobertura climática incompleta: previsão horária para 15 maiores colégios; classificação a/b/c para 29
