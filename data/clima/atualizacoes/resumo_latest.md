@@ -1,4 +1,4 @@
-# Risco de chuva – atualização automática (2026-10-25 16:41 BRT)
+# Risco de chuva – atualização automática (2026-10-25 17:07 BRT)
 
 Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de votação 08h–17h BRT.
 
@@ -8,23 +8,27 @@ Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de vo
 
 ## Contagem por nível
 
-- **a) Torrencial / Tempestade / Risco de alagamento**: 108 municípios, 37.391.461 aptos
-- **b) Moderada**: 47 municípios, 12.077.453 aptos
-- **c) Sem chuva relevante**: 147 municípios, 36.398.764 aptos
+- **a) Torrencial / Tempestade / Risco de alagamento**: 113 municípios, 38.789.934 aptos
+- **b) Moderada**: 42 municípios, 11.411.072 aptos
+- **c) Sem chuva relevante**: 147 municípios, 35.666.672 aptos
 
 ## Mudanças vs classificação da manhã (Bot 2, 06:35 BRT)
 
-- São José dos Campos/SP: subiu b→a (55.1 mm na janela; manhã 12.0 mm)
-- Ribeirão Preto/SP: subiu b→a (14.1 mm na janela; manhã 10.0 mm)
-- Londrina/PR: subiu b→a (9.2 mm na janela; manhã 14.0 mm)
-- Joinville/SC: desceu b→c (3.4 mm na janela; manhã 10.0 mm)
-- Florianópolis/SC: desceu b→c (0.3 mm na janela; manhã 8.0 mm)
-- Iguais: 24 de 29
+- São José dos Campos/SP: subiu b→a (21.6 mm na janela; manhã 12.0 mm)
+- Ribeirão Preto/SP: subiu b→a (21.1 mm na janela; manhã 10.0 mm)
+- Manaus/AM: subiu c→b (8.4 mm na janela; manhã 2.0 mm)
+- Osasco/SP: desceu a→b (4.3 mm na janela; manhã 32.0 mm)
+- Uberlândia/MG: subiu c→b (7.8 mm na janela; manhã 4.0 mm)
+- Porto Alegre/RS: desceu b→c (3.8 mm na janela; manhã 9.0 mm)
+- Joinville/SC: desceu b→c (3.2 mm na janela; manhã 10.0 mm)
+- Florianópolis/SC: desceu b→c (1.8 mm na janela; manhã 8.0 mm)
+- Iguais: 21 de 29
 
 ### Estados com mudança
 
-- MG: desceu b→c
+- RS: desceu b→c
 - SC: desceu b→c
+- AM: subiu c→b
 
 ## Ajustes por notícias aplicados
 
@@ -38,7 +42,6 @@ Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de vo
 
 ## Avisos INMET considerados
 
-- 56172: amarelo – Baixa Umidade (2026-10-25 10:00–2026-10-25 17:00)
 - 56170: amarelo – Tempestade (2026-10-25 00:00–2026-10-25 23:59)
 - 56171: laranja – Tempestade (2026-10-25 00:00–2026-10-25 23:59)
 - 56174: amarelo – Tempestade (2026-10-26 00:00–2026-10-26 23:59)
