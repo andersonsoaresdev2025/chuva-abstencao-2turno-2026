@@ -14,3 +14,8 @@
 - Sem novos ajustes nem revogações. Curitiba (a), Guaratuba (b) e Barracão (b) mantidos; nenhuma evidência contrária.
 - Registrado sem ajuste: lista oficial do TRE-PR com 8 mudanças de local em 7 municípios do interior (Cornélio Procópio, Inácio Martins, Santo Antônio do Sudoeste, Paranacity, Honório Serpa, Santo Inácio, Manoel Ribas) por eventos climáticos do início de outubro, com locais novos próximos; não é efeito da chuva do dia.
 - Monitorando: chuva forte relatada em Alfenas (MG), relato isolado; SP capital com alertas de alagamento do CGE na madrugada, chuva parou ~7h; Rio com chuva fraca e seções vazias (relatos). Jaú (SP) e BR-376 (PR) seguem sem segunda fonte.
+
+## 2026-10-25 09:20 BRT
+- **Itapevi (SP), 3522505 – novo ajuste ativo, nível a, confiança alta.** TRE-SP fez transferência emergencial das seções 439 e 474 (359ª ZE) do Cemeb Prof. Edevaldo Caramez, que ficou inacessível por alagamento na madrugada, para a Escola do Futuro ETI Prof. Irany Toledo de Moraes. Fontes: g1 (citando TRE-SP), Terra, Band. A previsão já classificava Itapevi como "a" (INMET laranja), então o ajuste confirma o nível com evidência observada. 1º turno: Lula 47,2% × Flávio 41,9% (Lula mais exposto).
+- Curitiba (a), Guaratuba (b) e Barracão (b) mantidos; sem evidência contrária.
+- Monitorando sem ajuste: Campinas (SP), 83 mm acumulados e rua de escola com 2,3 mil eleitores alagada, sem mudança de local (TRE-SP); já está como "a" pela previsão, fonte única (g1/EPTV, mesmo grupo). São Carlos (SP): urna da seção 114 com problema por goteira, incidente pontual. Rio: filas apesar da chuva (Extra/O Globo).
