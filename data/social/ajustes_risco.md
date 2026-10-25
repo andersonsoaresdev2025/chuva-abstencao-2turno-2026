@@ -75,3 +75,9 @@
 - Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; 6 ajustes ativos. Nenhuma nova mudança de local por chuva desde 12h20.
 - Monitorando sem ajuste: **Belo Horizonte (MG)**, já "b" pela previsão, novo temporal no início da tarde; Defesa Civil de BH registra 7 a 26 mm em 2h até 13h45 (Barreiro 26 mm) e outubro acima da média; alagamentos, quedas de árvores e Anel Rodoviário travado (O Tempo, g1, Metrópoles). Ainda sem relato de efeito em locais de votação e sem alteração do TRE-MG. São Paulo capital: relato isolado de ônibus demorando sob chuva (Cambuci), fonte única.
 - Descartados: 4 (especulação partidária sobre abstenção, relatos anedóticos de seções vazias sem local).
+
+## 2026-10-25 14:45 BRT
+- Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; 6 ajustes ativos. Nenhuma nova mudança de local por chuva desde 12h20.
+- Monitorando sem ajuste: **São Paulo capital**, Defesa Civil SP às 14h30 avisa chuva com vento e raios se espalhando das Zonas Norte e Oeste para Centro e Leste e municípios vizinhos; TRE-SP mantém votação dentro da normalidade. **Belo Horizonte (MG)**, alagamento e acidente travaram o Anel Rodoviário (O Tempo); relatos isolados de falta de luz em locais de votação sem confirmação do TRE-MG (urnas operam com bateria). Paraná: balanço do TRE-PR das 11h (60 locais com falta de energia, 41 mil eleitores, sem suspensão de votação) já registrado.
+- Fora do escopo (não é chuva): falta de ônibus e de energia relatada em Salvador.
+- Descartados: 4 (relato único sem local sobre BH, número anedótico em Maringá, relato vago em SP, Salvador fora do escopo).
