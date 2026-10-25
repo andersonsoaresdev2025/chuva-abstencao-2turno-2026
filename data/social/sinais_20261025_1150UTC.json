@@ -1,0 +1,58 @@
+[
+ {
+  "timestamp_coleta_utc": "2026-10-25T11:50:00Z",
+  "timestamp_post": "2026-10-25T11:40:48Z",
+  "cidade": "Alfenas",
+  "uf": "MG",
+  "cidade_risco_previsto": "n/d (fora da lista)",
+  "tipo": "observacao_chuva",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "baixa",
+  "fonte": "@drrenata_nina",
+  "tipo_fonte": "relato",
+  "resumo": "Relato de chuva forte em Alfenas (sul de MG) às 8h40 e receio de abstenção maior; sem relato de seção afetada. Monitorar.",
+  "link": "https://x.com/drrenata_nina/status/2114321274667204737"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T11:50:00Z",
+  "timestamp_post": "2026-10-25T11:34:37Z",
+  "cidade": "São Paulo",
+  "uf": "SP",
+  "cidade_risco_previsto": "verificar lista",
+  "tipo": "observacao_chuva",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "media",
+  "fonte": "@NaiaDulce",
+  "tipo_fonte": "relato",
+  "resumo": "Eleitora relata chuva a madrugada toda e 2 alertas de alagamento do CGE, mas chuva parou ~7h e local de votação cheio. Coerente com alerta laranja da Defesa Civil SP; sem impacto na votação relatado.",
+  "link": "https://x.com/NaiaDulce/status/2114319716751716415"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T11:50:00Z",
+  "timestamp_post": "2026-10-25T11:36:59Z",
+  "cidade": "Rio de Janeiro",
+  "uf": "RJ",
+  "cidade_risco_previsto": "verificar lista",
+  "tipo": "observacao_chuva",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "baixa",
+  "fonte": "@dayhtu",
+  "tipo_fonte": "relato",
+  "resumo": "Relatos (vários) de chuva constante mas fraca no Rio; seção vazia e votação rápida. Sem impacto operacional.",
+  "link": "https://x.com/dayhtu/status/2114320315169804599"
+ },
+ {
+  "timestamp_coleta_utc": "2026-10-25T11:50:00Z",
+  "timestamp_post": "2026-10-23T18:22:00Z",
+  "cidade": "Cornélio Procópio, Inácio Martins, Santo Antônio do Sudoeste, Paranacity, Honório Serpa, Santo Inácio, Manoel Ribas",
+  "uf": "PR",
+  "cidade_risco_previsto": "n/d",
+  "tipo": "eleitoral",
+  "nivel_risco_implicito": "baixo",
+  "confianca": "alta",
+  "fonte": "TRE-PR (nota oficial)",
+  "tipo_fonte": "oficial",
+  "resumo": "TRE-PR lista 8 mudanças de local entre 1º e 2º turno em 7 municípios do interior, principalmente por eventos climáticos do início de outubro; locais novos próximos. Não é efeito da chuva de hoje: sem ajuste, só registro.",
+  "link": "https://www.tre-pr.jus.br/comunicacao/noticias/2026/Outubro/evento-meteorologico-causa-alteracao-de-local-de-votacao-em-barracao"
+ }
+]

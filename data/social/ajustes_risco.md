@@ -9,3 +9,8 @@
 - **Barracão (PR), 4102604 – novo ajuste ativo, nível b, confiança alta.** TRE-PR (nota oficial) realocou ~3,2 mil eleitores da Escola Leonor Castellano, danificada por temporal, para o Centro Comunitário da Igreja Católica, em frente; CNN Brasil confirma com a Defesa Civil PR. Antes descartado só porque a primeira menção vinha de IA; agora há fonte primária. Nível b (local novo fica em frente, efeito no deslocamento tende a ser pequeno). 1º turno: Flávio 54,8% × Lula 39,1%.
 - Curitiba: perfil oficial do TRE-PR confirmou a mudança no X; ajuste mantido.
 - Monitorando sem ajuste: Jaú (SP), relato isolado de alagamento impedindo eleitores + alerta Defesa Civil SP de chuva persistente; BR-376 interditada por alagamento entre Ortigueira e Mauá da Serra (PR), fonte única; 62 mm em Maracaju (MS), sem efeito relatado na votação.
+
+## 2026-10-25 08:50 BRT
+- Sem novos ajustes nem revogações. Curitiba (a), Guaratuba (b) e Barracão (b) mantidos; nenhuma evidência contrária.
+- Registrado sem ajuste: lista oficial do TRE-PR com 8 mudanças de local em 7 municípios do interior (Cornélio Procópio, Inácio Martins, Santo Antônio do Sudoeste, Paranacity, Honório Serpa, Santo Inácio, Manoel Ribas) por eventos climáticos do início de outubro, com locais novos próximos; não é efeito da chuva do dia.
+- Monitorando: chuva forte relatada em Alfenas (MG), relato isolado; SP capital com alertas de alagamento do CGE na madrugada, chuva parou ~7h; Rio com chuva fraca e seções vazias (relatos). Jaú (SP) e BR-376 (PR) seguem sem segunda fonte.
