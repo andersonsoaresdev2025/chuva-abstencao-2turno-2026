@@ -1,16 +1,16 @@
 {
- "gerado_em_utc": "2026-10-25T10:51:16.580827+00:00",
- "gerado_em_brt": "2026-10-25 07:51 BRT",
+ "gerado_em_utc": "2026-10-25T10:52:25.478052+00:00",
+ "gerado_em_brt": "2026-10-25 07:52 BRT",
  "origem_risco": "atualizado",
  "n_ajustes_ativos": 2,
  "previsao": {
   "modo": "projecao",
   "rotulo": "projeção (votação ainda não começou)",
   "horas_decorridas": 9.0,
-  "calculado_em_utc": "2026-10-25 10:51 UTC",
-  "calculado_em_brt": "07:51 BRT",
-  "calculado_em": "2026-10-25 10:51 UTC / 2026-10-25 07:51 BRT",
-  "fonte_precipitacao": "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:51 BRT; horas decorridas = estimativa do modelo, não pluviômetro)",
+  "calculado_em_utc": "2026-10-25 10:52 UTC",
+  "calculado_em_brt": "07:52 BRT",
+  "calculado_em": "2026-10-25 10:52 UTC / 2026-10-25 07:52 BRT",
+  "fonte_precipitacao": "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro)",
   "usou_fallback": false,
   "erro_api": null,
   "flavio_pp": {
@@ -65,10 +65,10 @@
    "Bot 1 – coeficiente central para simulações: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0 p.p./cm); data/correlacao/coeficientes_e_resultados.md §3",
    "Divisão por candidato: suposição do Bot 4 (proporcional à base de votos do 1º turno)",
    "TSE 1º turno 2026 via Bot 3 (data/redutos_1turno/redutos_municipios.csv, todos os municípios + exterior)",
-   "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:51 BRT; horas decorridas = estimativa do modelo, não pluviômetro)"
+   "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro)"
   ],
-  "precip_obtida_em_utc": "2026-10-25T10:51:10.844570+00:00",
-  "precip_obtida_em_brt": "07:51 BRT",
+  "precip_obtida_em_utc": "2026-10-25T10:52:20.593552+00:00",
+  "precip_obtida_em_brt": "07:52 BRT",
   "origem_cobertura": "arquivo_atualizacao",
   "municipios_top": [
    {
@@ -527,10 +527,10 @@
   "modo": "projecao",
   "rotulo": "projeção (votação ainda não começou)",
   "horas_decorridas": 9.0,
-  "calculado_em_utc": "2026-10-25 10:51 UTC",
-  "calculado_em_brt": "07:51 BRT",
-  "calculado_em": "2026-10-25 10:51 UTC / 2026-10-25 07:51 BRT",
-  "fonte_precipitacao": "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:51 BRT; horas decorridas = estimativa do modelo, não pluviômetro)",
+  "calculado_em_utc": "2026-10-25 10:52 UTC",
+  "calculado_em_brt": "07:52 BRT",
+  "calculado_em": "2026-10-25 10:52 UTC / 2026-10-25 07:52 BRT",
+  "fonte_precipitacao": "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro)",
   "usou_fallback": false,
   "erro_api": null,
   "flavio_pp": {
@@ -585,10 +585,10 @@
    "Bot 1 – coeficiente central para simulações: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0 p.p./cm); data/correlacao/coeficientes_e_resultados.md §3",
    "Divisão por candidato: suposição do Bot 4 (proporcional à base de votos do 1º turno)",
    "TSE 1º turno 2026 via Bot 3 (data/redutos_1turno/redutos_municipios.csv, todos os municípios + exterior)",
-   "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:51 BRT; horas decorridas = estimativa do modelo, não pluviômetro)"
+   "Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro)"
   ],
-  "precip_obtida_em_utc": "2026-10-25T10:51:10.844570+00:00",
-  "precip_obtida_em_brt": "07:51 BRT",
+  "precip_obtida_em_utc": "2026-10-25T10:52:20.593552+00:00",
+  "precip_obtida_em_brt": "07:52 BRT",
   "origem_cobertura": "arquivo_atualizacao",
   "municipios_top": [
    {
