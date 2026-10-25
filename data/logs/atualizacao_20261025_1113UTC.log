@@ -1,0 +1,32 @@
+Atualização automática 20261025_1113UTC (2026-10-25 08:13 BRT) — log em data/logs/atualizacao_20261025_1113UTC.log
+===== [11:13:41Z] etapa: clima — .venv/bin/python scripts/atualizar_clima.py
+OK clima: 301 municípios · Open-Meteo ok · INMET ok
+  - universo: 301 municípios ({'maiores_colegios': 270, 'bot2': 29, 'ajuste_noticias': 2}); ajustes ativos: 3
+  - Open-Meteo ok: 301 séries
+  - INMET: ok (https://apiprevmet3.inmet.gov.br/avisos/ativos); 7 avisos; erros=[]
+----- clima: OK (4s)
+===== [11:13:45Z] etapa: impacto — .venv/bin/python scripts/atualizar_impacto.py
+OK impacto: 301 municípios · 121 Alta · agora (estimativa agora (chuva acumulada desde 08h)): Flávio -0.0002 pp (+notícias -0.0025); abstenção nacional +0.013 pp; ajustes 3
+----- impacto: OK (1s)
+===== [11:13:46Z] etapa: social — .venv/bin/python scripts/coletar_social.py
+OK social: 0 relevantes, 0 novos → None
+  - x/api_v2: pulado (0 res., 0 relev.) sem credencial X_BEARER_TOKEN/TWITTER_BEARER_TOKEN
+  - instagram/duckduckgo_html: bloqueado (0 res., 0 relev.) duckduckgo_html: HTTP 202 (limite/anti-robô)
+  - instagram/duckduckgo_lite: bloqueado (0 res., 0 relev.) duckduckgo_lite: HTTP 202 (limite/anti-robô)
+  - instagram/brave: bloqueado (0 res., 0 relev.) brave: HTTP 429 (limite/anti-robô)
+  - instagram/todos: pulado (0 res., 0 relev.) todos os buscadores bloquearam nesta execução
+  - todas/-: nada_encontrado (0 res., 0 relev.) nenhum sinal relevante nesta execução
+----- social: OK (0s)
+===== [11:13:46Z] etapa: noticias — .venv/bin/python scripts/coletar_noticias.py
+Coleta 2026-10-25 11:13 UTC: 81 fontes consultadas, 0 falhas; 104 notícias nesta coleta; 106 no consolidado.
+----- noticias: OK (6s)
+===== [11:13:52Z] etapa: site — .venv/bin/python scripts/build_site.py
+OK: docs/index.html (127.3 KB)
+----- site: OK (0s)
+===== [11:13:52Z] etapa: testes — .venv/bin/python -m pytest -q tests mcp/test_mcp_server.py
+....................................                                     [100%]
+36 passed in 12.39s
+----- testes: OK (13s)
+STATUS_PUBLICACAO.md atualizado
+Resumo: clima=ok(4s) impacto=ok(1s) social=ok(0s) noticias=ok(6s) site=ok(0s) testes=ok(13s)
+git: commit → pull --rebase --autostash → push (saída em data/logs/git_ultimo.txt)
