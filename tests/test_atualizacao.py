@@ -89,6 +89,7 @@ def ambiente(tmp_path, monkeypatch):
     """Pastas temporárias de saída + ajustes por notícias de teste."""
     monkeypatch.setattr(D, "ATUAL_CLIMA_DIR", tmp_path / "clima")
     monkeypatch.setattr(D, "ATUAL_IMPACTO_DIR", tmp_path / "impacto")
+    monkeypatch.setenv("CHUVA_SNAPSHOT_REMOTO", "0")  # testes nunca leem o snapshot do GitHub
     aj = tmp_path / "ajustes.csv"
     pd.DataFrame([
         # município fora das listas (existe no TSE 1º turno) → entra no cálculo
@@ -370,8 +371,7 @@ def test_site_mostra_timestamp_e_ajustes(ambiente, social_tmp):
 
 def test_destaque_votos_perdidos_previsao_mais_noticias(ambiente, social_tmp):
     _rodar_clima()
-    IMP.executar(AGORA)
-    d = IA.calcular_duplo()
+    d = IMP.executar(AGORA)["agora"]  # o dashboard mostra o snapshot publicado
     st.cache_data.clear()
     at = AppTest.from_file(APP, default_timeout=90).run()
     assert not at.exception, [e.value for e in at.exception]
@@ -385,3 +385,47 @@ def test_destaque_votos_perdidos_previsao_mais_noticias(ambiente, social_tmp):
     assert {"Flávio (p.p.)", "Lula (p.p.)", "Margem Lula − Flávio"} <= set(labels)
     html = _mod("build_site").build()
     assert 'id="votos-perdidos"' in html and "Flávio Bolsonaro — votos perdidos (previsão + notícias)" in html
+
+
+def test_site_e_dashboard_iguais_ao_snapshot(ambiente, social_tmp, monkeypatch):
+    """Fonte única: manchete do site e do dashboard = impacto_agora_latest.json (sem recálculo próprio)."""
+    import json
+    _rodar_clima()
+    IMP.executar(AGORA)
+    snap = json.loads((D.ATUAL_IMPACTO_DIR / "impacto_agora_latest.json").read_text(encoding="utf-8"))
+    rn = snap["previsao_mais_noticias"]
+    fmt = lambda x: f"{int(round(x, -2)):,}".replace(",", ".")  # noqa: E731
+    vf, vl = fmt(rn["votos_perdidos_flavio"]["mid"]), fmt(rn["votos_perdidos_lula"]["mid"])
+    # se alguém recalculasse "agora", o resultado seria outro: força isso a falhar
+    monkeypatch.setattr(IA, "calcular_duplo", lambda *a, **k: (_ for _ in ()).throw(AssertionError("recalculou")))
+    html = _mod("build_site").build()
+    assert vf in html and vl in html and "Snapshot de 07:00 BRT" in html and "próxima atualização ~07:30 BRT" in html
+    vc = _mod("verificar_consistencia")
+    assert vc.verificar(html, IA.carregar_snapshot(remoto=False)) == []
+    st.cache_data.clear()
+    at = AppTest.from_file(APP, default_timeout=90).run()
+    assert not at.exception, [e.value for e in at.exception]
+    labels = {m.label: m for m in at.metric}
+    assert labels["Flávio Bolsonaro — votos perdidos (previsão + notícias)"].value == vf
+    assert labels["Lula — votos perdidos (previsão + notícias)"].value == vl
+    assert any("Snapshot de 07:00 BRT" in i.value and "~07:30 BRT" in i.value for i in at.info)
+
+
+def test_snapshot_remoto_mais_novo_vence(ambiente):
+    _rodar_clima()
+    IMP.executar(AGORA)
+    loc = IA.carregar_snapshot(remoto=False)
+
+    class S:
+        def get(self, url, timeout=None):
+            d = dict(loc)
+            d["gerado_em_utc"] = "2026-10-25T12:44:00+00:00"
+            return Resp(js=d)
+    r = IA.carregar_snapshot(remoto=True, sessao=S())
+    assert r["_origem_snapshot"].startswith("GitHub") and r["snapshot_hhmm_brt"] == "09:44"
+    assert r["proxima_atualizacao_hhmm_brt"] == "10:14"
+
+    class Falha:
+        def get(self, *a, **k):
+            raise ConnectionError("x")
+    assert IA.carregar_snapshot(remoto=True, sessao=Falha())["_origem_snapshot"].startswith("arquivo")

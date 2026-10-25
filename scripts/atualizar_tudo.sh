@@ -46,6 +46,8 @@ if [ "${COLETAR_NOTICIAS:-1}" = "1" ]; then
   etapa noticias 300 "$PY" scripts/coletar_noticias.py
 fi
 etapa site     180 "$PY" scripts/build_site.py
+# site e dashboard leem o mesmo snapshot (impacto → site → commit juntos); confere antes do commit
+etapa consistencia 60 "$PY" scripts/verificar_consistencia.py
 if "$PY" -c "import pytest" 2>/dev/null; then
   etapa testes 600 "$PY" -m pytest -q tests mcp/test_mcp_server.py
 else

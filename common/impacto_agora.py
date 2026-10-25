@@ -30,8 +30,9 @@ O resultado é calculado duas vezes: só previsão e previsão + notícias (calc
 from __future__ import annotations
 
 import json
+import os
 import urllib.request
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -331,8 +332,93 @@ def resumo_json(r: dict) -> dict:
     """Versão serializável (sem DataFrame) de um resultado de calcular()."""
     out = {k: v for k, v in r.items() if k != "municipios"}
     mun = r["municipios"].copy()
-    out["municipios_top"] = (mun.sort_values("abst_extras_mid", ascending=False).head(25)
-                             .astype(object).where(mun.notna(), None).to_dict(orient="records"))
+    mun = mun.sort_values("abst_extras_mid", ascending=False)
+    out["municipios_top"] = mun.head(25).astype(object).where(mun.head(25).notna(), None).to_dict(orient="records")
+    out["municipios_lista"] = mun.astype(object).where(mun.notna(), None).to_dict(orient="records")
+    return out
+
+
+# ----------------------------------------------------------------------------------------------------------
+# Snapshot publicado = fonte única dos números de manchete (site e dashboard mostram exatamente este arquivo)
+# ----------------------------------------------------------------------------------------------------------
+SNAPSHOT_NOME = "impacto_agora_latest.json"
+SNAPSHOT_RAW_URL = ("https://raw.githubusercontent.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/main/"
+                    "data/impacto/atualizacoes/" + SNAPSHOT_NOME)
+INTERVALO_ATUALIZACAO_MIN = 30
+
+
+def _snapshot_valido(d) -> bool:
+    return (isinstance(d, dict) and isinstance(d.get("previsao"), dict) and "votos_perdidos_flavio" in d["previsao"]
+            and bool(d.get("gerado_em_utc")))
+
+
+def ler_snapshot_local(path=None) -> dict | None:
+    path = Path(path) if path else D.ATUAL_IMPACTO_DIR / SNAPSHOT_NOME
+    try:
+        d = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return None
+    return d if _snapshot_valido(d) else None
+
+
+def baixar_snapshot_remoto(url: str = SNAPSHOT_RAW_URL, timeout: float = 6.0, sessao=None) -> dict | None:
+    """Mesmo arquivo direto do branch main (raw.githubusercontent.com, cache curto) – para o dashboard não depender
+    do redeploy do Streamlit Cloud em pushes só de dados."""
+    try:
+        import time
+        u = f"{url}?t={int(time.time() // 60)}"
+        if sessao is not None:
+            r = sessao.get(u, timeout=timeout)
+            r.raise_for_status()
+            d = r.json()
+        else:
+            req = urllib.request.Request(u, headers={"Cache-Control": "no-cache", "User-Agent": "chuva-abstencao-dashboard"})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                d = json.loads(resp.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001
+        return None
+    return d if _snapshot_valido(d) else None
+
+
+def _gerado(d: dict) -> datetime:
+    try:
+        return datetime.fromisoformat(str(d["gerado_em_utc"]).replace("Z", "+00:00"))
+    except Exception:  # noqa: BLE001
+        return datetime.min.replace(tzinfo=timezone.utc)
+
+
+def carregar_snapshot(remoto: bool | None = None, path=None, sessao=None) -> dict | None:
+    """Snapshot publicado mais recente: arquivo local (checkout do repositório) e, se `remoto`, o do main no GitHub.
+    Escolhe o de `gerado_em_utc` mais novo. Não recalcula nada. `remoto=None` → variável CHUVA_SNAPSHOT_REMOTO
+    (padrão: ligado)."""
+    if remoto is None:
+        remoto = os.environ.get("CHUVA_SNAPSHOT_REMOTO", "1") not in ("0", "false", "nao", "não")
+    cand = []
+    loc = ler_snapshot_local(path)
+    if loc:
+        cand.append((loc, "arquivo do repositório (checkout)"))
+    if remoto:
+        rem = baixar_snapshot_remoto(sessao=sessao)
+        if rem:
+            cand.append((rem, "GitHub main (raw.githubusercontent.com)"))
+    if not cand:
+        return None
+    d, origem = max(cand, key=lambda c: _gerado(c[0]))
+    d = dict(d)
+    d["_origem_snapshot"] = origem
+    g = _gerado(d)
+    d["snapshot_hhmm_brt"] = g.astimezone(D.TZ_BRT).strftime("%H:%M")
+    d["proxima_atualizacao_hhmm_brt"] = (g + timedelta(minutes=INTERVALO_ATUALIZACAO_MIN)).astimezone(D.TZ_BRT).strftime("%H:%M")
+    return d
+
+
+def duplo_do_snapshot(snap: dict) -> dict:
+    """Converte o snapshot no mesmo formato de calcular_duplo() (DataFrame de municípios reconstruído do JSON)."""
+    out = {"n_ajustes_ativos": int(snap.get("n_ajustes_ativos") or 0)}
+    for k in ("previsao", "previsao_mais_noticias"):
+        r = dict(snap.get(k) or snap["previsao"])
+        r["municipios"] = pd.DataFrame(r.get("municipios_lista") or r.get("municipios_top") or [])
+        out[k] = r
     return out
 
 

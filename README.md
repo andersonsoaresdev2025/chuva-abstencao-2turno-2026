@@ -66,6 +66,11 @@ originais deles ficam intactos e servem de referência "manhã" e de fallback):
 - **Falhas:** nenhuma etapa derruba a execução. Se uma fonte falha, fica o último dado válido, marcado como
   desatualizado (`status_dado`, avisos no topo do dashboard e do site). Nada é inventado.
 - **Logs:** `data/logs/atualizacao_<UTC>.log` por execução e uma linha de status em `STATUS_PUBLICACAO.md`.
+- **Fonte única do "impacto agora":** site e dashboard mostram o mesmo snapshot
+  `data/impacto/atualizacoes/impacto_agora_latest.json` (gerado por `atualizar_impacto.py`, só previsão e previsão + notícias),
+  com "snapshot de HH:MM BRT · próxima atualização ~HH:MM". O pipeline roda impacto → site → `verificar_consistencia.py`
+  → commit único. O dashboard relê o arquivo local (chave = mtime, ttl 60 s) e o do `main` em raw.githubusercontent.com,
+  usando o mais novo; o recálculo ao vivo fica num expander de diagnóstico.
 - **Agendamento e reforço:** o workflow tem dois horários (`*/30` e `15,45`), porque o cron do GitHub Actions
   atrasa ou pula execuções em horários de pico (e costuma ignorar os primeiros horários logo após o workflow ser
   criado). Execuções agendadas com menos de 20 min desde a última atualização são puladas (limite diário do Open-Meteo).

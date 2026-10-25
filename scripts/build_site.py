@@ -183,12 +183,13 @@ def sinal_int(x: float) -> str:
 
 
 def secao_agora() -> str:
-    """Card 'Impacto estimado agora' (só previsão vs previsão + notícias) calculado no build."""
-    try:
-        duplo = IA.calcular_duplo()
-    except Exception as e:  # noqa: BLE001
-        return (f'<section id="agora"><h2>Impacto estimado agora</h2><p class="muted">Indisponível neste build '
-                f'({esc(type(e).__name__)}).</p></section>')
+    """Card 'Impacto estimado agora' – lido do snapshot publicado (impacto_agora_latest.json), o MESMO arquivo que o
+    dashboard mostra. Nenhum recálculo aqui."""
+    snap = IA.carregar_snapshot(remoto=False)
+    if not snap:
+        return ('<section id="agora"><h2>Impacto estimado agora</h2><p class="muted">Indisponível neste build '
+                '(snapshot data/impacto/atualizacoes/impacto_agora_latest.json ausente).</p></section>')
+    duplo = IA.duplo_do_snapshot(snap)
     r, rn, n_aj = duplo["previsao"], duplo["previsao_mais_noticias"], duplo["n_ajustes_ativos"]
     f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
     vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
@@ -197,7 +198,7 @@ def secao_agora() -> str:
         if not n_aj:
             return '<br><span class="muted">Previsão + notícias: igual (nenhum ajuste ativo)</span>'
         return f'<br><span class="muted"><b>Previsão + notícias:</b> {pp(rn[chave]["mid"])} p.p.{extra}</span>'
-    fb = ('<p class="alert">Open-Meteo indisponível no build: usada a previsão do Bot 0 (CSV) pró-rata.</p>'
+    fb = ('<p class="alert">Open-Meteo indisponível na atualização: usada a previsão do Bot 0 (CSV) pró-rata.</p>'
           if r["usou_fallback"] else "")
     return f"""<section id="agora">
 <h2>⏱️ Impacto estimado agora — {esc(r['rotulo'])}</h2>
@@ -214,7 +215,8 @@ def secao_agora() -> str:
 <div class="kpi"><b>{pp(m['mid'])} p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa {pp(m['min'])} a {pp(m['max'])} · abstenção nacional {pp(ab['mid'])} p.p.{noti('margem_lula_menos_flavio_pp')}</div>
 <div class="kpi"><b>{num(r['cobertura_pct_eleitorado'], 1)}%</b>do eleitorado coberto ({r['n_municipios_cobertos']} maiores colégios; demais = 0){' · ' + str(n_aj) + ' ajuste(s) por notícias' if n_aj else ''}</div>
 </div>
-<p class="muted">🕒 Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) no momento da geração desta página; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão interativa no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
+<p class="alert" id="snapshot-agora">🕒 <b>Snapshot de {esc(snap['snapshot_hhmm_brt'])} BRT</b> · próxima atualização ~{esc(snap['proxima_atualizacao_hhmm_brt'])} BRT · mesmos números do dashboard (arquivo publicado impacto_agora_latest.json).</p>
+<p class="muted">Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) pela atualização automática; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão interativa no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
 {fb}
 <p class="muted"><b>Como é calculado:</b> {esc(IA.METODO_TXT)}</p>
 <p class="alert">{esc(IA.DISCLAIMER.replace('**', ''))}</p>

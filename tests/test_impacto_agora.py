@@ -81,6 +81,11 @@ def test_convencao_open_meteo():
 @pytest.mark.parametrize("buscar", [_falha, _serie_fake])
 def test_app_card_visao_geral(buscar, monkeypatch):
     monkeypatch.setattr(IA, "buscar_open_meteo", buscar)
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("atualizar_impacto", ROOT / "scripts" / "atualizar_impacto.py")
+    imp = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(imp)
+    imp.executar(MOMENTOS["durante"])  # snapshot publicado (pasta temporária)
     st.cache_data.clear()
     at = AppTest.from_file(APP, default_timeout=60).run()
     assert not at.exception, [e.value for e in at.exception]
@@ -88,10 +93,12 @@ def test_app_card_visao_geral(buscar, monkeypatch):
     labels = [m.label for m in at.metric]
     assert any(l.startswith("Flávio") for l in labels) and any(l.startswith("Lula") for l in labels)
     assert any("Cobertura" in l for l in labels)
+    # manchete = snapshot publicado (mesmo arquivo do site), com horário e próxima atualização
+    assert any("Snapshot de" in i.value and "próxima atualização" in i.value for i in at.info)
+    # recálculo ao vivo só sob demanda, claramente rotulado
+    at.button(key="recalc_vivo").click().run()
+    assert not at.exception, [e.value for e in at.exception]
+    vivos = [m for m in at.metric if "recálculo ao vivo" in m.label]
+    assert len(vivos) == 2
     caps = " ".join(c.value for c in at.caption)
-    assert "Calculado em" in caps and "BRT" in caps
-    if buscar is _falha:
-        assert any("usando a previsão do Bot 0" in w.value for w in at.warning)
-        assert "fallback" in caps
-    else:
-        assert "Open-Meteo" in caps and not any("usando a previsão do Bot 0" in w.value for w in at.warning)
+    assert "Recálculo ao vivo às" in caps and "BRT" in caps

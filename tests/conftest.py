@@ -20,3 +20,9 @@ def _sem_rede(monkeypatch, tmp_path_factory):
     monkeypatch.setattr(D, "ATUAL_CLIMA_DIR", base / "clima_atualizacoes")
     monkeypatch.setattr(D, "ATUAL_IMPACTO_DIR", base / "impacto_atualizacoes")
     monkeypatch.setattr(D, "AJUSTES_FILE", base / "ajustes" / "ajustes_impacto_noticias.csv")
+
+
+@pytest.fixture(autouse=True)
+def _sem_snapshot_remoto(monkeypatch):
+    """Testes nunca leem o snapshot do GitHub (só o arquivo local)."""
+    monkeypatch.setenv("CHUVA_SNAPSHOT_REMOTO", "0")

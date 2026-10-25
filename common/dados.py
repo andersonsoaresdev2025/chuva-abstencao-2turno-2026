@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-VERSAO_CODIGO = "2026-10-25-auto30"  # conferido pelo dashboard para recarregar módulos após deploy
+VERSAO_CODIGO = "2026-10-25-snapshot"  # conferido pelo dashboard para recarregar módulos após deploy
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA = REPO_ROOT / "data"

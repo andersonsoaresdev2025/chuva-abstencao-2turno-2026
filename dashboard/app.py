@@ -30,7 +30,7 @@ import importlib  # noqa: E402
 import os  # noqa: E402
 from common import regras as R  # noqa: E402
 
-VERSAO_CODIGO_ESPERADA = "2026-10-25-auto30"
+VERSAO_CODIGO_ESPERADA = "2026-10-25-snapshot"
 
 
 def _recarregar_se_mudou():
@@ -143,6 +143,37 @@ def impacto_agora_calc():
     return duplo
 
 
+@st.cache_data(ttl=60, show_spinner=False)
+def _snapshot_publicado(caminho: str, mtime: float):
+    """Snapshot publicado (fonte única dos números). Chave = caminho + mtime do arquivo local, ttl 60 s (cobre o
+    arquivo do GitHub main, lido direto quando o Streamlit Cloud ainda não puxou o push)."""
+    return IA.carregar_snapshot(path=caminho)
+
+
+def impacto_snapshot():
+    p = D.ATUAL_IMPACTO_DIR / IA.SNAPSHOT_NOME
+    mt = p.stat().st_mtime if p.exists() else 0.0
+    return _snapshot_publicado(str(p), mt)
+
+
+def bloco_recalculo_ao_vivo():
+    """Opcional: recálculo neste instante (mais horas decorridas → números diferentes do snapshot)."""
+    with st.expander("🔬 Recálculo ao vivo neste instante (diagnóstico — NÃO é o número oficial)"):
+        st.caption("Os números acima são o snapshot publicado (os mesmos do site). Este botão refaz a conta agora, com "
+                   "mais horas decorridas e a série do Open-Meteo deste momento; por isso pode diferir do snapshot.")
+        if st.button("Recalcular ao vivo agora", key="recalc_vivo"):
+            try:
+                dv = impacto_agora_calc()
+            except Exception as e:  # noqa: BLE001
+                st.warning(f"Recálculo indisponível ({type(e).__name__}).")
+                return
+            rv = dv["previsao_mais_noticias"]
+            a, b = st.columns(2)
+            a.metric("Flávio — recálculo ao vivo (previsão + notícias)", _fmt_int(rv["votos_perdidos_flavio"]["mid"]))
+            b.metric("Lula — recálculo ao vivo (previsão + notícias)", _fmt_int(rv["votos_perdidos_lula"]["mid"]))
+            st.caption(f"Recálculo ao vivo às {rv['calculado_em_brt']} · {rv['horas_decorridas']:.1f} h desde 08h".replace(".", ","))
+
+
 def bloco_ajustes(contexto: str = ""):
     """Ajustes por notícias ativos (camada revisada; rótulo explícito 'ajuste por notícias')."""
     aj = D.carregar_ajustes()
@@ -187,13 +218,18 @@ def destaque_votos_perdidos(r: dict, rn: dict, n_aj: int):
                f"≈ {_fmt_int(rn['abstencoes_extras']['mid'])}. Estimativa com incerteza, não é contagem de votos.")
 
 
-@st.fragment(run_every="5m")
+@st.fragment(run_every="2m")
 def bloco_impacto_agora():
     try:
-        duplo = impacto_agora_calc()
-    except Exception as e:  # noqa: BLE001 – o card nunca deve derrubar a página
-        st.warning(f"Impacto estimado agora indisponível no momento ({type(e).__name__}).")
+        snap = impacto_snapshot()
+    except Exception:  # noqa: BLE001 – o card nunca deve derrubar a página
+        snap = None
+    if not snap:
+        st.warning("Impacto estimado agora indisponível: o snapshot publicado "
+                   "(data/impacto/atualizacoes/impacto_agora_latest.json) não foi encontrado.")
+        bloco_recalculo_ao_vivo()
         return
+    duplo = IA.duplo_do_snapshot(snap)
     r, rn = duplo["previsao"], duplo["previsao_mais_noticias"]
     n_aj = duplo["n_ajustes_ativos"]
     st.subheader(f"⏱️ Impacto estimado agora — {r['rotulo']}")
@@ -239,8 +275,16 @@ def bloco_impacto_agora():
     obtida = f" (dados obtidos às {r['precip_obtida_em_brt']})" if r.get("precip_obtida_em_brt") else ""
     janela = ("dia inteiro 08h–17h (previsão)" if r["modo"] == "projecao" else
               f"{r['horas_decorridas']:.1f} h desde 08h".replace(".", ","))
+    st.info(f"🕒 **Snapshot de {snap['snapshot_hhmm_brt']} BRT** · próxima atualização ~{snap['proxima_atualizacao_hhmm_brt']} BRT "
+            "· mesmos números do site (arquivo publicado impacto_agora_latest.json).")
+    try:
+        idade = (D.agora_utc() - IA._gerado(snap)).total_seconds() / 60
+    except Exception:  # noqa: BLE001
+        idade = 0
+    if idade > 50:
+        st.warning(f"Snapshot com {idade:.0f} min (a atualização automática deveria rodar a cada 30 min): dado desatualizado.")
     st.caption(
-        f"🕒 Calculado em {r['calculado_em_brt']} ({r['calculado_em_utc']}) · janela considerada: "
+        f"Fonte do snapshot: {snap.get('_origem_snapshot', '?')} · janela considerada: "
         f"{janela} · Precipitação: {r['fonte_precipitacao']}{obtida}."
     )
     if r["usou_fallback"]:
@@ -249,7 +293,7 @@ def bloco_impacto_agora():
     cb, ce = st.columns([1, 3])
     with cb:
         if st.button("🔄 Atualizar", help="Relê os arquivos atualizados (a atualização automática roda a cada 30 min)"):
-            _series_open_meteo.clear()
+            _snapshot_publicado.clear()
             carregar.clear()
             st.rerun(scope="fragment")
     with ce:
@@ -276,6 +320,7 @@ def bloco_impacto_agora():
                          hide_index=True)
             if r.get("erro_api"):
                 st.caption(f"Erro da API Open-Meteo: {r['erro_api']}")
+    bloco_recalculo_ao_vivo()
 
 
 d = carregar()
