@@ -200,26 +200,66 @@ def sinais_sociais_recentes(cidade: str | None = None, n: int = 10) -> dict:
     return out
 
 
+_CHAVES_CENARIO = ("flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp", "votos_perdidos_flavio", "votos_perdidos_lula",
+                   "abstencoes_extras", "abstencao_nacional_pp")
+
+
+def _cenario(r: dict) -> dict:
+    """Um cenário (dict de calcular_com_api ou do snapshot JSON) em formato limpo, sem a lista de municípios."""
+    out = {k: _limpo(v) if not isinstance(v, dict) else {kk: _limpo(vv) for kk, vv in v.items()}
+           for k, v in r.items() if k not in ("municipios", "municipios_lista", "municipios_top", "fontes", "coeficiente")}
+    out["coeficiente_pp_por_mm"] = r.get("coeficiente")
+    out["fonte"] = r.get("fontes")
+    return out
+
+
+def _impacto_ao_vivo(IA, motivo: str) -> dict:
+    r = IA.calcular_com_api(ajustes=None)  # só previsão
+    rn = IA.calcular_com_api(ajustes="auto")  # previsão + ajustes por notícias (igual se não houver ajuste)
+    out = _cenario(r)
+    out["municipios"] = _registros(r["municipios"])
+    out["previsao_mais_noticias"] = _cenario(rn)
+    out["previsao_mais_noticias"]["n_ajustes_noticias"] = int(rn.get("n_ajustes_noticias", 0))
+    out.update({"tipo_resultado": "recalculo_ao_vivo", "observacao": motivo,
+                "snapshot_brt": None, "proxima_atualizacao_brt": None})
+    return out
+
+
 @mcp.tool()
-def impacto_agora() -> dict:
+def impacto_agora(ao_vivo: bool = False) -> dict:
     """Impacto estimado AGORA da chuva acumulada desde 08h (BRT) sobre cada candidato, em p.p. dos votos
     válidos (Flávio+Lula), com faixa (coeficiente Bot 1 lo/mid/hi), votos perdidos, efeito na margem
-    (Lula − Flávio) e cobertura do eleitorado. Precipitação: Open-Meteo (fallback: previsão Bot 0).
-    Antes das 08h = projeção do dia; após 17h = estimativa final. Não é contagem de votos nem boca de urna."""
+    (Lula − Flávio) e cobertura do eleitorado – nos cenários "só previsão" (campos de topo) e
+    "previsao_mais_noticias" (com ajustes por notícias).
+    Padrão (ao_vivo=False): devolve o SNAPSHOT PUBLICADO data/impacto/atualizacoes/impacto_agora_latest.json –
+    exatamente os mesmos números do site e do dashboard – com snapshot_brt e proxima_atualizacao_brt (~30 min).
+    ao_vivo=True: recálculo de diagnóstico neste instante (mais horas decorridas → difere do snapshot; não é o
+    número oficial). Não é contagem de votos nem boca de urna."""
     from common import impacto_agora as IA
-    r = IA.calcular_com_api(ajustes=None)  # só previsão
-    out = {k: _limpo(v) if not isinstance(v, dict) else {kk: _limpo(vv) for kk, vv in v.items()}
-           for k, v in r.items() if k not in ("municipios", "fontes", "coeficiente")}
-    out["municipios"] = _registros(r["municipios"])
-    out["coeficiente_pp_por_mm"] = r["coeficiente"]
+    if ao_vivo:
+        out = _impacto_ao_vivo(IA, "Recálculo ao vivo (diagnóstico): difere do snapshot publicado exibido no site e no "
+                                   "dashboard; não é o número oficial.")
+    else:
+        snap = IA.carregar_snapshot()
+        if not snap:
+            out = _impacto_ao_vivo(IA, "Snapshot publicado ausente: valores recalculados agora (diagnóstico).")
+        else:
+            d = IA.duplo_do_snapshot(snap)
+            out = _cenario(d["previsao"])
+            out["municipios"] = _registros(d["previsao"]["municipios"])
+            out["previsao_mais_noticias"] = _cenario(d["previsao_mais_noticias"])
+            out["previsao_mais_noticias"]["municipios"] = _registros(d["previsao_mais_noticias"]["municipios"])
+            out.update({
+                "tipo_resultado": "snapshot_publicado",
+                "snapshot_brt": f"{snap['snapshot_hhmm_brt']} BRT", "gerado_em_brt": snap.get("gerado_em_brt"),
+                "gerado_em_utc": snap.get("gerado_em_utc"),
+                "proxima_atualizacao_brt": f"~{snap['proxima_atualizacao_hhmm_brt']} BRT",
+                "fonte_snapshot": f"data/impacto/atualizacoes/{IA.SNAPSHOT_NOME} ({snap.get('_origem_snapshot')})",
+                "n_ajustes_ativos": int(snap.get("n_ajustes_ativos") or 0),
+                "observacao": "Mesmos números do site e do dashboard (snapshot publicado pela atualização automática).",
+            })
     out["metodo"] = IA.METODO_TXT
     out["aviso"] = IA.DISCLAIMER.replace("**", "")
-    out["fonte"] = r["fontes"]
-    rn = IA.calcular_com_api(ajustes="auto")  # previsão + ajustes por notícias (igual se não houver ajuste)
-    out["previsao_mais_noticias"] = {k: {kk: _limpo(vv) for kk, vv in rn[k].items()} for k in (
-        "flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp", "votos_perdidos_flavio", "votos_perdidos_lula",
-        "abstencao_nacional_pp")}
-    out["previsao_mais_noticias"]["n_ajustes_noticias"] = int(rn.get("n_ajustes_noticias", 0))
     return out
 
 

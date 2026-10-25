@@ -2,6 +2,7 @@
 Uso: python mcp/test_mcp_server.py   (ou pytest mcp/test_mcp_server.py)"""
 import asyncio
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -18,7 +19,8 @@ def _json(res):
 
 
 async def _rodar():
-    params = StdioServerParameters(command=sys.executable, args=[str(SERVER)])
+    params = StdioServerParameters(command=sys.executable, args=[str(SERVER)],
+                                    env={**os.environ, "CHUVA_SNAPSHOT_REMOTO": "0"})  # só o arquivo local
     async with stdio_client(params) as (r, w):
         async with ClientSession(r, w) as s:
             await s.initialize()
@@ -52,10 +54,24 @@ async def _rodar():
             x = _json(await s.call_tool("sinais_sociais_recentes", {"cidade": "São Paulo", "n": 3}))
             assert "disclaimer" in x and isinstance(x["resultados"], list)
 
+            # padrão: snapshot publicado (mesmos números do site/dashboard)
             x = _json(await s.call_tool("impacto_agora", {}))
+            snap_path = SERVER.parent.parent / "data" / "impacto" / "atualizacoes" / "impacto_agora_latest.json"
+            if snap_path.exists():
+                snap = json.loads(snap_path.read_text(encoding="utf-8"))
+                assert x["tipo_resultado"] == "snapshot_publicado"
+                assert x["gerado_em_utc"] == snap["gerado_em_utc"]
+                assert x["snapshot_brt"].endswith("BRT") and x["proxima_atualizacao_brt"].startswith("~")
+                for cen, ref in ((x, snap["previsao"]), (x["previsao_mais_noticias"], snap["previsao_mais_noticias"])):
+                    for k in ("votos_perdidos_flavio", "votos_perdidos_lula", "flavio_pp", "margem_lula_menos_flavio_pp"):
+                        assert cen[k] == ref[k], k
             for k in ("flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp"):
                 assert x[k]["min"] <= x[k]["mid"] <= x[k]["max"] and abs(x[k]["mid"]) < 0.5
             assert x["calculado_em"] and x["fonte_precipitacao"] and len(x["municipios"]) >= 15
+            # diagnóstico: recálculo ao vivo
+            v = _json(await s.call_tool("impacto_agora", {"ao_vivo": True}))
+            assert v["tipo_resultado"] == "recalculo_ao_vivo" and v["snapshot_brt"] is None
+            assert v["calculado_em"] and "votos_perdidos_flavio" in v["previsao_mais_noticias"]
 
             x = _json(await s.call_tool("metodologia_e_limitacoes", {}))
             assert len(x["limitacoes"]) >= 5

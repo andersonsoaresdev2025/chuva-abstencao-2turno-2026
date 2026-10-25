@@ -11,7 +11,7 @@ Toda resposta inclui `fonte`, `atualizado_em` (timestamps declarados nos arquivo
 | `impacto_abstencao` | `municipio` \| `uf` \| `regiao` | Efeito em pp (mid/lo/hi), candidato com maior base local, ordem de grandeza de abstenções extras |
 | `ranking_risco` | `n` (padrão 10) | Municípios ordenados por nível (a>b>c) e precipitação estimada, com efeito do Bot 4 quando houver |
 | `sinais_sociais_recentes` | `cidade`, `n` | Sinais de `data/social/sinais_*.csv` (se existir), com disclaimer |
-| `impacto_agora` | — | Impacto estimado agora (chuva acumulada desde 08h): p.p. por candidato (lo/mid/hi), votos perdidos, margem, cobertura, fonte da chuva e horário |
+| `impacto_agora` | `ao_vivo` (bool, padrão `false`) | **Padrão:** o snapshot publicado `data/impacto/atualizacoes/impacto_agora_latest.json` – os mesmos números do site e do dashboard – com os dois cenários (campos de topo = só previsão; `previsao_mais_noticias`), p.p. por candidato (lo/mid/hi), votos perdidos, margem, cobertura, `snapshot_brt`, `proxima_atualizacao_brt` (~30 min) e `tipo_resultado: snapshot_publicado`. `ao_vivo=true`: recálculo de diagnóstico neste instante (`tipo_resultado: recalculo_ao_vivo`; difere do snapshot, não é o número oficial). Sem snapshot, recalcula e avisa em `observacao`. |
 | `metodologia_e_limitacoes` | — | Classificação, coeficientes, regra prática, limitações |
 
 Sem dado para um local → a ferramenta diz isso explicitamente (não estima).
