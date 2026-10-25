@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 14:41 UTC (11:41 BRT) · **Notícias no consolidado:** 264 (nesta coleta: 233) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 14:43 UTC (11:43 BRT) · **Notícias no consolidado:** 264 (nesta coleta: 237) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 

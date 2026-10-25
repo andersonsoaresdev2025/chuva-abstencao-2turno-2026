@@ -41,3 +41,10 @@
 - Curitiba (a), Guaratuba (b), Barracão (b, média) e Itapevi (a) mantidos; Terra informa 446 eleitores transferidos em Itapevi. Sem evidência contrária, sem revogações.
 - Monitorando sem ajuste: Júlio de Castilhos (RS), chuva sem filas e votação tranquila; Rio, relatos individuais contraditórios (seções vazias na Tijuca × movimento normal na Zona Norte). Nenhuma nova mudança de local relatada desde 10h45.
 - Descartados: 4 (generalizações sem dado, opinião partidária, resposta automatizada sem fonte primária).
+
+## 2026-10-25 11:50 BRT
+- **São Domingos (SC), 4216107 – novo ajuste ativo, nível b, confiança alta.** TRE-SC (49ª ZE) transferiu no sábado as seções 173–175 (621 eleitores) do Centro de Convivência Flor de Araucária, alagado, para o Centro de Assistência Social (antigo Fórum), a ~500 m. Fontes: NSC Total, OCP News, O Globo. Não estava na lista de risco da previsão. Nível b (novo local próximo, mudança comunicada na véspera). 1º turno: Flávio 62,9% × Lula 32,4% (Flávio mais exposto).
+- **Campinas (SP), 3509502 – novo ajuste ativo, nível a, confiança média.** Segunda fonte independente (Correio Popular/ACidadeON, além de g1/EPTV) confirma escola de Sousas com 2,3 mil eleitores alagada e acesso dificultado; 83 mm acumulados. TRE-SP diz que a votação flui normalmente, por isso confiança média. Já era "a" pela previsão. 1º turno: Flávio 52,1% × Lula 38,2% (Flávio mais exposto).
+- Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a) e Itupeva (a) mantidos; sem evidência contrária, sem revogações.
+- Registrado sem ajuste: CBN/TRE-SP lista 7 mudanças de local em SP, mas fora Itapevi e Itupeva são majoritariamente por danos do temporal de 4/10 ou reforma (Ibitinga), não pela chuva do dia. Luzerna (SC) teve mudança na sexta por dificuldade de acesso, motivo não especificado como chuva. Defesa Civil SP: chuva com raios na região de Assis/Ourinhos às 11h10, sem efeito relatado.
+- Descartados: 4 (números sem fonte, contagem "400 locais" sem confirmação oficial, opinião partidária, especulação).
