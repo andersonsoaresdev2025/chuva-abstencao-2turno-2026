@@ -1,0 +1,30 @@
+codigo_ibge,municipio,uf,regiao,nivel_risco,precipitacao_mm_estimada,horario_pico,probabilidade,fonte_principal,ultima_atualizacao,observacoes
+3550308,São Paulo,SP,Sudeste,a,35.0,08h-12h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET tempestade. Chuva forte desde a madrugada; risco alto de alagamento. Volume elevado na manhã de votação.
+3304557,Rio de Janeiro,RJ,Sudeste,a,28.0,11h-15h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET tempestade. Risco de temporais e alagamento na Região Metropolitana e Baixada.
+3518800,Guarulhos,SP,Sudeste,a,40.0,09h-12h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Um dos maiores volumes; alto risco de alagamento na manhã.
+3548708,São Bernardo do Campo,SP,Sudeste,a,30.0,09h-12h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Grande ABC sob instabilidade forte.
+3547809,Santo André,SP,Sudeste,a,30.0,09h-12h,100,Extrapolação SP metro + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Grande ABC.
+3534401,Osasco,SP,Sudeste,a,32.0,09h-12h,100,Extrapolação SP metro + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Região Metropolitana SP.
+3509502,Campinas,SP,Sudeste,a,25.0,10h-14h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET tempestade. Risco de alagamento pontual.
+3304904,São Gonçalo,RJ,Sudeste,a,26.0,11h-15h,95,Extrapolação RJ + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Baixada Fluminense.
+3301702,Duque de Caxias,RJ,Sudeste,a,26.0,11h-15h,95,Extrapolação RJ + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Baixada Fluminense.
+3303500,Nova Iguaçu,RJ,Sudeste,a,25.0,11h-15h,95,Extrapolação RJ + INMET,2026-10-25 06:35 BRT,ALERTA INMET. Baixada Fluminense.
+5002704,Campo Grande,MS,Centro-Oeste,a,22.0,13h-16h,90,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET tempestade. Temporal previsto à tarde.
+4106902,Curitiba,PR,Sul,a,18.0,12h-16h,100,Open-Meteo + INMET,2026-10-25 06:35 BRT,ALERTA INMET tempestade. Chuva moderada a forte isolada.
+4314902,Porto Alegre,RS,Sul,b,9.0,14h-16h,90,Open-Meteo,2026-10-25 06:35 BRT,Chuva moderada isolada.
+3106200,Belo Horizonte,MG,Sudeste,b,5.0,13h-16h,80,Open-Meteo,2026-10-25 06:35 BRT,Chuva fraca a moderada isolada; atenção a alertas regionais.
+5300108,Brasília,DF,Centro-Oeste,c,1.0,-,50,Open-Meteo,2026-10-25 06:35 BRT,Tempo predominantemente firme.
+2927408,Salvador,BA,Nordeste,c,0.0,-,5,Open-Meteo,2026-10-25 06:35 BRT,Sem chuva relevante.
+2304400,Fortaleza,CE,Nordeste,c,0.5,-,20,Open-Meteo,2026-10-25 06:35 BRT,Sem chuva relevante.
+2611606,Recife,PE,Nordeste,c,1.0,-,40,Open-Meteo,2026-10-25 06:35 BRT,Sem chuva relevante.
+1302603,Manaus,AM,Norte,c,2.0,15h,50,Open-Meteo,2026-10-25 06:35 BRT,Pancadas isoladas fracas possíveis.
+1501402,Belém,PA,Norte,c,3.0,14h,70,Open-Meteo,2026-10-25 06:35 BRT,Pancadas isoladas.
+5208707,Goiânia,GO,Centro-Oeste,c,3.0,13h,60,Open-Meteo,2026-10-25 06:35 BRT,Chuva fraca isolada possível.
+3549904,São José dos Campos,SP,Sudeste,b,12.0,12h-15h,80,Padrão Vale do Paraíba + INMET,2026-10-25 06:35 BRT,Possível intensificação; área sob alerta regional.
+3552205,Sorocaba,SP,Sudeste,b,12.0,12h-15h,80,Padrão interior SP + INMET,2026-10-25 06:35 BRT,Alerta amarelo INMET; chuva moderada a forte isolada.
+3543402,Ribeirão Preto,SP,Sudeste,b,10.0,13h-16h,75,Padrão interior SP + INMET,2026-10-25 06:35 BRT,Área sob alerta; chuva moderada possível.
+4113700,Londrina,PR,Sul,b,14.0,13h-16h,85,Padrão PR + INMET,2026-10-25 06:35 BRT,Alerta amarelo INMET; chuva moderada a forte.
+4205407,Florianópolis,SC,Sul,b,8.0,14h-16h,70,Padrão SC,2026-10-25 06:35 BRT,Chuva moderada isolada.
+4209102,Joinville,SC,Sul,b,10.0,13h-16h,75,Padrão SC,2026-10-25 06:35 BRT,Chuva moderada.
+3170206,Uberlândia,MG,Sudeste,c,4.0,15h,50,Padrão MG interior,2026-10-25 06:35 BRT,Chuva fraca isolada.
+5103403,Cuiabá,MT,Centro-Oeste,c,2.0,-,40,Padrão MT,2026-10-25 06:35 BRT,Sem chuva relevante.

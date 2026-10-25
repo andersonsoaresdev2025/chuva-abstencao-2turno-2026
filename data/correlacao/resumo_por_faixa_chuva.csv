@@ -1,0 +1,4 @@
+faixa_chuva,n_municipios,media_pct_abst,mediana_pct_abst,media_precip_mm,total_aptos,total_abstencao,pct_abst_ponderada
+sem_relevante_<5mm,19,18.42684210526316,18.23,2.031578947368421,19720351,3909618,19.83
+moderada_5_20mm,10,20.892,20.255,9.059999999999999,18538086,4079385,22.01
+torrencial_>20mm,1,23.99,23.99,21.2,1064200,255333,23.99

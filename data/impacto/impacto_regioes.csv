@@ -1,0 +1,6 @@
+regiao,aptos,pct_abstencao_1t,pct_flavio_1t,pct_lula_1t,vencedor_1t,peso_eleitoral_pct,nivel_risco,efeito_abstencao_pp_mid,efeito_abstencao_pp_lo,efeito_abstencao_pp_hi,impacto_relativo_flavio,impacto_relativo_lula,mais_prejudicado,vulnerabilidade,fonte_coeficiente,timestamp_atualizacao
+Sudeste,66344562,22.7,51.36,39.68,FLAVIO,41.793,moderada,1.1,0.6,2.0,0.565,0.436,Flávio Bolsonaro (maior base),Média,Bot 1,2026-10-25 09:24 BRT
+Nordeste,43511237,18.39,30.85,63.77,LULA,27.409,sem_chuva_relevante,0.12,0.0,0.3,0.037,0.077,Lula (maior base),Baixa,Bot 1,2026-10-25 09:24 BRT
+Sul,22870853,20.46,60.08,31.28,FLAVIO,14.407,moderada,0.65,0.35,1.15,0.391,0.203,Flávio Bolsonaro (maior base),Média,Bot 1,2026-10-25 09:24 BRT
+Norte,13101175,19.43,49.15,44.65,FLAVIO,8.253,sem_chuva_relevante,0.15,0.0,0.4,0.074,0.067,Flávio Bolsonaro (maior base),Baixa,Bot 1,2026-10-25 09:24 BRT
+Centro-Oeste,12001141,21.7,56.51,32.62,FLAVIO,7.56,sem_chuva_relevante,0.15,0.0,0.4,0.085,0.049,Flávio Bolsonaro (maior base),Baixa,Bot 1,2026-10-25 09:24 BRT

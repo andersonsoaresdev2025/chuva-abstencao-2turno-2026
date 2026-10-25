@@ -1,0 +1,4 @@
+timestamp_coleta_utc,timestamp_post,cidade,uf,tipo,nivel_risco_implicito,confianca,fonte,tipo_fonte,resumo,link,cidade_risco_previsto
+2026-10-25T10:00:00Z,2026-10-25T09:50:00Z,CIDADE TESTE,ZZ,alagamento,a,alta,FIXTURE DE TESTE,teste,"REGISTRO FICTÍCIO usado apenas em testes automatizados",https://example.invalid/teste1,a
+2026-10-25T10:00:00Z,2026-10-25T09:40:00Z,CIDADE TESTE 2,ZZ,chuva,b,media,FIXTURE DE TESTE,teste,"REGISTRO FICTÍCIO usado apenas em testes automatizados",https://example.invalid/teste2,c
+2026-10-25T09:00:00Z,2026-10-25T08:40:00Z,CIDADE TESTE,ZZ,chuva,a,alta,FIXTURE DE TESTE,teste,"REGISTRO FICTÍCIO duplicado (mesmo link) – deve ser deduplicado",https://example.invalid/teste1,a

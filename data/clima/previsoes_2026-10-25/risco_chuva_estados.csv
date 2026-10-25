@@ -1,0 +1,16 @@
+uf,estado,regiao,nivel_risco_predominante,precipitacao_mm_media_estimada,observacoes,ultima_atualizacao
+SP,São Paulo,Sudeste,a,28.0,ALERTA INMET ativo (amarelo/laranja). Grande SP e várias regiões sob risco de tempestade e alagamento. Chuva forte desde a madrugada na capital.,2026-10-25 06:35 BRT
+RJ,Rio de Janeiro,Sudeste,a,26.0,ALERTA INMET ativo. Região Metropolitana e Baixada com risco de temporais e alagamento.,2026-10-25 06:35 BRT
+MS,Mato Grosso do Sul,Centro-Oeste,a,20.0,ALERTA INMET tempestade em Campo Grande e centro-sul. Temporal à tarde.,2026-10-25 06:35 BRT
+PR,Paraná,Sul,a,15.0,"ALERTA INMET ativo em Curitiba, Londrina e várias regiões. Chuva moderada a forte.",2026-10-25 06:35 BRT
+RS,Rio Grande do Sul,Sul,b,9.0,Chuva moderada isolada. Alertas pontuais.,2026-10-25 06:35 BRT
+SC,Santa Catarina,Sul,b,9.0,Chuva moderada isolada. Alertas pontuais.,2026-10-25 06:35 BRT
+MG,Minas Gerais,Sudeste,b,6.0,Chuva fraca a moderada no sul e metropolitana. Alertas regionais.,2026-10-25 06:35 BRT
+DF,Distrito Federal,Centro-Oeste,c,1.0,Tempo firme.,2026-10-25 06:35 BRT
+GO,Goiás,Centro-Oeste,c,3.0,Chuva fraca isolada possível.,2026-10-25 06:35 BRT
+MT,Mato Grosso,Centro-Oeste,c,2.0,Sem chuva relevante.,2026-10-25 06:35 BRT
+BA,Bahia,Nordeste,c,0.5,Tempo firme.,2026-10-25 06:35 BRT
+CE,Ceará,Nordeste,c,0.5,Tempo firme.,2026-10-25 06:35 BRT
+PE,Pernambuco,Nordeste,c,1.0,Tempo firme.,2026-10-25 06:35 BRT
+AM,Amazonas,Norte,c,2.0,Pancadas isoladas fracas.,2026-10-25 06:35 BRT
+PA,Pará,Norte,c,3.0,Pancadas isoladas.,2026-10-25 06:35 BRT

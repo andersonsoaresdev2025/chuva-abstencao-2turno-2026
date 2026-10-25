@@ -1,0 +1,6 @@
+regiao,nivel_risco_predominante,precipitacao_mm_media_estimada,observacoes,ultima_atualizacao
+Sudeste,a,22.0,ALERTA INMET ativo em SP e RJ. Grande SP com chuva forte desde a madrugada. RJ com risco de temporais. Maior impacto esperado na abstenção.,2026-10-25 06:35 BRT
+Sul,a/b,12.0,PR sob alerta de tempestade (Curitiba e norte). RS e SC com chuva moderada isolada.,2026-10-25 06:35 BRT
+Centro-Oeste,a/b,10.0,"MS (Campo Grande) sob alerta de tempestade. DF, GO e MT predominantemente firmes.",2026-10-25 06:35 BRT
+Nordeste,c,0.5,Tempo firme. Sem impacto relevante por chuva.,2026-10-25 06:35 BRT
+Norte,c,2.0,Pancadas isoladas sem volume significativo no horário de votação.,2026-10-25 06:35 BRT
