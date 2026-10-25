@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 15:16 UTC (12:16 BRT) · **Notícias no consolidado:** 278 (nesta coleta: 245) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 15:41 UTC (12:41 BRT) · **Notícias no consolidado:** 291 (nesta coleta: 258) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -13,15 +13,15 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 - **Chuva provoca alagamentos, derruba árvores e dificulta acesso a locais de votação na região de Campinas** — g1 Campinas (EPTV) (11:20 BRT, Campinas; tema: locais de votação) — [link](https://g1.globo.com/sp/campinas-regiao/noticia/2026/10/25/chuva-provoca-pontos-de-alagamento-e-queda-de-arvores-na-regiao-de-campinas.ghtml)
 - **No pódio do voto, eleitores chegam antes das 5h, por medo da chuva** — Campo Grande News (08:10 BRT, Campo Grande; tema: locais de votação) — [link](https://www.campograndenews.com.br/politica/no-podio-do-voto-eleitores-chegam-antes-das-5h-por-medo-da-chuva)
 - **Chuva altera local de votação em Itapevi, no interior paulista** — Agência Brasil (10:37 BRT, São Paulo; tema: locais de votação) — [link](https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/chuva-altera-local-de-votacao-em-itapevi-no-interior-paulista)
-- **Rua de colégio eleitoral fica alagada em Campinas; ACOMPANHE a votação** — g1 Campinas (EPTV) (12:20 BRT, Campinas; tema: alagamento) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
 - **Troca de urnas, chuva e falta de energia elétrica marcam eleições no interior de SP** — g1 (14:31 BRT/SP; tema: locais de votação) — [link](https://g1.globo.com/sp/sao-carlos-regiao/eleicoes/2026/noticia/2026/10/25/troca-de-urnas-chuva-e-falta-de-energia-eletrica-marcam-eleicoes-no-interior-de-sp.ghtml)
+- **Região de Campinas tem manhã de votação tranquila no 2º turno; ACOMPANHE** — g1 Campinas (EPTV) (15:40 BRT, Campinas; tema: locais de votação) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
 - **Chuva alaga escola no PR e provoca mudança no local votação; veja** — CNN Brasil (07:34 BRT/PR; tema: locais de votação) — [link](https://www.cnnbrasil.com.br/eleicoes/chuva-alaga-escola-no-pr-e-provoca-mudanca-no-local-votacao-veja/)
 
 ## Distribuição
 
-Por tema: geral 88, alerta 82, locais de votação 60, alagamento 32, mobilidade 16
+Por tema: geral 93, alerta 87, locais de votação 61, alagamento 32, mobilidade 18
 
-Por UF: n 111, d 111, SP 69, PR 46, MS 15, SC 12, RJ 8, MG 8, GO 3, MT 3, RS 2, DF 1, AM 1
+Por UF: n 117, d 117, SP 74, PR 47, MS 16, SC 12, RJ 8, MG 8, GO 3, MT 3, RS 2, DF 1, AM 1
 
 ## Itens sinalizados (não verificados ou a checar)
 
