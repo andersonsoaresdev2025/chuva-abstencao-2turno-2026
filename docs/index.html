@@ -27,11 +27,11 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <header>
 <h1>🌧️ Chuva × Abstenção Eleitoral</h1>
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
-<p><b>Dados atualizados em:</b> impacto (Bot 4) 2026-10-25 09:24 BRT · risco a/b/c (Bot 2) 2026-10-25 06:35 BRT · página gerada 2026-10-25 10:12 UTC / 2026-10-25 07:12 BRT</p>
+<p><b>Dados atualizados em:</b> impacto (Bot 4) 2026-10-25 09:24 BRT · risco a/b/c (Bot 2) 2026-10-25 06:35 BRT · página gerada 2026-10-25 10:21 UTC / 2026-10-25 07:21 BRT</p>
 <a class="cta" href="https://chuva-abstencao-2026.streamlit.app/" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
 
 <section id="agora">
@@ -42,10 +42,17 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <div class="kpi"><b>+0,0004 p.p.</b>Efeito na margem (Lula − Flávio) · faixa +0,0002 a +0,0005 · abstenção nacional +0,18 p.p.</div>
 <div class="kpi"><b>20,0%</b>do eleitorado coberto (15 maiores colégios; demais = 0)</div>
 </div>
-<p class="muted">🕒 Calculado em 07:12 BRT (2026-10-25 10:12 UTC) no momento da geração desta página; janela: dia inteiro 08h–17h (previsão) · Precipitação: Open-Meteo (previsão horária atual para 08h–17h). Versão ao vivo (recalculada a cada poucos minutos) no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
+<p class="muted">🕒 Calculado em 07:21 BRT (2026-10-25 10:21 UTC) no momento da geração desta página; janela: dia inteiro 08h–17h (previsão) · Precipitação: Open-Meteo (previsão horária atual para 08h–17h). Versão ao vivo (recalculada a cada poucos minutos) no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
 
 <p class="muted"><b>Como é calculado:</b> Para cada um dos 15 maiores colégios com previsão horária, somamos a chuva desde 08h até agora (Open-Meteo; se a API falhar, a previsão do Bot 0 pró-rata pelas horas decorridas) e aplicamos o coeficiente do Bot 1: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0). As abstenções extras (aptos × efeito) são divididas entre Flávio e Lula pela votação de cada um no município no 1º turno (mesma suposição do Bot 4), e o resultado é comparado com os votos nacionais dos dois no 1º turno. Municípios fora da cobertura contam como zero. Antes das 08h mostramos a projeção do dia; após 17h, a estimativa final.</p>
 <p class="alert">Estimativa baseada em modelo — não é contagem de votos, apuração nem pesquisa de boca de urna. Mostra apenas o efeito estimado da chuva, com grande incerteza.</p>
+</section>
+
+<section id="noticias">
+<h2>📰 Principais notícias: chuva × eleição</h2>
+<p class="muted">Coleta: 2026-10-25 10:21 UTC / 07:21 BRT · 81 notícias monitoradas · 13 portais nacionais e 31 locais verificados (lista em <code>data/noticias/portais.csv</code>) + Google Notícias. Lista completa e filtros no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a> (página Notícias).</p>
+<ol><li><a href="https://www.cnnbrasil.com.br/eleicoes/eleicoes-2026-veja-previsao-do-tempo-para-o-2o-turno-em-todo-o-pais/" target="_blank" rel="noopener nofollow">Eleições 2026: Veja a previsão do tempo para o 2º turno em todo o país</a> <span class="muted">— CNN Brasil · 06:20 BRT · São Paulo · SP · alerta</span></li><li><a href="https://news.google.com/rss/articles/CBMisgFBVV95cUxQUXNYQmJiX2xFdC1QRWZ5UUxxalJhX3dlbmh5SEFLZk9YY1pxUjlWMURzQ3hLdThPTElWeXh1SE0xOEFMYTBBbTdDSzJJdFJqRXlkMDFoWTNZME1JMGkzQjdEak95akoteExYSlNrRExIcDVKQWNlX0tFREIxcHhhSjhsNUtuSldweGI4bkNNQkNkS2RETHpkdURJR29QeFNqYmdkd3VjbGQzOTV3WkFTYVZn?oc=5" target="_blank" rel="noopener nofollow">Chuva no dia da eleição muda locais de votação e põe estados em alerta</a> <span class="muted">— Band · 05:00 BRT · locais de votação</span></li><li><a href="https://www.bemparana.com.br/eleicoes-2026/chuva-pode-mudar-seu-local-de-votacao-no-parana-veja-como-consultar-antes-de-sair-de-casa/" target="_blank" rel="noopener nofollow">Chuva pode mudar seu local de votação no Paraná; veja como consultar antes de sair de casa</a> <span class="muted">— Bem Paraná · 00:31 BRT · PR · locais de votação</span></li><li><a href="https://www.metropoles.com/brasil/2o-turno-chuva-forte-atinge-sul-e-sudeste-norte-e-nordeste-terao-calor" target="_blank" rel="noopener nofollow">2º turno: chuva forte atinge Sul e Sudeste. Norte e Nordeste terão calor</a> <span class="muted">— Metrópoles · 04:30 BRT · Rio de Janeiro · RJ · geral</span></li><li><a href="https://www.metropoles.com/brasil/clima-domingo-de-2o-turno-tem-chuva-no-sul-e-calor-de-ate-40oc-no-nordeste" target="_blank" rel="noopener nofollow">Clima: domingo de 2º turno tem chuva no Sul e calor de até 40ºC no Nordeste</a> <span class="muted">— Metrópoles · 07:00 BRT · alerta</span></li><li><a href="https://g1.globo.com/pr/norte-noroeste/noticia/2026/10/25/alerta-laranja-temporal-parana.ghtml" target="_blank" rel="noopener nofollow">Alerta laranja: mais de 300 cidades do Paraná podem registrar temporais com ventos de 100 km/h no domingo de eleição</a> <span class="muted">— g1 · 03:05 BRT · PR · alerta</span></li><li><a href="https://ndmais.com.br/economia/agronegocios/bancada-do-agro-em-2027-o-que-muda-com-lula-ou-flavio/" target="_blank" rel="noopener nofollow">Faça chuva ou faça sol, o agro também vai às urnas hoje</a> <span class="muted">— ND Mais · 05:55 BRT · SC · geral</span></li><li><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxNNXFUYk5MdUMtV3htaFRwVnBTSzh2eVAyMFplMEwycTlpY0NNVmUtRFdubjhzUW02MjZNeE9uS1ZseDFwUG9UaHVPVjJHVG5QMDhkelN5Ni1ZX1FHdmk1VUZheUh2S2t2YVNvcm16UG9zd2hmV1ZsQ3pnVTRZb1J5RkJHYURyWkZBZ01oQ3o3SXY1U29qMzd3X0pDUkRUYlhTM3c?oc=5" target="_blank" rel="noopener nofollow">Domingo de 2º turno terá calor e chuva em BH; veja a previsão</a> <span class="muted">— Metrópoles · 02:00 BRT · mobilidade</span></li></ol>
+<p class="alert">Manchetes coletadas automaticamente de feeds RSS dos portais listados e do Google Notícias, filtradas por palavras-chave (chuva/tempo severo + eleição). Não são dados oficiais: a abstenção real só é conhecida na totalização do TSE. Tema, cidade e UF são classificados automaticamente e podem errar. Itens de fontes fora da lista verificada ou com alegações a checar aparecem sinalizados (⚠️). Alguns portais têm paywall. Sempre abra o link original e confira os canais oficiais (TSE, TREs, INMET, Defesa Civil).</p>
 </section>
 
 <section id="mensagem">
@@ -133,6 +140,6 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <p class="muted">Código sob licença MIT; dados de análise sob CC BY 4.0; dados de origem pública mantêm os termos originais.</p>
 </section>
 </main>
-<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 10:12 UTC / 2026-10-25 07:12 BRT por scripts/build_site.py</footer>
+<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 10:21 UTC / 2026-10-25 07:21 BRT por scripts/build_site.py</footer>
 </body>
 </html>

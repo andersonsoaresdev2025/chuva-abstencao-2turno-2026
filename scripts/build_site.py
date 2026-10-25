@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from common import dados as D  # noqa: E402
 from common import impacto_agora as IA  # noqa: E402
+from common import noticias as NOTI  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # PREENCHER APÓS A PUBLICAÇÃO (ou exportar as variáveis de ambiente)
@@ -107,6 +108,33 @@ def secao_social() -> str:
                 f"{esc(soc['timestamp_coleta_utc'].dropna().astype(str).max() if soc['timestamp_coleta_utc'].notna().any() else '—')}")
     extra = f'<p class="muted">Resumo mais recente: <code>data/social/{esc(nome_md)}</code></p>' if nome_md else ""
     return t + extra
+
+
+def secao_noticias(n: int = 8) -> str:
+    """Top notícias (chuva × eleição) dos portais verificados; ver data/noticias/."""
+    df = NOTI.carregar_noticias()
+    portais = NOTI.carregar_portais()
+    if df.empty:
+        return ('<section id="noticias"><h2>Principais notícias: chuva × eleição</h2><p class="muted">Ainda não há '
+                'notícias coletadas (<code>data/noticias/</code>).</p></section>')
+    top = NOTI.principais(df, n)
+    itens = []
+    for _, r in top.iterrows():
+        u = str(r["link"])
+        href = html.escape(u, quote=True) if u.startswith(("http://", "https://")) else "#"
+        local = " · ".join(x for x in [str(r["cidade"] or ""), str(r["uf"] or "")] if x)
+        dia = "" if str(r["publicado_brt"]).startswith("2026-10-25") else " (24/10)"
+        itens.append(f'<li><a href="{href}" target="_blank" rel="noopener nofollow">{esc(r["titulo"])}</a> '
+                     f'<span class="muted">— {esc(r["portal"])} · {esc(str(r["publicado_brt"])[11:16])} BRT{dia}'
+                     f'{" · " + esc(local) if local else ""} · {esc(r["tema"])}</span></li>')
+    n_nac = int((portais["abrangencia"] == "nacional").sum()) if not portais.empty else 0
+    n_reg = int((portais["abrangencia"] == "regional").sum()) if not portais.empty else 0
+    return f"""<section id="noticias">
+<h2>📰 Principais notícias: chuva × eleição</h2>
+<p class="muted">Coleta: {esc(NOTI.ultima_coleta(df))} · {len(df)} notícias monitoradas · {n_nac} portais nacionais e {n_reg} locais verificados (lista em <code>data/noticias/portais.csv</code>) + Google Notícias. Lista completa e filtros no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a> (página Notícias).</p>
+<ol>{''.join(itens)}</ol>
+<p class="alert">{esc(NOTI.DISCLAIMER.replace('**', ''))}</p>
+</section>"""
 
 
 def pp(x: float) -> str:
@@ -218,10 +246,12 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <a class="cta" href="{html.escape(STREAMLIT_URL, quote=True)}" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="{html.escape(REPO_URL, quote=True)}">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
 
 {secao_agora()}
+
+{secao_noticias()}
 
 <section id="mensagem">
 <h2>Mensagem principal</h2>

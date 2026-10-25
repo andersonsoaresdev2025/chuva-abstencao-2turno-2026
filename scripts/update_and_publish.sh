@@ -9,6 +9,11 @@ PY="${PYTHON:-.venv/bin/python}"
 [ -x "$PY" ] || PY=python3
 MSG="${1:-Atualização de dados $(date -u '+%Y-%m-%d %H:%M UTC') / $(TZ=America/Sao_Paulo date '+%H:%M BRT')}"
 
+if [ "${COLETAR_NOTICIAS:-1}" = "1" ]; then
+  echo "==> Coletando notícias (chuva × eleição) — desative com COLETAR_NOTICIAS=0"
+  "$PY" scripts/coletar_noticias.py || echo "AVISO: coleta de notícias falhou; publicando com os dados anteriores"
+fi
+
 echo "==> Reconstruindo docs/index.html"
 "$PY" scripts/build_site.py
 

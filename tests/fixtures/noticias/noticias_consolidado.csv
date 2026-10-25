@@ -1,0 +1,5 @@
+id,titulo,link,portal,dominio,abrangencia,uf,cidade,regiao,tema,publicado_brt,publicado_utc,coletado_utc,score,sinalizacao,menciona_eleicao,origem_coleta,resumo
+t-001,Exemplo fictício: chuva transfere local de votação,https://exemplo.invalid/a,Portal Teste,exemplo.invalid,regional,PR,Curitiba,Sul,locais de votação,2026-10-25 07:00,2026-10-25T10:00:00Z,2026-10-25T10:30:00Z,11.5,,sim,rss:Portal Teste,
+t-002,Exemplo fictício: alerta de temporal no dia da eleição,https://exemplo.invalid/b,Nacional Teste,nacional.invalid,nacional,SP,São Paulo,Sudeste,alerta,2026-10-25 06:00,2026-10-25T09:00:00Z,2026-10-25T10:30:00Z,9.0,,sim,gnews:chuva eleição,
+t-003,Exemplo fictício: eleição adiada pela chuva,https://exemplo.invalid/c,blog.invalid,blog.invalid,outro,,,,geral,2026-10-25 05:00,2026-10-25T08:00:00Z,2026-10-25T10:30:00Z,4.0,fonte fora da lista verificada; alegação a checar com TSE/TRE (possível contradição com fontes oficiais),sim,gnews:chuva eleição,
+t-004,Exemplo fictício duplicado,https://exemplo.invalid/a,Portal Teste,exemplo.invalid,regional,PR,Curitiba,Sul,locais de votação,2026-10-25 07:00,2026-10-25T10:00:00Z,2026-10-25T10:30:00Z,3.0,,sim,rss:Portal Teste,

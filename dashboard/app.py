@@ -22,6 +22,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from common import dados as D  # noqa: E402
 from common import impacto_agora as IA  # noqa: E402
+from dashboard import noticias as NOT  # noqa: E402  (monitoramento de notícias)
 
 # -----------------------------------------------------------------------------
 # Configuração da página
@@ -187,6 +188,7 @@ PAGINAS = [
     "Impacto na Abstenção",
     "Redutos e Diferencial",
     "Sinais Sociais",
+    "Notícias",
     "Metodologia e Limitações",
 ]
 
@@ -238,6 +240,9 @@ if pagina == "Visão Geral":
     )
 
     bloco_impacto_agora()
+    st.markdown("---")
+
+    NOT.bloco_principais()  # quadro de notícias (abaixo dos cards de impacto)
     st.markdown("---")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -571,6 +576,12 @@ elif pagina == "Sinais Sociais":
     if txt_md:
         with st.expander(f"Resumo mais recente do monitoramento ({nome_md})", expanded=social.empty is False):
             st.markdown(txt_md)
+
+# -----------------------------------------------------------------------------
+# PÁGINA: NOTÍCIAS (módulo dashboard/noticias.py)
+# -----------------------------------------------------------------------------
+elif pagina == "Notícias":
+    NOT.pagina()
 
 # -----------------------------------------------------------------------------
 # PÁGINA: METODOLOGIA E LIMITAÇÕES

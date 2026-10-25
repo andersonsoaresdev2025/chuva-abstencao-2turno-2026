@@ -1,0 +1,45 @@
+nome,url,dominio,abrangencia,uf,cidades_cobertas,tipo,rss_url,observacoes,status_http_home,verificado_em_utc
+g1,https://g1.globo.com/,g1.globo.com,nacional,BR,,portal,https://g1.globo.com/rss/g1/,Grupo Globo,200,2026-10-25 10:16 UTC
+UOL,https://www.uol.com.br/,uol.com.br,nacional,BR,,portal,https://rss.uol.com.br/feed/noticias.xml,,200,2026-10-25 10:16 UTC
+Folha de S.Paulo,https://www.folha.uol.com.br/,folha.uol.com.br,nacional,BR,,jornal,https://feeds.folha.uol.com.br/emcimadahora/rss091.xml,paywall parcial,200,2026-10-25 10:16 UTC
+Estadão,https://www.estadao.com.br/,estadao.com.br,nacional,BR,,jornal,https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/politica/,paywall,200,2026-10-25 10:16 UTC
+O Globo,https://oglobo.globo.com/,oglobo.globo.com,nacional,BR,,jornal,https://oglobo.globo.com/rss/oglobo,paywall,200,2026-10-25 10:16 UTC
+CNN Brasil,https://www.cnnbrasil.com.br/,cnnbrasil.com.br,nacional,BR,,TV,https://www.cnnbrasil.com.br/feed/,,200,2026-10-25 10:16 UTC
+Band,https://www.band.com.br/,band.com.br,nacional,BR,,TV,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+R7,https://noticias.r7.com/,noticias.r7.com,nacional,BR,,portal,,Record; sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+Metrópoles,https://www.metropoles.com/,metropoles.com,nacional,BR,,portal,https://www.metropoles.com/feed,,200,2026-10-25 10:16 UTC
+Poder360,https://www.poder360.com.br/,poder360.com.br,nacional,BR,,portal,https://www.poder360.com.br/feed/,,200,2026-10-25 10:16 UTC
+Agência Brasil,https://agenciabrasil.ebc.com.br/,agenciabrasil.ebc.com.br,nacional,BR,,portal,https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml,EBC (pública),200,2026-10-25 10:16 UTC
+Terra,https://www.terra.com.br/,terra.com.br,nacional,BR,,portal,https://www.terra.com.br/rss/,,200,2026-10-25 10:16 UTC
+CartaCapital,https://www.cartacapital.com.br/,cartacapital.com.br,nacional,BR,,portal,https://www.cartacapital.com.br/feed/,,200,2026-10-25 10:16 UTC
+Gazeta do Povo,https://www.gazetadopovo.com.br/,gazetadopovo.com.br,regional,PR,Curitiba;PR,jornal,https://www.gazetadopovo.com.br/feed/rss/ultimas-noticias.xml,paywall parcial,200,2026-10-25 10:16 UTC
+Banda B,https://www.bandab.com.br/,bandab.com.br,regional,PR,Curitiba;RMC,portal,https://www.bandab.com.br/feed/,rádio/portal,200,2026-10-25 10:16 UTC
+Tribuna do Paraná,https://www.tribunapr.com.br/,tribunapr.com.br,regional,PR,Curitiba;RMC,portal,https://www.tribunapr.com.br/feed/,,200,2026-10-25 10:16 UTC
+Bem Paraná,https://www.bemparana.com.br/,bemparana.com.br,regional,PR,Curitiba;PR,portal,https://www.bemparana.com.br/feed/,,200,2026-10-25 10:16 UTC
+Clique Paraná,https://cliqueparana.com.br/,cliqueparana.com.br,regional,PR,Curitiba,portal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+g1 Paraná (RPC),https://g1.globo.com/pr/parana/,g1.globo.com/pr/parana,regional,PR,Curitiba;PR,TV,https://g1.globo.com/rss/g1/pr/parana/,,200,2026-10-25 10:16 UTC
+Correio do Estado,https://correiodoestado.com.br/,correiodoestado.com.br,regional,MS,Campo Grande;MS,jornal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+Campo Grande News,https://www.campograndenews.com.br/,campograndenews.com.br,regional,MS,Campo Grande,portal,https://www.campograndenews.com.br/rss/,,200,2026-10-25 10:16 UTC
+HoraMS,https://horams.com.br/,horams.com.br,regional,MS,Campo Grande;MS,portal,https://horams.com.br/feed/,,200,2026-10-25 10:16 UTC
+g1 MS,https://g1.globo.com/ms/mato-grosso-do-sul/,g1.globo.com/ms/mato-grosso-do-sul,regional,MS,Campo Grande;MS,TV,https://g1.globo.com/rss/g1/ms/mato-grosso-do-sul/,,200,2026-10-25 10:16 UTC
+O Dia,https://odia.ig.com.br/,odia.ig.com.br,regional,RJ,Rio de Janeiro;Baixada Fluminense,jornal,https://odia.ig.com.br/rss.xml,,200,2026-10-25 10:16 UTC
+Extra,https://extra.globo.com/,extra.globo.com,regional,RJ,Rio de Janeiro;Baixada Fluminense,jornal,https://extra.globo.com/rss.xml,,200,2026-10-25 10:16 UTC
+g1 Rio,https://g1.globo.com/rj/rio-de-janeiro/,g1.globo.com/rj/rio-de-janeiro,regional,RJ,Rio de Janeiro;Baixada Fluminense,TV,https://g1.globo.com/rss/g1/rio-de-janeiro/,,200,2026-10-25 10:16 UTC
+Diário do Grande ABC,https://www.dgabc.com.br/,dgabc.com.br,regional,SP,Santo André;São Bernardo do Campo;São Caetano;Diadema;Mauá,jornal,https://www.dgabc.com.br/rss,,200,2026-10-25 10:16 UTC
+g1 SP,https://g1.globo.com/sp/sao-paulo/,g1.globo.com/sp/sao-paulo,regional,SP,São Paulo;Grande SP,TV,https://g1.globo.com/rss/g1/sao-paulo/,,200,2026-10-25 10:16 UTC
+Guarulhos Hoje,https://www.guarulhoshoje.com.br/,guarulhoshoje.com.br,regional,SP,Guarulhos,jornal,https://www.guarulhoshoje.com.br/feed/,,200,2026-10-25 10:16 UTC
+Correio Popular / ACidadeON,https://www.acidadeon.com/campinas/,acidadeon.com,regional,SP,Campinas,jornal,https://www.acidadeon.com/campinas/feed/,,200,2026-10-25 10:16 UTC
+g1 Campinas (EPTV),https://g1.globo.com/sp/campinas-regiao/,g1.globo.com/sp/campinas-regiao,regional,SP,Campinas;região,TV,https://g1.globo.com/rss/g1/sp/campinas-regiao/,,200,2026-10-25 10:16 UTC
+g1 Vale do Paraíba (TV Vanguarda),https://g1.globo.com/sp/vale-do-paraiba-regiao/,g1.globo.com/sp/vale-do-paraiba-regiao,regional,SP,São José dos Campos;Taubaté;Vale do Paraíba,TV,https://g1.globo.com/rss/g1/sp/vale-do-paraiba-regiao/,,200,2026-10-25 10:16 UTC
+g1 Santos (TV Tribuna),https://g1.globo.com/sp/santos-regiao/,g1.globo.com/sp/santos-regiao,regional,SP,Santos;Baixada Santista,TV,https://g1.globo.com/rss/g1/sp/santos-regiao/,,200,2026-10-25 10:16 UTC
+A Tribuna (Santos),https://www.atribuna.com.br/,atribuna.com.br,regional,SP,Santos;Baixada Santista,jornal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+g1 Sorocaba (TV TEM),https://g1.globo.com/sp/sorocaba-jundiai/,g1.globo.com/sp/sorocaba-jundiai,regional,SP,Sorocaba;Jundiaí,TV,https://g1.globo.com/rss/g1/sp/sorocaba-jundiai/,,200,2026-10-25 10:16 UTC
+NSC Total,https://www.nsctotal.com.br/,nsctotal.com.br,regional,SC,Florianópolis;Joinville;SC,portal,https://www.nsctotal.com.br/feed,,200,2026-10-25 10:16 UTC
+ND Mais,https://ndmais.com.br/,ndmais.com.br,regional,SC,Florianópolis;SC,portal,https://ndmais.com.br/feed/,,200,2026-10-25 10:16 UTC
+g1 SC,https://g1.globo.com/sc/santa-catarina/,g1.globo.com/sc/santa-catarina,regional,SC,SC,TV,https://g1.globo.com/rss/g1/sc/santa-catarina/,,200,2026-10-25 10:16 UTC
+GZH,https://gauchazh.clicrbs.com.br/,gauchazh.clicrbs.com.br,regional,RS,Porto Alegre;RS;rio Uruguai,portal,,paywall parcial; sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+Correio do Povo,https://www.correiodopovo.com.br/,correiodopovo.com.br,regional,RS,Porto Alegre;RS,jornal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+g1 RS,https://g1.globo.com/rs/rio-grande-do-sul/,g1.globo.com/rs/rio-grande-do-sul,regional,RS,RS,TV,https://g1.globo.com/rss/g1/rs/rio-grande-do-sul/,,200,2026-10-25 10:16 UTC
+Estado de Minas,https://www.em.com.br/,em.com.br,regional,MG,Belo Horizonte;MG,jornal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+O Tempo,https://www.otempo.com.br/,otempo.com.br,regional,MG,Belo Horizonte;MG,jornal,,sem RSS verificado: coberto via Google Notícias (site:),200,2026-10-25 10:16 UTC
+g1 Minas,https://g1.globo.com/mg/minas-gerais/,g1.globo.com/mg/minas-gerais,regional,MG,Belo Horizonte;MG,TV,https://g1.globo.com/rss/g1/minas-gerais/,,200,2026-10-25 10:16 UTC

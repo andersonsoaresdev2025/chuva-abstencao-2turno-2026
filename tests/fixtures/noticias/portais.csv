@@ -1,0 +1,2 @@
+nome,url,dominio,abrangencia,uf,cidades_cobertas,tipo,rss_url,observacoes,status_http_home,verificado_em_utc
+Portal Teste,https://exemplo.invalid/,exemplo.invalid,regional,PR,Curitiba,portal,,fictício,200,2026-10-25 10:00 UTC
