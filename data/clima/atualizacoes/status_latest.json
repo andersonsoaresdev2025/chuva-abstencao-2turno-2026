@@ -1,24 +1,24 @@
 {
- "executado_em_utc": "2026-10-25T15:14:25.458259+00:00",
- "executado_em_brt": "2026-10-25 12:14 BRT",
+ "executado_em_utc": "2026-10-25T15:15:57.193635+00:00",
+ "executado_em_brt": "2026-10-25 12:15 BRT",
  "open_meteo": {
   "status": "ok",
   "erro": null,
-  "n_series": 303
+  "n_series": 302
  },
  "inmet": {
   "status": "ok",
   "fonte": "https://apiprevmet3.inmet.gov.br/avisos/ativos",
-  "obtido_em_utc": "2026-10-25T15:14:25.458259+00:00",
+  "obtido_em_utc": "2026-10-25T15:15:57.193635+00:00",
   "erros": [],
   "n_avisos": 7
  },
- "n_municipios": 303,
- "ajustes_ativos": 7,
- "arquivo_versionado": "risco_chuva_municipios_20261025_1514UTC.csv",
+ "n_municipios": 302,
+ "ajustes_ativos": 6,
+ "arquivo_versionado": "risco_chuva_municipios_20261025_1515UTC.csv",
  "log": [
-  "universo: 303 municípios ({'maiores_colegios': 270, 'bot2': 29, 'ajuste_noticias': 4}); ajustes ativos: 7",
-  "Open-Meteo ok: 303 séries",
+  "universo: 302 municípios ({'maiores_colegios': 270, 'bot2': 29, 'ajuste_noticias': 3}); ajustes ativos: 6",
+  "Open-Meteo ok: 302 séries",
   "INMET: ok (https://apiprevmet3.inmet.gov.br/avisos/ativos); 7 avisos; erros=[]"
  ]
 }

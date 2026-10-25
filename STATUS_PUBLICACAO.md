@@ -32,6 +32,7 @@
 
 - 2026-10-25 14:20 UTC / 11:20 BRT: pipeline completo rodado 2× (11:14 e 11:16 BRT, tudo ok); verificação X (3 buscas) + web/Instagram público; 4 sinais novos + 4 descartados; ajuste Itupeva (SP) elevado para confiança alta (2ª fonte: Terra/TRE-SP, 3.722 eleitores); 5 ajustes ativos; impacto recalculado e publicado.
 - 2026-10-25 14:50 UTC / 11:50 BRT: pipeline completo rodado 2× (11:41 e 11:43 BRT, tudo ok); verificação X (2 buscas) + web; 7 sinais novos + 4 descartados; novos ajustes São Domingos (SC, b, alta; TRE-SC, 621 eleitores) e Campinas (SP, a, média; escola alagada em Sousas); 7 ajustes ativos; impacto recalculado e publicado.
+- 2026-10-25 15:20 UTC / 12:20 BRT: pipeline completo rodado 2× (12:14 BRT e após ajuste); verificação X (5 buscas) + web; 5 sinais novos + 4 descartados; ajuste Itupeva (SP) REVOGADO (TRE-SP suspendeu a transferência após a água baixar; g1/CNN); 6 ajustes ativos; impacto recalculado e publicado.
 ## Configuração do Streamlit Community Cloud
 - Repository: `andersonsoaresdev2025/chuva-abstencao-2turno-2026`
 - Branch: `main`
@@ -47,6 +48,7 @@
 ## Atualizações automáticas (mais recente primeiro)
 
 <!-- AUTO-STATUS:INICIO -->
+- 2026-10-25 12:15 BRT (20261025_1515UTC) · clima=ok(5s) impacto=ok(1s) social=ok(0s) noticias=ok(15s) site=ok(1s) consistencia=ok(0s) testes=ok(16s) · log: data/logs/atualizacao_20261025_1515UTC.log
 - 2026-10-25 12:14 BRT (20261025_1514UTC) · clima=ok(5s) impacto=ok(1s) social=ok(0s) noticias=ok(16s) site=ok(1s) consistencia=ok(0s) testes=ok(16s) · log: data/logs/atualizacao_20261025_1514UTC.log
 - 2026-10-25 11:43 BRT (20261025_1443UTC) · clima=ok(5s) impacto=ok(0s) social=ok(1s) noticias=ok(14s) site=ok(0s) consistencia=ok(1s) testes=ok(15s) · log: data/logs/atualizacao_20261025_1443UTC.log
 - 2026-10-25 11:41 BRT (20261025_1441UTC) · clima=ok(5s) impacto=ok(1s) social=ok(0s) noticias=ok(15s) site=ok(0s) consistencia=ok(1s) testes=ok(16s) · log: data/logs/atualizacao_20261025_1441UTC.log
@@ -58,5 +60,4 @@
 - 2026-10-25 09:46 BRT (20261025_1246UTC) · clima=ok(5s) impacto=ok(1s) social=ok(1s) noticias=ok(8s) site=ok(1s) consistencia=ok(0s) testes=ok(15s) · log: data/logs/atualizacao_20261025_1246UTC.log
 - 2026-10-25 09:32 BRT (20261025_1232UTC) · clima=ok(5s) impacto=ok(1s) social=ok(10s) noticias=ok(10s) site=ok(1s) consistencia=ok(0s) testes=ok(15s) · log: data/logs/atualizacao_20261025_1232UTC.log
 - 2026-10-25 09:14 BRT (20261025_1214UTC) · clima=ok(5s) impacto=ok(1s) social=ok(0s) noticias=ok(8s) site=ok(0s) testes=ok(14s) · log: data/logs/atualizacao_20261025_1214UTC.log
-- 2026-10-25 09:12 BRT (20261025_1212UTC) · clima=ok(4s) impacto=ok(1s) social=ok(10s) noticias=ok(8s) site=ok(0s) testes=ok(14s) · log: data/logs/atualizacao_20261025_1212UTC.log
 <!-- AUTO-STATUS:FIM -->

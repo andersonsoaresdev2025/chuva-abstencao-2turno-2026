@@ -48,3 +48,9 @@
 - Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a) e Itupeva (a) mantidos; sem evidência contrária, sem revogações.
 - Registrado sem ajuste: CBN/TRE-SP lista 7 mudanças de local em SP, mas fora Itapevi e Itupeva são majoritariamente por danos do temporal de 4/10 ou reforma (Ibitinga), não pela chuva do dia. Luzerna (SC) teve mudança na sexta por dificuldade de acesso, motivo não especificado como chuva. Defesa Civil SP: chuva com raios na região de Assis/Ourinhos às 11h10, sem efeito relatado.
 - Descartados: 4 (números sem fonte, contagem "400 locais" sem confirmação oficial, opinião partidária, especulação).
+
+## 2026-10-25 12:20 BRT
+- **Itupeva (SP), 3524006 – ajuste REVOGADO.** O TRE-SP suspendeu a transferência dos dois locais da 65ª ZE após a água baixar; Cemeb Monteiro Lobato e Cemeb Profª Thereza Angelina Lourençon seguem funcionando normalmente para os 3.722 eleitores (g1, CNN Brasil 11h47). Itupeva deixa de contar como impactado por notícia. 1º turno: Flávio 60,4% × Lula 29,9% (a revogação reduz levemente a perda estimada de Flávio).
+- Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; sem evidência contrária. 6 ajustes ativos.
+- Monitorando sem ajuste: Americana (SP), SBT News relata que a entrada da Escola Sesi (Machadinho) foi deslocada para a Rua Ângelo Ortolan por alagamento da Av. Bandeirantes, mesmo local de votação, fonte única; São Paulo capital, escola sem luz (Jovem Pan), urnas na bateria sem interrupção relatada. Defesa Civil SP mantém alerta laranja; danos em ao menos 8 cidades sem novo efeito em locais de votação.
+- Descartados: 4 (contagem desatualizada de transferências, opinião, relatos sem local).

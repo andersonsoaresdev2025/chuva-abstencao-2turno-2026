@@ -123,3 +123,9 @@ timestamp_utc,rede,motor,consulta,status,n_resultados,n_relevantes,erro
 2026-10-25T15:14:30Z,instagram,brave,site:instagram.com alagamento seção eleitoral,bloqueado,0,0,brave: HTTP 429 (limite/anti-robô)
 2026-10-25T15:14:30Z,instagram,todos,site:instagram.com alagamento seção eleitoral,pulado,0,0,todos os buscadores bloquearam nesta execução
 2026-10-25T15:14:30Z,todas,-,-,nada_encontrado,0,0,nenhum sinal relevante nesta execução
+2026-10-25T15:16:02Z,x,api_v2,"(chuva OR tempestade OR alagamento OR temporal OR enchente) (eleição OR urna OR votação OR ""seção eleitoral"" OR ""segundo turno"" OR votar) lang:pt -is:retweet",pulado,0,0,sem credencial X_BEARER_TOKEN/TWITTER_BEARER_TOKEN
+2026-10-25T15:16:02Z,instagram,duckduckgo_html,site:instagram.com alagamento seção eleitoral,bloqueado,0,0,duckduckgo_html: HTTP 202 (limite/anti-robô)
+2026-10-25T15:16:02Z,instagram,duckduckgo_lite,site:instagram.com alagamento seção eleitoral,bloqueado,0,0,duckduckgo_lite: HTTP 202 (limite/anti-robô)
+2026-10-25T15:16:02Z,instagram,brave,site:instagram.com alagamento seção eleitoral,bloqueado,0,0,brave: HTTP 429 (limite/anti-robô)
+2026-10-25T15:16:02Z,instagram,todos,site:instagram.com alagamento seção eleitoral,pulado,0,0,todos os buscadores bloquearam nesta execução
+2026-10-25T15:16:02Z,todas,-,-,nada_encontrado,0,0,nenhum sinal relevante nesta execução
