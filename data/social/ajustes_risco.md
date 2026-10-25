@@ -106,3 +106,12 @@
 - Monitorando sem ajuste: Varginha (MG), chuva a manhã toda e trégua à tarde, expectativa de mais eleitores na reta final (98 News); sem mudança de local.
 - Fora do escopo (transporte, não chuva): nenhuma decisão do TSE sobre prorrogação até 19h (Salvador e região, capital paulista) localizada até 16h45; vale o horário oficial das 17h para quem estiver na fila.
 - Descartados: 6 (relatos anedóticos sem local, alegações partidárias genéricas, campanha por hashtag).
+
+## 2026-10-25 17:15 BRT
+- **Novo ajuste: Águas de Chapecó (SC) → b (confiança média).** Corpo de Bombeiros levou de barco 9 eleitores ilhados por alagamento para votar (g1 SC; NSC Total). 1º turno: Flávio 52,96% × Lula 41,12%, efeito tende a pesar mais para Flávio (município pequeno, 4,7 mil aptos).
+- **Novo ajuste: Prudentópolis (PR) → b (confiança média).** Urnas transportadas por moto, trator e barco; mesários e eleitores cruzaram rio de barco; ~2,5 mil afetados (g1 PR/RPC, Fórum Eleitoral, Defesa Civil Estadual). 1º turno: Flávio 71,36% × Lula 20,52%, efeito pesa mais para Flávio.
+- Belo Horizonte (b, alta) reforçado: TRE-MG informa 349 locais de votação sem energia em MG, 44 em BH (g1, Itatiaia); Cemig 636 mil clientes sem luz.
+- Pedidos de prorrogação até 19h: campanha de Flávio pediu em 17 cidades de SP/PR/SC por chuva (depois MG e RS); campanha de Lula pediu na BA e em outros 9 estados por transporte. Sem decisão do TSE localizada até o fechamento das urnas às 17h.
+- Demais ajustes mantidos: Curitiba (a), Guaratuba (b), Barracão (b), Itapevi (a), São Domingos (b), Campinas (a), Belo Horizonte (b); agora 9 ativos.
+- Monitorando sem ajuste: Jundiaí (SP), duas mulheres morreram arrastadas por enxurrada (ACidadeON), sem efeito em locais confirmado; rodovias bloqueadas no PR (O Globo/PRF).
+- Descartados: 5 (negação genérica contraditada por fontes oficiais, alegações multi-estado sem fonte, relato anedótico, campanha por hashtag).
