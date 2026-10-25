@@ -1,4 +1,4 @@
-# Risco de chuva – atualização automática (2026-10-25 16:12 BRT)
+# Risco de chuva – atualização automática (2026-10-25 16:41 BRT)
 
 Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de votação 08h–17h BRT.
 
@@ -8,9 +8,9 @@ Gerado por `scripts/atualizar_clima.py` (executa o papel do Bot 2). Janela de vo
 
 ## Contagem por nível
 
-- **a) Torrencial / Tempestade / Risco de alagamento**: 120 municípios, 40.538.831 aptos
-- **b) Moderada**: 28 municípios, 7.275.052 aptos
-- **c) Sem chuva relevante**: 154 municípios, 38.053.795 aptos
+- **a) Torrencial / Tempestade / Risco de alagamento**: 108 municípios, 37.391.461 aptos
+- **b) Moderada**: 47 municípios, 12.077.453 aptos
+- **c) Sem chuva relevante**: 147 municípios, 36.398.764 aptos
 
 ## Mudanças vs classificação da manhã (Bot 2, 06:35 BRT)
 
