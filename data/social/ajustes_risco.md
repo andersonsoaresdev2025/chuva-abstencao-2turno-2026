@@ -54,3 +54,9 @@
 - Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; sem evidência contrária. 6 ajustes ativos.
 - Monitorando sem ajuste: Americana (SP), SBT News relata que a entrada da Escola Sesi (Machadinho) foi deslocada para a Rua Ângelo Ortolan por alagamento da Av. Bandeirantes, mesmo local de votação, fonte única; São Paulo capital, escola sem luz (Jovem Pan), urnas na bateria sem interrupção relatada. Defesa Civil SP mantém alerta laranja; danos em ao menos 8 cidades sem novo efeito em locais de votação.
 - Descartados: 4 (contagem desatualizada de transferências, opinião, relatos sem local).
+
+## 2026-10-25 12:45 BRT
+- Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; 6 ajustes ativos. Nenhuma nova mudança de local por chuva desde 12h20 (g1/CBN mantêm o quadro).
+- Monitorando sem ajuste: Juiz de Fora (MG), já "a" pela previsão (INMET laranja), perfil comunitário relata carona a idosos com dificuldade de chegar aos locais por causa da chuva, fonte única; Luzerna (SC), manchete do Ligado no Sul atribui a mudança a alagamentos, mas o texto não confirma o motivo.
+- Fora do escopo (não é chuva): falhas no transporte por ônibus em Salvador (TRE-BA mandou restabelecer a frota) e medidas de transporte do TRE-PA.
+- Descartados: 4 (número sem fonte primária, frase repetida sem local, duas especulações partidárias).
