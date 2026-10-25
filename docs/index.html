@@ -28,7 +28,7 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <h1>🌧️ Chuva × Abstenção Eleitoral</h1>
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
 <p id="atualizado" style="font-size:1.25rem;background:#fff;color:#12324f;display:inline-block;padding:6px 12px;border-radius:8px;margin:8px 0"><b>🕒 Atualizado em 2026-10-25 07:52 BRT</b></p>
-<p><b>Dados atualizados em:</b> risco a/b/c (atualização automática, papel do Bot 2) 2026-10-25 07:52 BRT · impacto (atualização automática, papel do Bot 4) 2026-10-25 07:52 BRT · ajustes por notícias 2026-10-25 07:52 · página gerada 2026-10-25 10:52 UTC / 2026-10-25 07:52 BRT</p>
+<p><b>Dados atualizados em:</b> risco a/b/c (atualização automática, papel do Bot 2) 2026-10-25 07:52 BRT · impacto (atualização automática, papel do Bot 4) 2026-10-25 07:52 BRT · ajustes por notícias 2026-10-25 07:52 · página gerada 2026-10-25 11:08 UTC / 2026-10-25 08:08 BRT</p>
 <p>Atualização automática a cada 30 min (08h–19h BRT). Open-Meteo: ok · INMET: ok</p>
 <a class="cta" href="https://chuva-abstencao-2026.streamlit.app/" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026">Código e dados (GitHub)</a>
@@ -37,14 +37,21 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <main>
 
 <section id="agora">
-<h2>⏱️ Impacto estimado agora — projeção (votação ainda não começou)</h2>
+<h2>⏱️ Impacto estimado agora — estimativa agora (chuva acumulada desde 08h)</h2>
+<h3>🗳️ Votos perdidos por candidato — previsão + notícias</h3>
+<div class="kpis" id="votos-perdidos" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+<div class="kpi" style="border:2px solid #12324f"><span class="muted">Flávio Bolsonaro — votos perdidos (previsão + notícias)</span><b style="font-size:2rem">17.300</b>faixa 9.900 – 24.800 · +11.500 vs só previsão (5.900)</div>
+<div class="kpi" style="border:2px solid #12324f"><span class="muted">Lula — votos perdidos (previsão + notícias)</span><b style="font-size:2rem">11.400</b>faixa 6.500 – 16.300 · +6.000 vs só previsão (5.400)</div>
+</div>
+<p class="muted">Diferença Flávio − Lula: <b>+5.900</b> votos · ponto central, arredondado à centena; estimativa com incerteza, não é contagem de votos.</p>
+<h3>Efeito nos votos válidos — só previsão</h3>
 <div class="kpis">
-<div class="kpi"><b>−0,03 p.p.</b>Flávio Bolsonaro (votos válidos) · só previsão · faixa −0,04 a −0,02 · votos perdidos ≈ 314.500 (179.700–449.300)<br><span class="muted"><b>Previsão + notícias:</b> −0,03 p.p. · votos perdidos ≈ 317.600</span></div>
-<div class="kpi"><b>+0,03 p.p.</b>Lula (votos válidos) · só previsão · faixa +0,02 a +0,04 · votos perdidos ≈ 244.800 (139.900–349.800)<br><span class="muted"><b>Previsão + notícias:</b> +0,03 p.p. · votos perdidos ≈ 246.500</span></div>
-<div class="kpi"><b>+0,05 p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa +0,03 a +0,08 · abstenção nacional +0,39 p.p.<br><span class="muted"><b>Previsão + notícias:</b> +0,05 p.p.</span></div>
+<div class="kpi"><b>−0,0001 p.p.</b>Flávio Bolsonaro (votos válidos) · só previsão · faixa −0,0002 a −0,0001 · votos perdidos ≈ 5.900 (3.400–8.400)<br><span class="muted"><b>Previsão + notícias:</b> −0,0024 p.p. · votos perdidos ≈ 17.300</span></div>
+<div class="kpi"><b>+0,0001 p.p.</b>Lula (votos válidos) · só previsão · faixa +0,0001 a +0,0002 · votos perdidos ≈ 5.400 (3.100–7.700)<br><span class="muted"><b>Previsão + notícias:</b> +0,0024 p.p. · votos perdidos ≈ 11.400</span></div>
+<div class="kpi"><b>+0,0002 p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa +0,0001 a +0,0003 · abstenção nacional +0,0079 p.p.<br><span class="muted"><b>Previsão + notícias:</b> +0,0048 p.p.</span></div>
 <div class="kpi"><b>54,1%</b>do eleitorado coberto (300 maiores colégios; demais = 0) · 2 ajuste(s) por notícias</div>
 </div>
-<p class="muted">🕒 Calculado em 07:52 BRT (2026-10-25 10:52 UTC) no momento da geração desta página; janela: dia inteiro 08h–17h (previsão) · Precipitação: Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro). Versão interativa no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
+<p class="muted">🕒 Calculado em 08:08 BRT (2026-10-25 11:08 UTC) no momento da geração desta página; janela: 0,1 h desde 08h · Precipitação: Open-Meteo horário de 300 municípios (arquivo da atualização automática, obtido às 07:52 BRT; horas decorridas = estimativa do modelo, não pluviômetro). Versão interativa no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
 
 <p class="muted"><b>Como é calculado:</b> Para cada município coberto (≈300 maiores colégios do arquivo horário atualizado a cada 30 min; sem esse arquivo, os 15 maiores colégios), somamos a chuva desde 08h até agora (Open-Meteo; se a API falhar, a previsão do Bot 0 pró-rata pelas horas decorridas) e aplicamos o coeficiente do Bot 1: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0). As abstenções extras (aptos × efeito) são divididas entre Flávio e Lula pela votação de cada um no município no 1º turno (mesma suposição do Bot 4), e o resultado é comparado com os votos nacionais dos dois no 1º turno. Municípios fora da cobertura contam como zero. Ajustes por notícias ativos elevam a chuva do município ao maior valor entre modelo e ajuste (versão &#x27;previsão + notícias&#x27;). Antes das 08h mostramos a projeção do dia; após 17h, a estimativa final.</p>
 <p class="alert">Estimativa baseada em modelo — não é contagem de votos, apuração nem pesquisa de boca de urna. Mostra apenas o efeito estimado da chuva, com grande incerteza.</p>
@@ -145,6 +152,6 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <p class="muted">Código sob licença MIT; dados de análise sob CC BY 4.0; dados de origem pública mantêm os termos originais.</p>
 </section>
 </main>
-<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 10:52 UTC / 2026-10-25 07:52 BRT por scripts/build_site.py</footer>
+<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 11:08 UTC / 2026-10-25 08:08 BRT por scripts/build_site.py</footer>
 </body>
 </html>

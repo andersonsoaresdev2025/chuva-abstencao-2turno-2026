@@ -177,6 +177,11 @@ def pp(x: float) -> str:
     return f"{x:+.{casas}f}".replace("-", "−").replace(".", ",")
 
 
+def sinal_int(x: float) -> str:
+    v = int(round(x, -2))
+    return ("+" if v > 0 else "−" if v < 0 else "±") + num(abs(v))
+
+
 def secao_agora() -> str:
     """Card 'Impacto estimado agora' (só previsão vs previsão + notícias) calculado no build."""
     try:
@@ -196,6 +201,13 @@ def secao_agora() -> str:
           if r["usou_fallback"] else "")
     return f"""<section id="agora">
 <h2>⏱️ Impacto estimado agora — {esc(r['rotulo'])}</h2>
+<h3>🗳️ Votos perdidos por candidato — {'previsão + notícias' if n_aj else 'previsão + notícias = só previsão (nenhum ajuste ativo)'}</h3>
+<div class="kpis" id="votos-perdidos" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+<div class="kpi" style="border:2px solid #12324f"><span class="muted">Flávio Bolsonaro — votos perdidos (previsão + notícias)</span><b style="font-size:2rem">{num(round(rn['votos_perdidos_flavio']['mid'], -2))}</b>faixa {num(round(rn['votos_perdidos_flavio']['min'], -2))} – {num(round(rn['votos_perdidos_flavio']['max'], -2))} · {sinal_int(rn['votos_perdidos_flavio']['mid'] - vf['mid'])} vs só previsão ({num(round(vf['mid'], -2))})</div>
+<div class="kpi" style="border:2px solid #12324f"><span class="muted">Lula — votos perdidos (previsão + notícias)</span><b style="font-size:2rem">{num(round(rn['votos_perdidos_lula']['mid'], -2))}</b>faixa {num(round(rn['votos_perdidos_lula']['min'], -2))} – {num(round(rn['votos_perdidos_lula']['max'], -2))} · {sinal_int(rn['votos_perdidos_lula']['mid'] - vl['mid'])} vs só previsão ({num(round(vl['mid'], -2))})</div>
+</div>
+<p class="muted">Diferença Flávio − Lula: <b>{sinal_int(rn['votos_perdidos_flavio']['mid'] - rn['votos_perdidos_lula']['mid'])}</b> votos · ponto central, arredondado à centena; estimativa com incerteza, não é contagem de votos.</p>
+<h3>Efeito nos votos válidos — só previsão</h3>
 <div class="kpis">
 <div class="kpi"><b>{pp(f['mid'])} p.p.</b>Flávio Bolsonaro (votos válidos) · só previsão · faixa {pp(f['min'])} a {pp(f['max'])} · votos perdidos ≈ {num(round(vf['mid'], -2))} ({num(round(vf['min'], -2))}–{num(round(vf['max'], -2))}){noti('flavio_pp', ' · votos perdidos ≈ ' + num(round(rn['votos_perdidos_flavio']['mid'], -2)))}</div>
 <div class="kpi"><b>{pp(l['mid'])} p.p.</b>Lula (votos válidos) · só previsão · faixa {pp(l['min'])} a {pp(l['max'])} · votos perdidos ≈ {num(round(vl['mid'], -2))} ({num(round(vl['min'], -2))}–{num(round(vl['max'], -2))}){noti('lula_pp', ' · votos perdidos ≈ ' + num(round(rn['votos_perdidos_lula']['mid'], -2)))}</div>

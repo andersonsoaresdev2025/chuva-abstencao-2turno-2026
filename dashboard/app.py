@@ -145,6 +145,32 @@ def bloco_ajustes(contexto: str = ""):
                  width="stretch", hide_index=True)
 
 
+def _fmt_int_sinal(x: float) -> str:
+    v = int(round(x, -2))
+    return ("+" if v > 0 else "−" if v < 0 else "±") + f"{abs(v):,}".replace(",", ".")
+
+
+def destaque_votos_perdidos(r: dict, rn: dict, n_aj: int):
+    """Destaque: total de votos perdidos por candidato no cenário 'Previsão + notícias' (valores já calculados)."""
+    cen = "previsão + notícias" if n_aj else "previsão + notícias = só previsão (nenhum ajuste ativo)"
+    st.markdown(f"##### 🗳️ Votos perdidos por candidato — {cen}")
+    vf, vl = rn["votos_perdidos_flavio"], rn["votos_perdidos_lula"]
+    vf0, vl0 = r["votos_perdidos_flavio"], r["votos_perdidos_lula"]
+    dif = vf["mid"] - vl["mid"]
+    quem = "Flávio perde mais" if dif > 0 else "Lula perde mais" if dif < 0 else "empate"
+    d1, d2 = st.columns(2)
+    for col, nome, v, v0, outro in ((d1, "Flávio Bolsonaro", vf, vf0, "Lula"), (d2, "Lula", vl, vl0, "Flávio")):
+        with col, st.container(border=True):
+            st.metric(f"{nome} — votos perdidos (previsão + notícias)", _fmt_int(v["mid"]),
+                      delta=f"{_fmt_int_sinal(v['mid'] - v0['mid'])} vs só previsão", delta_color="off",
+                      help="Eleitores a mais que deixariam de votar por causa da chuva e que votaram neste candidato "
+                           "no 1º turno (abstenções extras × fatia do candidato no município). Ponto central; "
+                           "arredondado à centena.")
+            st.caption(f"Faixa {_fmt_int(v['min'])} – {_fmt_int(v['max'])} · só previsão: {_fmt_int(v0['mid'])}")
+    st.caption(f"Diferença Flávio − Lula: **{_fmt_int_sinal(dif)}** votos ({quem}) · abstenções extras totais "
+               f"≈ {_fmt_int(rn['abstencoes_extras']['mid'])}. Estimativa com incerteza, não é contagem de votos.")
+
+
 @st.fragment(run_every="5m")
 def bloco_impacto_agora():
     try:
@@ -162,31 +188,33 @@ def bloco_impacto_agora():
         return f"**Previsão + notícias:** {fmt(rn[chave])}"
     f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
     vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
+    destaque_votos_perdidos(r, rn, n_aj)
+    st.markdown("###### Efeito nos votos válidos — só previsão")
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric("Flávio Bolsonaro (p.p. dos votos válidos) · só previsão", _fmt_pp(f["mid"]),
-                  help="Variação estimada na participação de Flávio nos votos válidos (Flávio+Lula) por causa "
+        st.metric("Flávio (p.p.)", _fmt_pp(f["mid"]),
+                  help="Só previsão. Variação estimada na participação de Flávio nos votos válidos (Flávio+Lula) por causa "
                        "da chuva, ponto central (coeficiente médio do Bot 1).")
         st.caption(f"Faixa {_fmt_pp(f['min'])} a {_fmt_pp(f['max'])} p.p. · "
                    f"votos perdidos ≈ {_fmt_int(vf['mid'])} ({_fmt_int(vf['min'])}–{_fmt_int(vf['max'])})")
         st.caption(linha_noticias("flavio_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · votos perdidos ≈ "
                                   f"{_fmt_int(rn['votos_perdidos_flavio']['mid'])}"))
     with c2:
-        st.metric("Lula (p.p. dos votos válidos) · só previsão", _fmt_pp(l["mid"]),
-                  help="Variação estimada na participação de Lula nos votos válidos (Flávio+Lula).")
+        st.metric("Lula (p.p.)", _fmt_pp(l["mid"]),
+                  help="Só previsão. Variação estimada na participação de Lula nos votos válidos (Flávio+Lula).")
         st.caption(f"Faixa {_fmt_pp(l['min'])} a {_fmt_pp(l['max'])} p.p. · "
                    f"votos perdidos ≈ {_fmt_int(vl['mid'])} ({_fmt_int(vl['min'])}–{_fmt_int(vl['max'])})")
         st.caption(linha_noticias("lula_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · votos perdidos ≈ "
                                   f"{_fmt_int(rn['votos_perdidos_lula']['mid'])}"))
     with c3:
-        st.metric("Efeito na margem (Lula − Flávio) · só previsão", f"{_fmt_pp(m['mid'])} p.p.",
-                  help="Positivo = a chuva favorece Lula na margem; negativo = favorece Flávio.")
+        st.metric("Margem Lula − Flávio", f"{_fmt_pp(m['mid'])} p.p.",
+                  help="Só previsão. Efeito na margem (Lula − Flávio). Positivo = a chuva favorece Lula na margem; negativo = favorece Flávio.")
         st.caption(f"Faixa {_fmt_pp(m['min'])} a {_fmt_pp(m['max'])} p.p. · abstenção nacional "
                    f"{_fmt_pp(ab['mid'])} p.p. ({_fmt_pp(ab['min'], False)}–{_fmt_pp(ab['max'], False)})")
         st.caption(linha_noticias("margem_lula_menos_flavio_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · abstenção "
                                   f"nacional {_fmt_pp(rn['abstencao_nacional_pp']['mid'])} p.p."))
     with c4:
-        st.metric("Cobertura do eleitorado", f"{r['cobertura_pct_eleitorado']:.1f}%".replace(".", ","),
+        st.metric("Cobertura", f"{r['cobertura_pct_eleitorado']:.1f}%".replace(".", ","),
                   help="Parcela dos eleitores aptos do país nos municípios com chuva medida; o restante conta como zero.")
         st.caption(f"{r['n_municipios_cobertos']} municípios (maiores colégios) · demais municípios = 0")
         if n_aj:

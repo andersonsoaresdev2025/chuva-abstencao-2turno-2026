@@ -366,3 +366,22 @@ def test_site_mostra_timestamp_e_ajustes(ambiente, social_tmp):
     assert 'id="atualizado"' in html and "2026-10-25 07:00 BRT" in html
     assert "Ajustes por notícias (2 ativos)" in html and "https://exemplo.org/a" in html
     assert "O que mudou desde a manhã" in html and "Previsão + notícias" in html
+
+
+def test_destaque_votos_perdidos_previsao_mais_noticias(ambiente, social_tmp):
+    _rodar_clima()
+    IMP.executar(AGORA)
+    d = IA.calcular_duplo()
+    st.cache_data.clear()
+    at = AppTest.from_file(APP, default_timeout=90).run()
+    assert not at.exception, [e.value for e in at.exception]
+    labels = {m.label: m for m in at.metric}
+    mf = labels["Flávio Bolsonaro — votos perdidos (previsão + notícias)"]
+    ml = labels["Lula — votos perdidos (previsão + notícias)"]
+    fmt = lambda x: f"{int(round(x, -2)):,}".replace(",", ".")  # noqa: E731
+    assert mf.value == fmt(d["previsao_mais_noticias"]["votos_perdidos_flavio"]["mid"])
+    assert ml.value == fmt(d["previsao_mais_noticias"]["votos_perdidos_lula"]["mid"])
+    assert "vs só previsão" in mf.delta
+    assert {"Flávio (p.p.)", "Lula (p.p.)", "Margem Lula − Flávio"} <= set(labels)
+    html = _mod("build_site").build()
+    assert 'id="votos-perdidos"' in html and "Flávio Bolsonaro — votos perdidos (previsão + notícias)" in html
