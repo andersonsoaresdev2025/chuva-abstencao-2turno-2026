@@ -94,3 +94,9 @@
 - Monitorando sem ajuste: Americana (SP), entrada da Escola Sesi (1.487 eleitores) alterada por alagamento, mesmo prédio (Folha); Piracicaba (SP), rio transbordou a 4,96 m, vias interditadas (EPTV), sem efeito em locais; BR-153 bloqueada em Rebouças (PR).
 - Fora do escopo (transporte, não chuva): PT pediu ao TSE prorrogação até 19h em Salvador, Feira de Santana e Lauro de Freitas; TRE-BA mandou prender o secretário de Mobilidade de Salvador (Folha).
 - Descartados: 5 (alegação genérica de campanha, especulação partidária, resposta de IA, senhas na BA sem confirmação oficial, relato anedótico em Petrópolis).
+
+## 2026-10-25 16:15 BRT
+- Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b), Campinas (a, média) e Belo Horizonte (b, alta) mantidos; 7 ativos. Nenhuma nova mudança de local por chuva desde a de BH (Itatiaia, 15h09). Sem novos avisos do INMET.
+- Monitorando sem ajuste: Belo Horizonte, relato isolado de nova chuva forte no fim da tarde com transformadores explodindo e bairro sem luz (fonte única); Curitiba, relato isolado de pancada forte por volta das 16h; Rio de Janeiro, boletim de rádio cita falta de energia em locais de votação por chuva, sem confirmação do TRE-RJ.
+- Fora do escopo (transporte, não chuva): pedidos do PT de prorrogação até 19h (Salvador, Feira de Santana, Lauro de Freitas e capital paulista) aguardam decisão; Nunes Marques (TSE) não descarta e espera relatório do TRE-BA (Estadão).
+- Descartados: 6 (boato de prorrogação já concedida, teoria conspiratória, relatos anedóticos/partidários, relato sem local, alegação contraditória sobre Campinas).
