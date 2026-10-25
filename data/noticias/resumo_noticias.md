@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 14:43 UTC (11:43 BRT) · **Notícias no consolidado:** 264 (nesta coleta: 237) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 15:14 UTC (12:14 BRT) · **Notícias no consolidado:** 275 (nesta coleta: 242) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -14,14 +14,14 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 - **No pódio do voto, eleitores chegam antes das 5h, por medo da chuva** — Campo Grande News (08:10 BRT, Campo Grande; tema: locais de votação) — [link](https://www.campograndenews.com.br/politica/no-podio-do-voto-eleitores-chegam-antes-das-5h-por-medo-da-chuva)
 - **Chuva altera local de votação em Itapevi, no interior paulista** — Agência Brasil (10:37 BRT, São Paulo; tema: locais de votação) — [link](https://agenciabrasil.ebc.com.br/politica/noticia/2026-10/chuva-altera-local-de-votacao-em-itapevi-no-interior-paulista)
 - **Rua de colégio eleitoral fica alagada em Campinas; ACOMPANHE a votação** — g1 Campinas (EPTV) (12:20 BRT, Campinas; tema: alagamento) — [link](https://g1.globo.com/sp/campinas-regiao/eleicoes/2026/ao-vivo/cobertura-apuracao-votacao-2-turno-campinas.ghtml)
+- **Troca de urnas, chuva e falta de energia elétrica marcam eleições no interior de SP** — g1 (14:31 BRT/SP; tema: locais de votação) — [link](https://g1.globo.com/sp/sao-carlos-regiao/eleicoes/2026/noticia/2026/10/25/troca-de-urnas-chuva-e-falta-de-energia-eletrica-marcam-eleicoes-no-interior-de-sp.ghtml)
 - **Chuva alaga escola no PR e provoca mudança no local votação; veja** — CNN Brasil (07:34 BRT/PR; tema: locais de votação) — [link](https://www.cnnbrasil.com.br/eleicoes/chuva-alaga-escola-no-pr-e-provoca-mudanca-no-local-votacao-veja/)
-- **Chuva altera local de votação em escola de Itapevi (SP); veja onde votar** — Band (10:02 BRT/SP; tema: locais de votação) — [link](https://news.google.com/rss/articles/CBMisAFBVV95cUxNWlNsRDNfQnMtYmliTjhPVUZ6V0J3LXZTQnd3S25hckZ0R3VMSU1lbGU1d3VwdV9DWEhaTVpVN1lHN3Aza25QUVVvZjdObHhnQ1YyN0h4aExZblFNazhKRncxTDlDNmZTdHpjenRwRW5YWEZlamNBSTlKbE9QdGp4WktodTlROWhFckZEaElDWWlURThndWZOTUw5c1RHN1VRY2pvTjNTcEkwM1dzOHlZNg?oc=5)
 
 ## Distribuição
 
-Por tema: geral 83, alerta 80, locais de votação 55, alagamento 30, mobilidade 16
+Por tema: geral 86, alerta 82, locais de votação 60, alagamento 31, mobilidade 16
 
-Por UF: n 107, d 107, SP 63, PR 44, MS 15, SC 12, RJ 8, MG 6, GO 3, MT 3, RS 2, DF 1, AM 1
+Por UF: n 110, d 110, SP 68, PR 46, MS 15, SC 12, RJ 8, MG 7, GO 3, MT 3, RS 2, DF 1, AM 1
 
 ## Itens sinalizados (não verificados ou a checar)
 
@@ -38,8 +38,8 @@ Por UF: n 107, d 107, SP 63, PR 44, MS 15, SC 12, RJ 8, MG 6, GO 3, MT 3, RS 2, 
 - Sorocaba sofre com enchentes na madrugada, mas locais de votação são mantidos — www.portalporque.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMiwwFBVV95cUxOYVBqbjdfSDZXbTV5Y2NTcFFySDJteFh3WGhoUTVyamFmMWNlN0s0ZjkzeHY3STI2RUdpZDVBeE93OERqVjVBeWdLNVQzVWRhOVNJeEtMMVhZUVlWeUZMcmlHcUk1UDdPa1lxQVBGMXR6eUlWWFJPSk5HS244eDZQei1yeXNsQ2xrMUd3Z19ENXJaUzhEbFdiWm90Zzk3T1BLa252MDMtb1E3RzZwUEpub1JIbXEybmk5Z19vR3pVOUwxbHc?oc=5)
 - Chuvas alteram locais de votação em três cidades de SP — SBT News — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMimAFBVV95cUxPZDY4UG9xaEZKV3JYTllFVmdqZWluYnlkYzltb1IwOER6cWdQMFJEZ25EbzMteGNrY3NIakljVEQzTnpqdDU2RTRuTVJvYWNKdWgzbmtMcnNadlZodFdGb2RrMVNTQl9vcGxFZXRYOVBqX25YQWtZNGgwTkNRRG9QZGtzY0ZHdGR5NWVJSTNENWh3Y2dQeGV4QQ?oc=5)
 - Alagamento em colégio eleitoral altera local de votação para 3,5 mil eleitores no Paraná — boca.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMijAFBVV95cUxQQ19fV1BheTRQSlpjVFdNbEZzTTFvTWRqdUFiR2Fva2wyaEFSenk2dzRXMmNBU3lpd1hLTDJwemZ0bEppUF83SGZJS0lrSnlzWWJlZXcyT1lENVE3cXBCY0ZwdUZYZ2V5OW1wWWdLOVlKS1pZM2QxQ21IODNneVlqd0pRcExPbzhlTHVoRw?oc=5)
+- As fortes chuvas que atingiram o Paraná no sábado (24) provocaram mudanças nos locais de votação de 3.745 eleitores para o segundo turno das Eleições 2026, realizado neste domingo (25). Segundo o Tribunal Regional Eleitoral do Paraná (TRE-PR), as — Instagram — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMiVkFVX3lxTE9WdkFfa1dJMHBlMXBFUldMLVRlMF9fTk95b0tDZHpVeG5DYUhtU3ZQQlNobEJWYThzUldVZ2wzWEpkX2VPSXd4a3FYWWszT09KQ1U2bGdR?oc=5)
 - Chuva provoca alagamentos e muda local de votação em Itapevi, SP — Portal Tela — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMisAFBVV95cUxPRzhYc2p1MGgzMGNnSGh5aUFHRGxfTkJuTE1PblEwOGRYNEI2R1ZpTk1VTXhsWVAzQjRqSzJvQ0ZaQmZMUm9Ba0VVS0tfRUNmZVlZT09ocVoyLUZyNHMtZE9FalR2QkJSSnIyVnYyWno1U3lNYklnZHB6aHY2NVU0WHVWbzhQb19NR293SkR3dXdFdXJ6T2RLbEtaMllkblBOYlRocXplY1FONjk0ZlRKVA?oc=5)
-- Chuva muda locais de votação no Paraná neste domingo (25); veja onde votar — Massa.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMimwFBVV95cUxOSUVGMktNTkQtbHhySjcyMmZJdzd0ZkJBNFFNMmp4QXN4dlNYejBtbllPMW5MR1Z2VGk3SGkwNFZPTkVqQVB2dzVhQVF1TkpSbXd0eFpJYTdPVUhpZHBiN18xazlCOTVqUTMxOFlLNHVwaGlzMEM4MzV6YTJyNmR3N0lla0tLX2RoN3JGSVpaSXdWbFB1T3ZiNHNIRQ?oc=5)
 
 ## Limitações
 

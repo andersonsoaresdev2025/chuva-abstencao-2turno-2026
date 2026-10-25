@@ -1,0 +1,35 @@
+Atualização automática 20261025_1514UTC (2026-10-25 12:14 BRT) — log em data/logs/atualizacao_20261025_1514UTC.log
+===== [15:14:24Z] etapa: clima — .venv/bin/python scripts/atualizar_clima.py
+OK clima: 303 municípios · Open-Meteo ok · INMET ok
+  - universo: 303 municípios ({'maiores_colegios': 270, 'bot2': 29, 'ajuste_noticias': 4}); ajustes ativos: 7
+  - Open-Meteo ok: 303 séries
+  - INMET: ok (https://apiprevmet3.inmet.gov.br/avisos/ativos); 7 avisos; erros=[]
+----- clima: OK (5s)
+===== [15:14:29Z] etapa: impacto — .venv/bin/python scripts/atualizar_impacto.py
+OK impacto: 303 municípios · 121 Alta · agora (estimativa agora (chuva acumulada desde 08h)): Flávio -0.0126 pp (+notícias -0.0152); abstenção nacional +0.126 pp; ajustes 7
+----- impacto: OK (1s)
+===== [15:14:30Z] etapa: social — .venv/bin/python scripts/coletar_social.py
+OK social: 0 relevantes, 0 novos → None
+  - x/api_v2: pulado (0 res., 0 relev.) sem credencial X_BEARER_TOKEN/TWITTER_BEARER_TOKEN
+  - instagram/duckduckgo_html: bloqueado (0 res., 0 relev.) duckduckgo_html: HTTP 202 (limite/anti-robô)
+  - instagram/duckduckgo_lite: bloqueado (0 res., 0 relev.) duckduckgo_lite: HTTP 202 (limite/anti-robô)
+  - instagram/brave: bloqueado (0 res., 0 relev.) brave: HTTP 429 (limite/anti-robô)
+  - instagram/todos: pulado (0 res., 0 relev.) todos os buscadores bloquearam nesta execução
+  - todas/-: nada_encontrado (0 res., 0 relev.) nenhum sinal relevante nesta execução
+----- social: OK (0s)
+===== [15:14:30Z] etapa: noticias — .venv/bin/python scripts/coletar_noticias.py
+Coleta 2026-10-25 15:14 UTC: 81 fontes consultadas, 0 falhas; 242 notícias nesta coleta; 275 no consolidado.
+----- noticias: OK (16s)
+===== [15:14:46Z] etapa: site — .venv/bin/python scripts/build_site.py
+OK: docs/index.html (131.5 KB)
+----- site: OK (1s)
+===== [15:14:47Z] etapa: consistencia — .venv/bin/python scripts/verificar_consistencia.py
+OK: site = snapshot 2026-10-25 12:14 BRT · 122.100 / 84.700
+----- consistencia: OK (0s)
+===== [15:14:47Z] etapa: testes — .venv/bin/python -m pytest -q tests mcp/test_mcp_server.py
+......................................                                   [100%]
+38 passed in 15.25s
+----- testes: OK (16s)
+STATUS_PUBLICACAO.md atualizado
+Resumo: clima=ok(5s) impacto=ok(1s) social=ok(0s) noticias=ok(16s) site=ok(1s) consistencia=ok(0s) testes=ok(16s)
+git: commit → pull --rebase --autostash → push (saída em data/logs/git_ultimo.txt)
