@@ -100,7 +100,7 @@ def secao_social() -> str:
                 '<code>sinais_*.csv</code>.</p>')
     top = soc.head(20)
     t = table(top, [
-        ("timestamp_post", "Post", None), ("cidade", "Cidade", None), ("uf", "UF", None),
+        ("timestamp_post", "Post", None), ("rede", "Rede", None), ("cidade", "Cidade", None), ("uf", "UF", None),
         ("tipo", "Tipo", None), ("nivel_risco_implicito", "Risco implícito", badge),
         ("confianca", "Confiança", None), ("fonte", "Fonte", None), ("tipo_fonte", "Tipo de fonte", None),
         ("resumo", "Resumo", None), ("link", "Link", link_seguro)],
@@ -137,31 +137,72 @@ def secao_noticias(n: int = 8) -> str:
 </section>"""
 
 
+def secao_ajustes() -> str:
+    aj = D.carregar_ajustes()
+    if aj.empty:
+        return ('<section id="ajustes"><h2>📰 Ajustes por notícias</h2><p class="muted">Nenhum <b>ajuste por notícias</b> '
+                'ativo no momento (data/ajustes/ajustes_impacto_noticias.csv, revisado a cada 30 min). As estimativas usam só a '
+                'previsão.</p></section>')
+
+    def fontes(v):
+        us = [u.strip() for u in str(v or "").replace(";", " ").replace(",", " ").split() if u.strip().startswith("http")]
+        return " ".join(link_seguro(u) for u in us) or "—"
+    t = table(aj, [("timestamp_brt", "Registrado (BRT)", None), ("municipio", "Município", None), ("uf", "UF", None),
+                   ("nivel_risco_ajustado", "Nível (ajuste por notícias)", badge),
+                   ("intensidade_estimada_mm", "mm estimados", None), ("evidencia", "Evidência", None),
+                   ("confianca", "Confiança", None), ("fontes", "Fontes", fontes)])
+    return (f'<section id="ajustes"><h2>📰 Ajustes por notícias ({len(aj)} ativos)</h2><p class="muted">Rótulo '
+            '"ajuste por notícias": nível mínimo de risco por município com base em reportagens/relatos; o nível usado é o '
+            'maior entre previsão e ajuste. Confira as fontes.</p>' + t + '</section>')
+
+
+def secao_mudancas(rm: pd.DataFrame, ru: pd.DataFrame, ts_r: str) -> str:
+    if "mudanca_vs_manha" not in rm.columns:
+        return ""
+    b2 = rm[rm["nivel_risco_manha_bot2"].notna()]
+    mud = b2[b2["mudanca_vs_manha"] != "igual"]
+    ufm = ru[ru["nivel_risco_manha_bot2"].notna() & (ru["mudanca_vs_manha"] != "igual")] if "mudanca_vs_manha" in ru.columns else ru.iloc[0:0]
+    t = table(mud, [("municipio", "Município", None), ("uf", "UF", None), ("nivel_risco_manha_bot2", "Manhã (Bot 2)", badge),
+                    ("precip_manha_bot2_mm", "mm manhã", lambda v: num(v, 1)), ("nivel_risco", "Agora", badge),
+                    ("precipitacao_mm_estimada", "mm 08–17h agora", lambda v: num(v, 1)),
+                    ("mudanca_vs_manha", "Mudança", None), ("alerta_inmet", "Alerta INMET", None),
+                    ("ajuste_noticias", "Ajuste por notícias", None)]) if not mud.empty else         '<p class="muted">Nenhum dos municípios do Bot 2 mudou de nível.</p>'
+    u = (" · ".join(f"{esc(r['uf'])}: {esc(r['mudanca_vs_manha'])}" for _, r in ufm.iterrows()) or "nenhum")
+    return (f'<h3>🔄 O que mudou desde a manhã (Bot 2, 06:35 BRT → {esc(ts_r)})</h3>'
+            f'<p class="muted">{len(mud)} de {len(b2)} municípios do Bot 2 mudaram; estados com mudança: {u}.</p>' + t)
+
+
 def pp(x: float) -> str:
     casas = 4 if abs(x) < 0.01 else 2
     return f"{x:+.{casas}f}".replace("-", "−").replace(".", ",")
 
 
 def secao_agora() -> str:
-    """Card 'Impacto estimado agora' calculado no momento do build (com timestamp)."""
+    """Card 'Impacto estimado agora' (só previsão vs previsão + notícias) calculado no build."""
     try:
-        r = IA.calcular_com_api()
+        duplo = IA.calcular_duplo()
     except Exception as e:  # noqa: BLE001
         return (f'<section id="agora"><h2>Impacto estimado agora</h2><p class="muted">Indisponível neste build '
                 f'({esc(type(e).__name__)}).</p></section>')
+    r, rn, n_aj = duplo["previsao"], duplo["previsao_mais_noticias"], duplo["n_ajustes_ativos"]
     f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
     vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
+
+    def noti(chave, extra=""):
+        if not n_aj:
+            return '<br><span class="muted">Previsão + notícias: igual (nenhum ajuste ativo)</span>'
+        return f'<br><span class="muted"><b>Previsão + notícias:</b> {pp(rn[chave]["mid"])} p.p.{extra}</span>'
     fb = ('<p class="alert">Open-Meteo indisponível no build: usada a previsão do Bot 0 (CSV) pró-rata.</p>'
           if r["usou_fallback"] else "")
     return f"""<section id="agora">
 <h2>⏱️ Impacto estimado agora — {esc(r['rotulo'])}</h2>
 <div class="kpis">
-<div class="kpi"><b>{pp(f['mid'])} p.p.</b>Flávio Bolsonaro (votos válidos) · faixa {pp(f['min'])} a {pp(f['max'])} · votos perdidos ≈ {num(round(vf['mid'], -2))} ({num(round(vf['min'], -2))}–{num(round(vf['max'], -2))})</div>
-<div class="kpi"><b>{pp(l['mid'])} p.p.</b>Lula (votos válidos) · faixa {pp(l['min'])} a {pp(l['max'])} · votos perdidos ≈ {num(round(vl['mid'], -2))} ({num(round(vl['min'], -2))}–{num(round(vl['max'], -2))})</div>
-<div class="kpi"><b>{pp(m['mid'])} p.p.</b>Efeito na margem (Lula − Flávio) · faixa {pp(m['min'])} a {pp(m['max'])} · abstenção nacional {pp(ab['mid'])} p.p.</div>
-<div class="kpi"><b>{num(r['cobertura_pct_eleitorado'], 1)}%</b>do eleitorado coberto ({r['n_municipios_cobertos']} maiores colégios; demais = 0)</div>
+<div class="kpi"><b>{pp(f['mid'])} p.p.</b>Flávio Bolsonaro (votos válidos) · só previsão · faixa {pp(f['min'])} a {pp(f['max'])} · votos perdidos ≈ {num(round(vf['mid'], -2))} ({num(round(vf['min'], -2))}–{num(round(vf['max'], -2))}){noti('flavio_pp', ' · votos perdidos ≈ ' + num(round(rn['votos_perdidos_flavio']['mid'], -2)))}</div>
+<div class="kpi"><b>{pp(l['mid'])} p.p.</b>Lula (votos válidos) · só previsão · faixa {pp(l['min'])} a {pp(l['max'])} · votos perdidos ≈ {num(round(vl['mid'], -2))} ({num(round(vl['min'], -2))}–{num(round(vl['max'], -2))}){noti('lula_pp', ' · votos perdidos ≈ ' + num(round(rn['votos_perdidos_lula']['mid'], -2)))}</div>
+<div class="kpi"><b>{pp(m['mid'])} p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa {pp(m['min'])} a {pp(m['max'])} · abstenção nacional {pp(ab['mid'])} p.p.{noti('margem_lula_menos_flavio_pp')}</div>
+<div class="kpi"><b>{num(r['cobertura_pct_eleitorado'], 1)}%</b>do eleitorado coberto ({r['n_municipios_cobertos']} maiores colégios; demais = 0){' · ' + str(n_aj) + ' ajuste(s) por notícias' if n_aj else ''}</div>
 </div>
-<p class="muted">🕒 Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) no momento da geração desta página; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão ao vivo (recalculada a cada poucos minutos) no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
+<p class="muted">🕒 Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) no momento da geração desta página; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão interativa no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
 {fb}
 <p class="muted"><b>Como é calculado:</b> {esc(IA.METODO_TXT)}</p>
 <p class="alert">{esc(IA.DISCLAIMER.replace('**', ''))}</p>
@@ -193,7 +234,7 @@ def build() -> str:
     # ----- Impacto municipal com ordem de grandeza em votos
     imx = im.copy()
     if not imx.empty:
-        imx = imx.sort_values(["efeito_abstencao_pp_mid", "aptos"], ascending=False)
+        imx = imx.sort_values(["efeito_abstencao_pp_mid", "aptos"], ascending=False).head(80)
         imx["faixa"] = imx.apply(faixa, axis=1)
         imx["votos"] = imx.apply(
             lambda r: f"{num(round(r['aptos']*r['efeito_abstencao_pp_lo']/100, -2))} a "
@@ -209,6 +250,23 @@ def build() -> str:
     top_col = red_mun.sort_values("aptos", ascending=False).head(15) if not red_mun.empty else red_mun
 
     social_html = secao_social()
+    og = d.get("_origem", {})
+    auto = og.get("risco_mun") == "atualizado"
+    ts_r, ts_i = D.ts_camada(d, "risco"), D.ts_camada(d, "impacto")
+    st_cl = D.status_atualizacao().get("clima", {})
+    fontes_ok = ""
+    if st_cl:
+        om, inm = st_cl.get("open_meteo", {}), st_cl.get("inmet", {})
+        fontes_ok = f"Open-Meteo: {esc(om.get('status'))} · INMET: {esc(inm.get('status'))}"
+        if om.get("status") != "ok" or inm.get("status") != "ok":
+            fontes_ok += " — fonte com falha: mantido o último dado válido (desatualizado)"
+    mudancas_html = secao_mudancas(rm, ru, ts_r) if auto else ""
+    rm_site = ordenar_risco(rm, "nivel_risco", "aptos" if "aptos" in rm.columns else "precipitacao_mm_estimada")
+    n_rm = len(rm_site)
+    rm_site = rm_site.head(80)
+    im_site = ordenar_risco(im, "nivel_risco", "aptos").head(80)
+    rot_r = "atualização automática, papel do Bot 2" if auto else "Bot 2"
+    rot_i = "atualização automática, papel do Bot 4" if og.get("impacto_mun") == "atualizado" else "Bot 4"
     lim = "".join(f"<li>{esc(t)}</li>" for t in D.LIMITACOES)
     ts_html = "".join(f"<tr><td>{esc(k)}</td><td>{esc(v)}</td></tr>" for k, v in ts.items())
     gerado = D.fmt_utc_brt()
@@ -242,14 +300,18 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <header>
 <h1>🌧️ Chuva × Abstenção Eleitoral</h1>
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
-<p><b>Dados atualizados em:</b> impacto (Bot 4) {esc(ts.get('Impacto (Bot 4)'))} · risco a/b/c (Bot 2) {esc(ts.get('Risco de chuva a/b/c (Bot 2)'))} · página gerada {esc(gerado)}</p>
+<p id="atualizado" style="font-size:1.25rem;background:#fff;color:#12324f;display:inline-block;padding:6px 12px;border-radius:8px;margin:8px 0"><b>🕒 Atualizado em {esc(ts_r)}</b></p>
+<p><b>Dados atualizados em:</b> risco a/b/c ({rot_r}) {esc(ts_r)} · impacto ({rot_i}) {esc(ts_i)} · ajustes por notícias {esc(ts.get('Ajustes por notícias'))} · página gerada {esc(gerado)}</p>
+<p>Atualização automática a cada 30 min (08h–19h BRT). {fontes_ok}</p>
 <a class="cta" href="{html.escape(STREAMLIT_URL, quote=True)}" id="streamlit-link">Abrir dashboard interativo</a>
 <a class="cta" style="background:#34495e" href="{html.escape(REPO_URL, quote=True)}">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#agora">Agora</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#agora">Agora</a><a href="#ajustes">Ajustes por notícias</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
 
 {secao_agora()}
+
+{secao_ajustes()}
 
 {secao_noticias()}
 
@@ -262,9 +324,9 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <li><b>Nordeste</b> e <b>Norte</b>: tempo firme previsto → baixo impacto climático esperado.</li>
 </ul>
 <div class="kpis">
-<div class="kpi"><b>{n_a_bot2}</b>municípios em risco <span class="badge" style="background:var(--a)">a</span> (Bot 2, {len(rm)} classificados)</div>
-<div class="kpi"><b>{n_alta} / {n_media}</b>municípios com vulnerabilidade Alta / Média (Bot 4, {len(im)} com previsão horária)</div>
-<div class="kpi"><b>{num(aptos_a_bot4)}</b>eleitores aptos nos municípios "torrencial" do Bot 4 (soma)</div>
+<div class="kpi"><b>{n_a_bot2}</b>municípios em risco <span class="badge" style="background:var(--a)">a</span> ({rot_r}, {len(rm)} classificados)</div>
+<div class="kpi"><b>{n_alta} / {n_media}</b>municípios com vulnerabilidade Alta / Média ({rot_i}, {len(im)} com previsão horária)</div>
+<div class="kpi"><b>{num(aptos_a_bot4)}</b>eleitores aptos nos municípios "torrencial" ({rot_i}, soma)</div>
 </div>
 <p class="alert">Estimativas com incerteza, para acompanhamento público. <b>Não</b> é previsão eleitoral oficial. Para informações oficiais: TSE, INMET e Defesa Civil.</p>
 </section>
@@ -272,26 +334,29 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <section id="risco">
 <h2>Risco de chuva no horário de votação</h2>
 <p class="muted">Classificação do projeto: <span class="badge" style="background:var(--a)">a</span> torrencial/tempestade/risco de alagamento (≥ 20–30 mm ou alertas) · <span class="badge" style="background:var(--b)">b</span> moderada (5–20/30 mm) · <span class="badge" style="background:var(--c)">c</span> sem chuva relevante (&lt; 5 mm).</p>
-<p class="alert">As camadas Bot 2 (06:35 BRT, com alertas INMET) e Bot 4 (09:24 BRT, nova rodada Open-Meteo) divergem para alguns locais (ex.: Curitiba, MS, MG, Sudeste). Mostramos ambas, cada uma com seu horário.</p>
-<h3>Por município – classificação a/b/c (Bot 2)</h3>
-{table(ordenar_risco(rm, "nivel_risco", "precipitacao_mm_estimada"), [
+<p class="muted">Regra da atualização automática: chuva na janela 08–17h ≥ 20 mm → a; 5–20 mm → b; &lt; 5 mm → c; aviso INMET laranja/vermelho de chuva/tempestade eleva um nível; ajuste por notícias ativo funciona como piso.</p>
+{mudancas_html}
+<h3>Por município – classificação a/b/c ({rot_r})</h3>
+{table(rm_site, [
     ("municipio", "Município", None), ("uf", "UF", None), ("regiao", "Região", None),
     ("nivel_risco", "Nível", badge), ("precipitacao_mm_estimada", "Precip. est. (mm)", lambda v: num(v, 1)),
-    ("horario_pico", "Pico", None), ("probabilidade", "Prob. %", None), ("fonte_principal", "Fonte", None),
-    ("observacoes", "Observações", None)], caption=f"Fonte: {esc(D.FONTES['risco_bot2'])} · {esc(ts.get('Risco de chuva a/b/c (Bot 2)'))}")}
-<h3>Por município – previsão horária Open-Meteo (Bot 0/Bot 4)</h3>
-{table(ordenar_risco(im, "nivel_risco", "aptos"), [
+    ("horario_pico", "Pico", None), ("probabilidade", "Prob. %", None), ("alerta_inmet", "Alerta INMET", None),
+    ("ajuste_noticias", "Ajuste por notícias", None), ("status_dado", "Status", None)],
+    caption=f"Fonte: {esc(D.FONTES['risco_auto' if auto else 'risco_bot2'])} · {esc(ts_r)} · {min(n_rm, 80)} de {n_rm} municípios (lista completa em data/clima/atualizacoes/risco_chuva_municipios_latest.csv)")}
+<h3>Por município – previsão horária Open-Meteo ({rot_i})</h3>
+{table(im_site, [
     ("municipio", "Município", None), ("uf", "UF", None), ("aptos", "Aptos", num),
     ("precip_sum_mm", "Precip. dia (mm)", lambda v: num(v, 1)),
     ("precip_janela_votacao_08_17_mm", "Precip. 08–17h (mm)", lambda v: num(v, 1)),
     ("precip_prob_max_pct", "Prob. máx %", None), ("nivel_risco", "Nível", badge),
-    ("vulnerabilidade", "Vulnerabilidade", None)], caption=f"Fonte: {esc(D.FONTES['impacto_bot4'])} · {esc(ts.get('Impacto (Bot 4)'))}")}
-<h3>Por UF (Bot 2)</h3>
+    ("vulnerabilidade", "Vulnerabilidade", None)], caption=f"Fonte: {esc(D.FONTES['impacto_auto' if og.get('impacto_mun') == 'atualizado' else 'impacto_bot4'])} · {esc(ts_i)} · até 80 municípios")}
+<h3>Por UF ({rot_r})</h3>
 {table(ordenar_risco(ru, "nivel_risco_predominante", "precipitacao_mm_media_estimada"), [
     ("uf", "UF", None), ("estado", "Estado", None), ("regiao", "Região", None),
     ("nivel_risco_predominante", "Nível", badge), ("precipitacao_mm_media_estimada", "Precip. média (mm)", lambda v: num(v, 1)),
-    ("observacoes", "Observações", None)], caption="UFs não listadas não foram classificadas pelo Bot 2.")}
-<h3>Por grande região (Bot 2)</h3>
+    ("nivel_risco_manha_bot2", "Manhã (Bot 2)", lambda v: badge(v) if isinstance(v, str) else "—"),
+    ("observacoes", "Observações", None)], caption="Nível predominante = maior fatia do eleitorado coberto. UFs não listadas não têm município coberto.")}
+<h3>Por grande região ({rot_r})</h3>
 {table(rr, [
     ("regiao", "Região", None), ("nivel_risco_predominante", "Nível", badge),
     ("precipitacao_mm_media_estimada", "Precip. média (mm)", lambda v: num(v, 1)), ("observacoes", "Observações", None)])}
@@ -304,8 +369,9 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 {table(imx, [
     ("municipio", "Município", None), ("uf", "UF", None), ("aptos", "Aptos", num), ("nivel_risco", "Risco", badge),
     ("faixa", "Efeito (pp)", None), ("votos", "Abstenções extras (faixa)", None),
-    ("mais_prejudicado", "Maior base local (1º turno)", None), ("vulnerabilidade", "Vulnerab.", None)],
-    caption=f"Fonte: {esc(D.FONTES['impacto_bot4'])}")}
+    ("mais_prejudicado", "Maior base local (1º turno)", None), ("vulnerabilidade", "Vulnerab.", None),
+    ("ajuste_noticias", "Ajuste por notícias", None), ("efeito_mid_manha_bot4", "Efeito mid manhã (Bot 4)", lambda v: num(v, 2))],
+    caption=f"Fonte: {esc(D.FONTES['impacto_auto' if og.get('impacto_mun') == 'atualizado' else 'impacto_bot4'])} · {esc(ts_i)} · até 80 municípios (lista completa em data/impacto/atualizacoes/)")}
 <h3>Grandes regiões</h3>
 {table(irx, [
     ("regiao", "Região", None), ("aptos", "Aptos", num), ("peso_eleitoral_pct", "Peso %", lambda v: num(v, 1)),
@@ -334,7 +400,7 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 </section>
 
 <section id="social">
-<h2>Sinais sociais (X + fontes locais)</h2>
+<h2>Sinais sociais (X, Instagram + fontes locais)</h2>
 <p class="alert">{esc(D.DISCLAIMER_SOCIAL).replace('**', '')}</p>
 {social_html}
 </section>

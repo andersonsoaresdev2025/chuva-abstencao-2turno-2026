@@ -18,6 +18,14 @@ Método (nenhum coeficiente novo; tudo vem dos arquivos dos Bots 0–4):
    Δ participação de cada candidato nos votos válidos dos dois candidatos (p.p.) e efeito na margem
    (Lula − Flávio). Municípios não cobertos contribuem zero.
 Antes das 08h: projeção do dia inteiro; após 17h: estimativa final do dia (congelada na janela completa).
+
+Atualização automática (a cada 30 min): quando existe data/clima/atualizacoes/precip_horaria_latest.csv
+(gravado por scripts/atualizar_clima.py), a cobertura passa dos 15 maiores colégios para todos os municípios
+desse arquivo (~300 maiores colégios + lista do Bot 2), sem chamar a API a cada visita.
+Ajustes por notícias (data/ajustes/ajustes_impacto_noticias.csv, status=ativo): a chuva usada no município é
+max(chuva do modelo, intensidade_estimada_mm do ajuste, no mínimo o piso da classe: a=20 mm, b=5 mm).
+Municípios ajustados fora da cobertura entram com os votos do 1º turno (TSE via redutos_municipios.csv).
+O resultado é calculado duas vezes: só previsão e previsão + notícias (calcular_duplo).
 """
 from __future__ import annotations
 
@@ -29,6 +37,7 @@ from pathlib import Path
 import pandas as pd
 
 from common import dados as D
+from common import regras as R
 
 DIA_ELEICAO = date(2026, 10, 25)
 HORA_INI, HORA_FIM = 8, 17
@@ -56,7 +65,67 @@ def cidades_cobertas() -> pd.DataFrame:
     imp = imp.assign(_k=imp["municipio"].map(D.norm))
     cols_imp = ["_k", "uf", "aptos", "pct_flavio_1t", "pct_lula_1t"]
     df = prev.merge(imp[cols_imp], on="_k", how="inner")
+    red = D.read_csv(D.REDUTOS_DIR / "redutos_municipios.csv")
+    if not red.empty:
+        red = red[red["cd_ibge"].notna()].assign(_k=red["municipio"].map(D.norm))
+        df = df.merge(red[["_k", "uf", "cd_ibge"]], on=["_k", "uf"], how="left")
+        df["codigo_ibge"] = df.pop("cd_ibge").astype("Int64")
     return df.drop(columns="_k").reset_index(drop=True)
+
+
+def cobertura_horaria() -> tuple[pd.DataFrame, list[dict], str | None]:
+    """Cobertura ampliada a partir do arquivo horário da atualização automática.
+    Retorna (municípios com aptos/% do 1º turno, séries {rótulo: mm}, obtido_em_utc) ou (vazio, [], None)."""
+    hz = D.read_csv(D.ATUAL_CLIMA_DIR / "precip_horaria_latest.csv")
+    red = D.read_csv(D.REDUTOS_DIR / "redutos_municipios.csv")
+    if hz.empty or red.empty:
+        return pd.DataFrame(), [], None
+    red = red[red["cd_ibge"].notna()].assign(codigo_ibge=lambda x: x["cd_ibge"].astype(int))
+    hz["codigo_ibge"] = hz["codigo_ibge"].astype(int)
+    df = hz.drop(columns=["aptos"], errors="ignore").merge(
+        red[["codigo_ibge", "aptos", "pct_flavio", "pct_lula"]].rename(
+            columns={"pct_flavio": "pct_flavio_1t", "pct_lula": "pct_lula_1t"}), on="codigo_ibge", how="inner")
+    hcols = [c for c in df.columns if len(c) == 3 and c.startswith("h") and c[1:].isdigit()]
+    series = [{int(c[1:]): float(r[c]) for c in hcols} for _, r in df.iterrows()]
+    obtido = str(df["obtido_em_utc"].dropna().astype(str).max()) if "obtido_em_utc" in df.columns else None
+    cid = df[["codigo_ibge", "municipio", "uf", "lat", "lon", "aptos", "pct_flavio_1t", "pct_lula_1t"]].reset_index(drop=True)
+    return cid, series, obtido
+
+
+def _aplicar_ajustes(cid: pd.DataFrame, ajustes: pd.DataFrame | None) -> pd.DataFrame:
+    """precip_usado_mm = max(modelo, ajuste). Ajustes fora da cobertura entram com votos TSE do 1º turno."""
+    cid = cid.copy()
+    cid["precip_ajuste_mm"] = float("nan")
+    cid["ajuste_noticias"] = "não"
+    cid["ajuste_fontes"] = ""
+    cid["ajuste_confianca"] = ""
+    if ajustes is not None and not ajustes.empty:
+        red = D.read_csv(D.REDUTOS_DIR / "redutos_municipios.csv")
+        red = red[red["cd_ibge"].notna()].assign(codigo_ibge=lambda x: x["cd_ibge"].astype(int))
+        if "codigo_ibge" not in cid.columns:
+            cid["codigo_ibge"] = pd.NA
+        cods = set(pd.to_numeric(cid["codigo_ibge"], errors="coerce").dropna().astype(int))
+        novos = []
+        for _, a in ajustes.iterrows():
+            c = int(a["codigo_ibge"])
+            info = {"precip_ajuste_mm": float(a["mm_ajuste"]), "ajuste_noticias": "sim",
+                    "ajuste_fontes": str(a.get("fontes") or ""), "ajuste_confianca": str(a.get("confianca") or "")}
+            if c in cods:
+                idx = cid.index[pd.to_numeric(cid["codigo_ibge"], errors="coerce") == c]
+                for k, v in info.items():
+                    cid.loc[idx, k] = v
+            else:
+                rr = red[red["codigo_ibge"] == c]
+                if rr.empty:
+                    continue  # fora dos dados TSE do 1º turno: não entra
+                r0 = rr.iloc[0]
+                novos.append({"codigo_ibge": c, "municipio": a.get("municipio") or str(r0["municipio"]).title(),
+                              "uf": r0["uf"], "aptos": float(r0["aptos"]), "pct_flavio_1t": float(r0["pct_flavio"]),
+                              "pct_lula_1t": float(r0["pct_lula"]), "precip_acum_mm": 0.0, **info})
+        if novos:
+            cid = pd.concat([cid, pd.DataFrame(novos)], ignore_index=True)
+    cid["precip_usado_mm"] = cid[["precip_acum_mm", "precip_ajuste_mm"]].max(axis=1, skipna=True).round(2)
+    return cid
 
 
 def base_nacional() -> dict:
@@ -130,12 +199,14 @@ def acumulado_fallback(row: pd.Series, decorridas: float) -> float:
 
 
 def calcular(agora: datetime | None = None, series: list[dict] | None = None,
-             erro_api: str | None = None) -> dict:
-    """Calcula o impacto. `series` = saída de buscar_open_meteo (None -> fallback CSV)."""
+             erro_api: str | None = None, cid: pd.DataFrame | None = None,
+             ajustes: pd.DataFrame | None = None, fonte: str | None = None) -> dict:
+    """Calcula o impacto. `series` = saída de buscar_open_meteo (None -> fallback CSV).
+    `cid` = municípios cobertos (padrão: 15 maiores colégios); `ajustes` = ajustes por notícias ativos."""
     agora = agora or D.agora_utc()
     decorridas, modo = horas_decorridas(agora)
     janela = 9.0 if modo == "projecao" else decorridas
-    cid = cidades_cobertas()
+    cid = cidades_cobertas() if cid is None else cid
     nac = base_nacional()
     if cid.empty:
         raise RuntimeError("dados de municípios cobertos indisponíveis")
@@ -143,17 +214,19 @@ def calcular(agora: datetime | None = None, series: list[dict] | None = None,
     usar_api = series is not None and len(series) == len(cid)
     if usar_api:
         mm = [acumulado_open_meteo(s, janela) for s in series]
-        fonte = FONTE_OBS_PROJ if modo == "projecao" else FONTE_OBS
+        fonte = fonte or (FONTE_OBS_PROJ if modo == "projecao" else FONTE_OBS)
     else:
         mm = [acumulado_fallback(r, janela) for _, r in cid.iterrows()]
         fonte = FONTE_FALLBACK
     cid = cid.assign(precip_acum_mm=[round(x, 2) for x in mm])
+    cid = _aplicar_ajustes(cid, ajustes)
+    n_aj = int((cid["ajuste_noticias"] == "sim").sum())
 
     F0, L0 = nac["votos_flavio"], nac["votos_lula"]
     s0 = F0 / (F0 + L0)
     res = {}
     for k, c in COEF_PP_POR_MM.items():
-        dabs = cid["precip_acum_mm"] * c  # p.p. de abstenção
+        dabs = cid["precip_usado_mm"] * c  # p.p. de abstenção
         extra = cid["aptos"] * dabs / 100
         perde_f = extra * cid["pct_flavio_1t"] / 100
         perde_l = extra * cid["pct_lula_1t"] / 100
@@ -174,7 +247,8 @@ def calcular(agora: datetime | None = None, series: list[dict] | None = None,
         vals = sorted(res[k][chave] for k in ("lo", "mid", "hi"))
         return {"mid": res["mid"][chave], "min": vals[0], "max": vals[-1]}
 
-    aptos_cob = float(cid["aptos"].sum())
+    n_cob = len(mm)  # municípios com chuva do modelo (ajustes extras são anexados depois)
+    aptos_cob = float(cid["aptos"].iloc[:n_cob].sum())
     rotulo = {"projecao": "projeção (votação ainda não começou)",
               "agora": "estimativa agora (chuva acumulada desde 08h)",
               "final": "estimativa final do dia"}[modo]
@@ -196,12 +270,16 @@ def calcular(agora: datetime | None = None, series: list[dict] | None = None,
         "abstencoes_extras": faixa("abstencoes_extras"),
         "abstencao_nacional_pp": faixa("pp_abst_nacional"),
         "cobertura_pct_eleitorado": aptos_cob / nac["aptos"] * 100,
-        "n_municipios_cobertos": int(len(cid)),
+        "n_municipios_cobertos": int(n_cob),
+        "n_municipios_extras_ajuste": int(len(cid) - n_cob),
         "aptos_cobertos": int(aptos_cob),
         "aptos_nacional": int(nac["aptos"]),
         "base_flavio_pct_2cand": s0 * 100,
-        "municipios": cid[["municipio", "uf", "aptos", "pct_flavio_1t", "pct_lula_1t", "precip_acum_mm",
-                           "efeito_abst_pp_lo", "efeito_abst_pp_mid", "efeito_abst_pp_hi",
+        "n_ajustes_noticias": n_aj,
+        "aptos_ajustados": int(cid.loc[cid["ajuste_noticias"] == "sim", "aptos"].sum()),
+        "municipios": cid[[c for c in ["codigo_ibge"] if c in cid.columns] + ["municipio", "uf", "aptos", "pct_flavio_1t", "pct_lula_1t", "precip_acum_mm",
+                           "precip_ajuste_mm", "precip_usado_mm", "ajuste_noticias", "ajuste_confianca",
+                           "ajuste_fontes", "efeito_abst_pp_lo", "efeito_abst_pp_mid", "efeito_abst_pp_hi",
                            "abst_extras_mid"]],
         "coeficiente": COEF_PP_POR_MM,
         "fontes": [COEF_FONTE, "Divisão por candidato: suposição do Bot 4 (proporcional à base de votos do 1º turno)",
@@ -209,25 +287,65 @@ def calcular(agora: datetime | None = None, series: list[dict] | None = None,
     }
 
 
-def calcular_com_api(agora: datetime | None = None, buscar=None) -> dict:
-    """Tenta Open-Meteo; em qualquer falha usa o fallback do CSV."""
+def calcular_com_api(agora: datetime | None = None, buscar=None, ajustes="auto",
+                     usar_arquivo: bool = True) -> dict:
+    """1) arquivo horário da atualização automática (cobertura ampliada, sem chamar a API);
+    2) senão, API Open-Meteo para os 15 maiores colégios; 3) em qualquer falha, fallback do CSV do Bot 0.
+    ajustes="auto" -> ajustes por notícias ativos; None -> só previsão."""
+    if isinstance(ajustes, str) and ajustes == "auto":
+        ajustes = D.carregar_ajustes()
+    if usar_arquivo:
+        cid, series, obtido = cobertura_horaria()
+        if not cid.empty:
+            try:
+                ob = datetime.fromisoformat(obtido).astimezone(D.TZ_BRT).strftime("%H:%M BRT") if obtido else "?"
+            except ValueError:
+                ob = str(obtido)
+            fonte = (f"Open-Meteo horário de {len(cid)} municípios (arquivo da atualização automática, obtido às {ob}; "
+                     "horas decorridas = estimativa do modelo, não pluviômetro)")
+            r = calcular(agora, series=series, cid=cid, ajustes=ajustes, fonte=fonte)
+            r["precip_obtida_em_utc"] = obtido
+            r["precip_obtida_em_brt"] = ob
+            r["origem_cobertura"] = "arquivo_atualizacao"
+            return r
     buscar = buscar or buscar_open_meteo
     cid = cidades_cobertas()
     try:
         series = buscar(cid["lat"].tolist(), cid["lon"].tolist())
-        return calcular(agora, series=series)
+        r = calcular(agora, series=series, ajustes=ajustes)
     except Exception as e:  # noqa: BLE001
-        return calcular(agora, series=None, erro_api=f"{type(e).__name__}: {e}"[:200])
+        r = calcular(agora, series=None, erro_api=f"{type(e).__name__}: {e}"[:200], ajustes=ajustes)
+    r["origem_cobertura"] = "15_maiores_colegios"
+    return r
+
+
+def calcular_duplo(agora: datetime | None = None, buscar=None, usar_arquivo: bool = True) -> dict:
+    """Mesma conta duas vezes: só previsão vs previsão + ajustes por notícias."""
+    aj = D.carregar_ajustes()
+    so_prev = calcular_com_api(agora, buscar=buscar, ajustes=None, usar_arquivo=usar_arquivo)
+    com_not = calcular_com_api(agora, buscar=buscar, ajustes=aj, usar_arquivo=usar_arquivo) if not aj.empty else so_prev
+    return {"previsao": so_prev, "previsao_mais_noticias": com_not, "n_ajustes_ativos": int(len(aj))}
+
+
+def resumo_json(r: dict) -> dict:
+    """Versão serializável (sem DataFrame) de um resultado de calcular()."""
+    out = {k: v for k, v in r.items() if k != "municipios"}
+    mun = r["municipios"].copy()
+    out["municipios_top"] = (mun.sort_values("abst_extras_mid", ascending=False).head(25)
+                             .astype(object).where(mun.notna(), None).to_dict(orient="records"))
+    return out
 
 
 METODO_TXT = (
-    "Para cada um dos 15 maiores colégios com previsão horária, somamos a chuva desde 08h até agora "
+    "Para cada município coberto (≈300 maiores colégios do arquivo horário atualizado a cada 30 min; "
+    "sem esse arquivo, os 15 maiores colégios), somamos a chuva desde 08h até agora "
     "(Open-Meteo; se a API falhar, a previsão do Bot 0 pró-rata pelas horas decorridas) e aplicamos o "
     "coeficiente do Bot 1: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0). As abstenções extras "
     "(aptos × efeito) são divididas entre Flávio e Lula pela votação de cada um no município no 1º turno "
     "(mesma suposição do Bot 4), e o resultado é comparado com os votos nacionais dos dois no 1º turno. "
-    "Municípios fora da cobertura contam como zero. Antes das 08h mostramos a projeção do dia; após 17h, "
-    "a estimativa final."
+    "Municípios fora da cobertura contam como zero. Ajustes por notícias ativos elevam a chuva do município ao "
+    "maior valor entre modelo e ajuste (versão 'previsão + notícias'). Antes das 08h mostramos a projeção do dia; "
+    "após 17h, a estimativa final."
 )
 DISCLAIMER = ("Estimativa baseada em modelo — **não** é contagem de votos, apuração nem pesquisa de boca de urna. "
               "Mostra apenas o efeito estimado da chuva, com grande incerteza.")

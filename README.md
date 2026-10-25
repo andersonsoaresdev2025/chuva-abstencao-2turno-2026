@@ -22,7 +22,10 @@ dashboard/          app Streamlit (main file: dashboard/app.py) + requirements.t
 docs/               site estático (GitHub Pages), gerado por scripts/build_site.py
 mcp/                servidor MCP (FastMCP, stdio) + teste
 common/dados.py     leitura compartilhada dos CSVs (dashboard, site e MCP)
-scripts/            build_site.py e update_and_publish.sh
+scripts/            atualizar_tudo.sh (orquestrador 30 min), atualizar_clima.py, atualizar_impacto.py,
+                    coletar_social.py, coletar_noticias.py, build_site.py, update_and_publish.sh (atalho)
+common/regras.py    regras a/b/c, efeitos por classe e ajustes por notícias (compartilhadas)
+.github/workflows/atualizar.yml   GitHub Actions: atualização automática a cada 30 min
 data/               dados processados (ver abaixo)
 tests/              testes do dashboard (streamlit.testing AppTest)
 Documento_Instrucoes_v2*.md, AGENTS.md, checklist_execucao.md   documentos do projeto
@@ -36,8 +39,34 @@ streamlit run dashboard/app.py               # dashboard local (http://localhost
 python scripts/build_site.py                 # regenera docs/index.html
 python mcp/chuva_mcp_server.py               # servidor MCP (stdio) – ver mcp/README.md
 python -m pytest -q tests mcp/test_mcp_server.py
-scripts/update_and_publish.sh "mensagem"     # rebuild + testes + commit + push
+scripts/atualizar_tudo.sh                    # atualização completa: clima → impacto → social → notícias → site → testes → commit/push
+PUBLICAR=0 scripts/atualizar_tudo.sh         # idem, sem git (só gera os arquivos)
 ```
+`scripts/update_and_publish.sh` continua existindo, mas apenas chama `scripts/atualizar_tudo.sh` — use o orquestrador.
+
+## Atualização automática (a cada 30 min)
+**Os papéis dos Bots 0–4 são executados por estes scripts** (os bots originais não são chamados; os arquivos
+originais deles ficam intactos e servem de referência "manhã" e de fallback):
+
+| Etapa | Script | Papel | Saídas |
+|---|---|---|---|
+| clima | `scripts/atualizar_clima.py` | Bot 0/Bot 2 – previsão Open-Meteo horária (≈300 municípios) + avisos INMET (JSON → RSS → último cache, marcado) → risco a/b/c | `data/clima/atualizacoes/risco_chuva_{municipios,estados,regioes}_latest.csv` (+ versões `_<UTC>.csv`), `precip_horaria_latest.csv`, `inmet_avisos_latest.json`, `status_latest.json`, `resumo_latest.md` (mudanças vs manhã) |
+| impacto | `scripts/atualizar_impacto.py` | Bot 4 (+ coeficiente do Bot 1) – impacto por município/UF/região e "impacto agora" | `data/impacto/atualizacoes/impacto_*_latest.csv`, `impacto_agora_latest.json` (só previsão × previsão + notícias), `impacto_agora_historico.csv` |
+| social | `scripts/coletar_social.py` | sinais em redes: X (API v2, só se houver `X_BEARER_TOKEN`); Instagram via busca web pública (sem login) | `data/social/sinais_<data>_auto.csv` (coluna `rede`), `data/social/log_coleta_social.csv` |
+| notícias | `scripts/coletar_noticias.py` | portais + Google Notícias RSS | `data/noticias/` |
+| site | `scripts/build_site.py` | GitHub Pages | `docs/index.html` |
+| testes | pytest (rede mockada) | — | — |
+| git | commit → `pull --rebase` → push | — | — |
+
+- **Onde roda:** `.github/workflows/atualizar.yml` (GitHub Actions) com `cron: '*/30 9-22 * * *'` (06h00–19h30 BRT) e
+  disparo manual (`gh workflow run atualizar.yml`). O workflow roda `atualizar_tudo.sh` com `PUBLICAR=0`, faz o commit como
+  `github-actions[bot]` (`pull --rebase` antes do push, `concurrency` para não sobrepor execuções) e pede o build do
+  GitHub Pages pela API (push com `GITHUB_TOKEN` pode não disparar o Pages). O Streamlit Community Cloud redeploya a
+  partir da `main`; o dashboard lê os `*_latest` com cache de no máximo 10 min.
+- **Falhas:** nenhuma etapa derruba a execução. Se uma fonte falha, fica o último dado válido, marcado como
+  desatualizado (`status_dado`, avisos no topo do dashboard e do site). Nada é inventado.
+- **Logs:** `data/logs/atualizacao_<UTC>.log` por execução e uma linha de status em `STATUS_PUBLICACAO.md`.
+- **Cron local alternativo:** `*/30 * * * * cd <repo> && scripts/atualizar_tudo.sh` (não rode os dois ao mesmo tempo).
 Para preencher o link do Streamlit no site: `STREAMLIT_URL=https://... python scripts/build_site.py`
 (ou edite a constante `STREAMLIT_URL` em `scripts/build_site.py`).
 
@@ -87,6 +116,16 @@ Os timestamps exibidos no dashboard e no site são lidos **de dentro dos arquivo
    - Antes das 08h: projeção do dia inteiro; após 17h: estimativa final do dia. A faixa lo–hi reflete só a
      incerteza do coeficiente. **Não** é contagem de votos nem boca de urna.
 5. **Sinais sociais** – exibidos separadamente; não alteram automaticamente as estimativas.
+6. **Regra da atualização automática (papel Bot 2):** chuva prevista na janela 08–17h ≥ 20 mm → **a**; 5–20 mm → **b**;
+   < 5 mm → **c**; aviso INMET **laranja/vermelho** de chuva/tempestade vigente na janela eleva um nível. Estado/região:
+   nível predominante pela fatia do eleitorado coberto. (O Bot 4 original classificava pelo total do dia ≥ 30 mm; a
+   atualização usa a janela de votação.) Efeitos por classe (Bot 4): a = +2,0 (1,2–3,0) pp; b = +0,85 (0,5–1,2); c = +0,15 (0–0,4).
+7. **Ajustes por notícias** (`data/ajustes/ajustes_impacto_noticias.csv`, revisado a cada 30 min a partir de notícias e
+   relatos verificados): para cada município, vale o último registro; com `status=ativo`, o nível usado é
+   **max(previsão, ajuste)** e, no impacto agora, a chuva usada é **max(modelo, intensidade estimada)**, sendo a intensidade
+   no mínimo o piso da classe (a = 20 mm, b = 5 mm; sem intensidade, vale o piso). Pode incluir municípios fora das listas, desde que existam nos dados do TSE do
+   1º turno (o impacto por candidato usa os votos desse município). Tudo aparece com o rótulo **"ajuste por notícias"**,
+   fontes e confiança; os cards de impacto mostram **só previsão** e **previsão + notícias** lado a lado.
 
 ## Limitações e incerteza (explícitas)
 - Cobertura climática incompleta: previsão horária para 15 maiores colégios; classificação a/b/c para 29
@@ -98,6 +137,14 @@ Os timestamps exibidos no dashboard e no site são lidos **de dentro dos arquivo
 - **As camadas Bot 2 (06:35 BRT) e Bot 4 (09:24 BRT) divergem em alguns locais** (ex.: Curitiba, MS, MG,
   região Sudeste); ambas são mostradas com seus horários, sem ajuste.
 - Correlação não é causalidade.
+- **Atualização automática:** cobertura de ≈300 municípios (≈54% do eleitorado); o restante de cada UF recebe o nível
+  predominante dos municípios cobertos (extrapolação). O modelo Open-Meteo não é observação de pluviômetro.
+- **Ajustes por notícias** dependem da cobertura da imprensa (viés para capitais e grandes cidades), têm confiança
+  declarada e podem ficar defasados até a próxima revisão (30 min); só elevam o risco, nunca reduzem.
+- **Redes sociais:** sem credencial da API do X, a coleta no X é pulada (registrado no log). Instagram só por busca
+  web pública, sem login: os buscadores frequentemente bloqueiam robôs (HTTP 202/429), então muitas execuções não
+  encontram nada — isso é registrado em `data/social/log_coleta_social.csv`. Itens do Instagram têm confiança baixa,
+  exceto contas oficiais.
 
 ## Política de desinformação (sinais sociais)
 - Prioridade a fontes oficiais (INMET, Defesa Civil, CGE, TREs/TSE), meteorologistas e imprensa com fonte primária.

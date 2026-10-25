@@ -70,9 +70,9 @@ def load_md(path_str: str) -> str:
 # -----------------------------------------------------------------------------
 # Impacto estimado AGORA (chuva acumulada desde 08h -> p.p. por candidato)
 # -----------------------------------------------------------------------------
-@st.cache_data(ttl=900, show_spinner=False)
+@st.cache_data(ttl=600, show_spinner=False)
 def _series_open_meteo(lats: tuple, lons: tuple):
-    """Cache de ~15 min da série horária Open-Meteo. Falhas não são cacheadas (exceção propaga)."""
+    """Cache de 10 min da série horária Open-Meteo (só usada se o arquivo da atualização automática faltar)."""
     return D.agora_utc().isoformat(), IA.buscar_open_meteo(list(lats), list(lons))
 
 
@@ -94,44 +94,79 @@ def impacto_agora_calc():
         obtido["ts"] = ts
         return series
 
-    r = IA.calcular_com_api(buscar=buscar)
-    if obtido.get("ts") and not r["usou_fallback"]:
-        from datetime import datetime as _dt
-        r["precip_obtida_em_brt"] = _dt.fromisoformat(obtido["ts"]).astimezone(D.TZ_BRT).strftime("%H:%M BRT")
-    return r
+    duplo = IA.calcular_duplo(buscar=buscar)
+    for r in (duplo["previsao"], duplo["previsao_mais_noticias"]):
+        if obtido.get("ts") and not r["usou_fallback"] and not r.get("precip_obtida_em_brt"):
+            from datetime import datetime as _dt
+            r["precip_obtida_em_brt"] = _dt.fromisoformat(obtido["ts"]).astimezone(D.TZ_BRT).strftime("%H:%M BRT")
+    return duplo
+
+
+def bloco_ajustes(contexto: str = ""):
+    """Ajustes por notícias ativos (camada revisada; rótulo explícito 'ajuste por notícias')."""
+    aj = D.carregar_ajustes()
+    st.markdown("#### 📰 Ajustes por notícias" + (f" — {contexto}" if contexto else ""))
+    if aj.empty:
+        st.caption("Nenhum **ajuste por notícias** ativo no momento (arquivo data/ajustes/ajustes_impacto_noticias.csv, "
+                   "revisado a cada 30 min). As estimativas abaixo usam só a previsão.")
+        return
+    st.caption(f"{len(aj)} município(s) com **ajuste por notícias** ativo: o nível de risco usado é o maior entre a "
+               "previsão e o ajuste. Confira sempre as fontes.")
+    st.dataframe(aj[["timestamp_brt", "municipio", "uf", "nivel_risco_ajustado", "intensidade_estimada_mm",
+                     "evidencia", "confianca", "fontes"]].rename(columns={
+                         "timestamp_brt": "Registrado (BRT)", "municipio": "Município", "uf": "UF",
+                         "nivel_risco_ajustado": "Nível (ajuste por notícias)", "intensidade_estimada_mm": "mm estimados",
+                         "evidencia": "Evidência", "confianca": "Confiança", "fontes": "Fontes"}),
+                 width="stretch", hide_index=True)
 
 
 @st.fragment(run_every="5m")
 def bloco_impacto_agora():
     try:
-        r = impacto_agora_calc()
+        duplo = impacto_agora_calc()
     except Exception as e:  # noqa: BLE001 – o card nunca deve derrubar a página
         st.warning(f"Impacto estimado agora indisponível no momento ({type(e).__name__}).")
         return
+    r, rn = duplo["previsao"], duplo["previsao_mais_noticias"]
+    n_aj = duplo["n_ajustes_ativos"]
     st.subheader(f"⏱️ Impacto estimado agora — {r['rotulo']}")
+
+    def linha_noticias(chave, fmt):
+        if not n_aj:
+            return "Previsão + notícias: igual (nenhum ajuste por notícias ativo)"
+        return f"**Previsão + notícias:** {fmt(rn[chave])}"
     f, l, m = r["flavio_pp"], r["lula_pp"], r["margem_lula_menos_flavio_pp"]
     vf, vl, ab = r["votos_perdidos_flavio"], r["votos_perdidos_lula"], r["abstencao_nacional_pp"]
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric("Flávio Bolsonaro (p.p. dos votos válidos)", _fmt_pp(f["mid"]),
+        st.metric("Flávio Bolsonaro (p.p. dos votos válidos) · só previsão", _fmt_pp(f["mid"]),
                   help="Variação estimada na participação de Flávio nos votos válidos (Flávio+Lula) por causa "
                        "da chuva, ponto central (coeficiente médio do Bot 1).")
         st.caption(f"Faixa {_fmt_pp(f['min'])} a {_fmt_pp(f['max'])} p.p. · "
                    f"votos perdidos ≈ {_fmt_int(vf['mid'])} ({_fmt_int(vf['min'])}–{_fmt_int(vf['max'])})")
+        st.caption(linha_noticias("flavio_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · votos perdidos ≈ "
+                                  f"{_fmt_int(rn['votos_perdidos_flavio']['mid'])}"))
     with c2:
-        st.metric("Lula (p.p. dos votos válidos)", _fmt_pp(l["mid"]),
+        st.metric("Lula (p.p. dos votos válidos) · só previsão", _fmt_pp(l["mid"]),
                   help="Variação estimada na participação de Lula nos votos válidos (Flávio+Lula).")
         st.caption(f"Faixa {_fmt_pp(l['min'])} a {_fmt_pp(l['max'])} p.p. · "
                    f"votos perdidos ≈ {_fmt_int(vl['mid'])} ({_fmt_int(vl['min'])}–{_fmt_int(vl['max'])})")
+        st.caption(linha_noticias("lula_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · votos perdidos ≈ "
+                                  f"{_fmt_int(rn['votos_perdidos_lula']['mid'])}"))
     with c3:
-        st.metric("Efeito na margem (Lula − Flávio)", f"{_fmt_pp(m['mid'])} p.p.",
+        st.metric("Efeito na margem (Lula − Flávio) · só previsão", f"{_fmt_pp(m['mid'])} p.p.",
                   help="Positivo = a chuva favorece Lula na margem; negativo = favorece Flávio.")
         st.caption(f"Faixa {_fmt_pp(m['min'])} a {_fmt_pp(m['max'])} p.p. · abstenção nacional "
                    f"{_fmt_pp(ab['mid'])} p.p. ({_fmt_pp(ab['min'], False)}–{_fmt_pp(ab['max'], False)})")
+        st.caption(linha_noticias("margem_lula_menos_flavio_pp", lambda x: f"{_fmt_pp(x['mid'])} p.p. · abstenção "
+                                  f"nacional {_fmt_pp(rn['abstencao_nacional_pp']['mid'])} p.p."))
     with c4:
         st.metric("Cobertura do eleitorado", f"{r['cobertura_pct_eleitorado']:.1f}%".replace(".", ","),
                   help="Parcela dos eleitores aptos do país nos municípios com chuva medida; o restante conta como zero.")
-        st.caption(f"{r['n_municipios_cobertos']} maiores colégios · demais municípios = 0")
+        st.caption(f"{r['n_municipios_cobertos']} municípios (maiores colégios) · demais municípios = 0")
+        if n_aj:
+            st.caption(f"📰 {n_aj} ajuste(s) por notícias ativo(s); {rn.get('n_municipios_extras_ajuste', 0)} município(s) "
+                       "fora da cobertura entram pelo ajuste.")
     obtida = f" (dados obtidos às {r['precip_obtida_em_brt']})" if r.get("precip_obtida_em_brt") else ""
     janela = ("dia inteiro 08h–17h (previsão)" if r["modo"] == "projecao" else
               f"{r['horas_decorridas']:.1f} h desde 08h".replace(".", ","))
@@ -144,8 +179,9 @@ def bloco_impacto_agora():
     st.caption("⚠️ " + IA.DISCLAIMER)
     cb, ce = st.columns([1, 3])
     with cb:
-        if st.button("🔄 Atualizar", help="Busca de novo a precipitação no Open-Meteo (cache de 15 min)"):
+        if st.button("🔄 Atualizar", help="Relê os arquivos atualizados (a atualização automática roda a cada 30 min)"):
             _series_open_meteo.clear()
+            carregar.clear()
             st.rerun(scope="fragment")
     with ce:
         with st.expander("Como este número é calculado"):
@@ -153,17 +189,21 @@ def bloco_impacto_agora():
             st.markdown(
                 "- Coeficiente: **0,07 p.p. de abstenção por mm** (faixa 0,04–0,10), do Bot 1.  \n"
                 "- A faixa reflete só a incerteza do coeficiente; não inclui erro da precipitação nem efeitos de "
-                "alagamento/transporte. O **sinal** pode mudar conforme onde chove (SP pesa a favor de Flávio na "
-                "margem; RJ, Guarulhos e Campinas a favor de Lula).  \n"
+                "alagamento/transporte. O **sinal** pode mudar conforme onde chove.  \n"
                 "- Base nacional: votos de Flávio e Lula no 1º turno (TSE). Valores muito pequenos são esperados: "
-                "a chuva reduz votos dos dois lados quase na mesma proporção."
+                "a chuva reduz votos dos dois lados quase na mesma proporção.  \n"
+                "- **Previsão + notícias**: em municípios com ajuste por notícias ativo, a chuva usada é o maior valor "
+                "entre o modelo e o ajuste (intensidade informada, no mínimo o piso da classe: a = 20 mm, b = 5 mm)."
             )
-            mun = r["municipios"].rename(columns={
+            mun = rn["municipios"].rename(columns={
                 "municipio": "Município", "uf": "UF", "aptos": "Aptos", "pct_flavio_1t": "% Flávio 1ºT",
-                "pct_lula_1t": "% Lula 1ºT", "precip_acum_mm": "Chuva acumulada (mm)",
+                "pct_lula_1t": "% Lula 1ºT", "precip_acum_mm": "Chuva acumulada – modelo (mm)",
+                "precip_ajuste_mm": "Ajuste por notícias (mm)", "precip_usado_mm": "Chuva usada (mm)",
+                "ajuste_noticias": "Ajuste por notícias", "ajuste_confianca": "Confiança do ajuste",
+                "ajuste_fontes": "Fontes do ajuste",
                 "efeito_abst_pp_lo": "Abst. lo (p.p.)", "efeito_abst_pp_mid": "Abst. mid (p.p.)",
                 "efeito_abst_pp_hi": "Abst. hi (p.p.)", "abst_extras_mid": "Abstenções extras (mid)"})
-            st.dataframe(mun.sort_values("Chuva acumulada (mm)", ascending=False), width="stretch",
+            st.dataframe(mun.sort_values("Abstenções extras (mid)", ascending=False), width="stretch",
                          hide_index=True)
             if r.get("erro_api"):
                 st.caption(f"Erro da API Open-Meteo: {r['erro_api']}")
@@ -180,7 +220,11 @@ resumo_redutos = load_md(str(D.REDUTOS_DIR / "resumo_executivo_redutos.md"))
 
 social = carregar_social()
 timestamps = D.timestamps_dados(d)
-ts_atualizacao = timestamps.get("Impacto (Bot 4)", "—")
+ORIGEM = d.get("_origem", {})
+ts_atualizacao = D.ts_camada(d, "impacto")
+ts_risco = D.ts_camada(d, "risco")
+STATUS = D.status_atualizacao()
+AUTO = ORIGEM.get("risco_mun") == "atualizado"
 
 PAGINAS = [
     "Visão Geral",
@@ -222,11 +266,20 @@ st.markdown(
 )
 
 # Faixa de timestamp sempre visível no topo
+_rot_i = "impacto (atualização automática, papel Bot 4)" if ORIGEM.get("impacto_mun") == "atualizado" else "impacto (Bot 4)"
+_rot_r = "risco a/b/c (atualização automática, papel Bot 2)" if AUTO else "risco a/b/c (Bot 2)"
 st.info(
-    f"🕒 **Dados atualizados em:** impacto (Bot 4) {ts_atualizacao} · "
-    f"risco a/b/c (Bot 2) {timestamps.get('Risco de chuva a/b/c (Bot 2)', '—')} · "
-    f"agora {D.fmt_utc_brt()}. Estimativas com incerteza — não é previsão eleitoral oficial."
+    f"🕒 **Dados atualizados em:** {_rot_r} **{ts_risco}** · {_rot_i} **{ts_atualizacao}** · "
+    f"ajustes por notícias {timestamps.get('Ajustes por notícias', '—')} · agora {D.fmt_utc_brt()}. "
+    "Atualização automática a cada 30 min. Estimativas com incerteza — não é previsão eleitoral oficial."
 )
+_cl = STATUS.get("clima", {})
+if _cl:
+    _om, _in = _cl.get("open_meteo", {}), _cl.get("inmet", {})
+    if _om.get("status") != "ok" or _in.get("status") != "ok":
+        st.warning(f"⚠️ Fonte com falha na última atualização ({_cl.get('executado_em_brt')}): Open-Meteo "
+                   f"{_om.get('status')} · INMET {_in.get('status')} ({_in.get('fonte')}). Mantido o último dado "
+                   "válido, marcado como desatualizado (coluna status_dado).")
 
 # -----------------------------------------------------------------------------
 # PÁGINA: VISÃO GERAL
@@ -240,6 +293,7 @@ if pagina == "Visão Geral":
     )
 
     bloco_impacto_agora()
+    bloco_ajustes("Visão Geral")
     st.markdown("---")
 
     NOT.bloco_principais()  # quadro de notícias (abaixo dos cards de impacto)
@@ -266,7 +320,7 @@ if pagina == "Visão Geral":
     with col4:
         n_prev = len(impacto_mun) if not impacto_mun.empty else 0
         st.metric("Municípios com previsão horária", n_prev,
-                  help="Maiores colégios com previsão Open-Meteo (Bot 0/Bot 4)")
+                  help="Municípios com previsão Open-Meteo horária (atualização automática: ~300 maiores colégios)")
 
     st.markdown("---")
     st.subheader("Onde a chuva deve importar mais hoje")
@@ -281,7 +335,8 @@ if pagina == "Visão Geral":
             tabela(criticos, {
                 "municipio": "Município", "uf": "UF", "aptos_fmt": "Eleitores aptos",
                 "nivel_risco": "Risco de chuva", "efeito": "Efeito na abstenção (pp)",
-                "mais_prejudicado": "Maior base local (1º turno)", "vulnerabilidade": "Vulnerabilidade"})
+                "mais_prejudicado": "Maior base local (1º turno)", "vulnerabilidade": "Vulnerabilidade",
+                "ajuste_noticias": "Ajuste por notícias"}, height=420)
         else:
             st.info("Nenhum município prioritário classificado com vulnerabilidade Alta ou Média.")
     else:
@@ -302,7 +357,7 @@ if pagina == "Visão Geral":
         st.subheader("📣 Últimos sinais sociais")
         st.caption(D.DISCLAIMER_SOCIAL)
         st.dataframe(
-            social.head(5)[["timestamp_post", "cidade", "uf", "nivel_risco_implicito", "fonte", "resumo", "link"]],
+            social.head(5)[["timestamp_post", "rede", "cidade", "uf", "nivel_risco_implicito", "fonte", "resumo", "link"]],
             width="stretch", hide_index=True,
             column_config={"link": st.column_config.LinkColumn("Link")})
 
@@ -322,8 +377,32 @@ elif pagina == "Risco de Chuva":
         """
     )
 
-    st.subheader("Previsão horária – maiores colégios (Bot 0 / Bot 4)")
-    st.caption(f"Fonte: {D.FONTES['impacto_bot4']} · atualizado {ts_atualizacao}")
+    if AUTO:
+        st.subheader("🔄 O que mudou desde a manhã (Bot 2, 06:35 BRT)")
+        st.caption(f"Fonte: {D.FONTES['risco_auto']} · atualizado em **{ts_risco}**")
+        b2 = risco_mun[risco_mun.get("nivel_risco_manha_bot2", pd.Series(dtype=str)).notna()] if "nivel_risco_manha_bot2" in risco_mun.columns else pd.DataFrame()
+        if not b2.empty:
+            mud = b2[b2["mudanca_vs_manha"] != "igual"]
+            c1, c2, c3 = st.columns(3)
+            c1.metric("Municípios do Bot 2 que subiram de nível", int(mud["mudanca_vs_manha"].str.startswith("subiu").sum()))
+            c2.metric("Que desceram de nível", int(mud["mudanca_vs_manha"].str.startswith("desceu").sum()))
+            c3.metric("Sem mudança", int((b2["mudanca_vs_manha"] == "igual").sum()))
+            if not mud.empty:
+                tabela(mud, {"municipio": "Município", "uf": "UF", "nivel_risco_manha_bot2": "Nível manhã (Bot 2)",
+                             "precip_manha_bot2_mm": "mm manhã (Bot 2)", "nivel_risco": "Nível agora",
+                             "precipitacao_mm_estimada": "mm 08–17h agora", "mudanca_vs_manha": "Mudança",
+                             "alerta_inmet": "Alerta INMET", "ajuste_noticias": "Ajuste por notícias"})
+            else:
+                st.info("Nenhum dos 29 municípios do Bot 2 mudou de nível.")
+        if "mudanca_vs_manha" in risco_uf.columns:
+            mu = risco_uf[risco_uf["nivel_risco_manha_bot2"].notna() & (risco_uf["mudanca_vs_manha"] != "igual")]
+            if not mu.empty:
+                st.caption("Estados com mudança: " + " · ".join(f"{r['uf']} {r['mudanca_vs_manha']}" for _, r in mu.iterrows()))
+        bloco_ajustes("Risco de Chuva")
+        st.markdown("---")
+
+    st.subheader("Previsão horária – maiores colégios" + (" (atualização automática)" if ORIGEM.get("impacto_mun") == "atualizado" else " (Bot 0 / Bot 4)"))
+    st.caption(f"Fonte: {D.FONTES['impacto_auto' if ORIGEM.get('impacto_mun') == 'atualizado' else 'impacto_bot4']} · atualizado {ts_atualizacao}")
     if not impacto_mun.empty:
         df = impacto_mun.copy()
         df["_ordem"] = df["nivel_risco"].map(D.nivel_curto).map(D.ORDEM_RISCO)
@@ -331,26 +410,28 @@ elif pagina == "Risco de Chuva":
         col_precip = ("precip_janela_votacao_08_17_mm" if "precip_janela_votacao_08_17_mm" in df.columns
                       else "precip_sum_mm")
         if col_precip in df.columns:
+            dfg = df.sort_values("aptos", ascending=False).head(30)
             fig = px.bar(
-                df, x="municipio", y=col_precip, color="nivel_risco",
-                color_discrete_map=mapa_cores(df["nivel_risco"]),
+                dfg, x="municipio", y=col_precip, color="nivel_risco",
+                color_discrete_map=mapa_cores(dfg["nivel_risco"]),
                 labels={col_precip: "Precipitação estimada (mm)", "municipio": "Município", "nivel_risco": "Risco"},
-                title="Precipitação prevista na janela de votação 08–17h (Open-Meteo)",
+                title="Precipitação na janela de votação 08–17h (Open-Meteo; 30 maiores colégios)",
             )
             fig.update_layout(xaxis_tickangle=-40, height=420, margin=dict(t=40, b=80))
             st.plotly_chart(fig, width="stretch")
         tabela(df, {
             "municipio": "Município", "uf": "UF", "precip_sum_mm": "Precip. dia (mm)",
             "precip_janela_votacao_08_17_mm": "Precip. 08–17h (mm)",
+            "precip_observada_mm": "Já ocorrido (mm, modelo)", "precip_prevista_restante_mm": "Restante previsto (mm)",
             "precip_prob_max_pct": "Prob. máx. (%)", "nivel_risco": "Nível de risco",
-            "vulnerabilidade": "Vulnerabilidade"})
+            "nivel_risco_so_previsao": "Nível só previsão", "ajuste_noticias": "Ajuste por notícias",
+            "vulnerabilidade": "Vulnerabilidade"}, height=420)
     else:
         st.warning("Dados de municípios não disponíveis.")
 
     st.markdown("---")
-    st.subheader("Classificação a/b/c com alertas INMET (Bot 2)")
-    st.caption(f"Fonte: {D.FONTES['risco_bot2']} · atualizado "
-               f"{timestamps.get('Risco de chuva a/b/c (Bot 2)', '—')}")
+    st.subheader("Classificação a/b/c com alertas INMET" + (" (atualização automática, papel do Bot 2)" if AUTO else " (Bot 2)"))
+    st.caption(f"Fonte: {D.FONTES['risco_auto' if AUTO else 'risco_bot2']} · atualizado **{ts_risco}**")
     if not risco_mun.empty:
         rm = risco_mun.copy()
         rm["_ordem"] = rm["nivel_risco"].map(D.nivel_curto).map(D.ORDEM_RISCO)
@@ -361,42 +442,50 @@ elif pagina == "Risco de Chuva":
         tabela(rm, {
             "municipio": "Município", "uf": "UF", "regiao": "Região", "nivel_risco": "Nível",
             "precipitacao_mm_estimada": "Precip. estimada (mm)", "horario_pico": "Pico",
-            "probabilidade": "Prob. (%)", "fonte_principal": "Fonte", "observacoes": "Observações",
-            "ultima_atualizacao": "Atualizado"})
+            "probabilidade": "Prob. (%)", "alerta_inmet": "Alerta INMET", "nivel_risco_previsao": "Nível só previsão",
+            "ajuste_noticias": "Ajuste por notícias", "ajuste_fontes": "Fontes do ajuste",
+            "nivel_risco_manha_bot2": "Nível manhã (Bot 2)", "mudanca_vs_manha": "Mudança vs manhã",
+            "fonte_principal": "Fonte", "observacoes": "Observações", "status_dado": "Status do dado",
+            "ultima_atualizacao": "Atualizado"}, height=420)
     else:
         st.info("Classificação do Bot 2 não disponível.")
 
-    st.warning(
-        "⚠️ As duas camadas acima foram geradas em horários diferentes (Bot 2 ~06:35 BRT com alertas INMET; "
-        "Bot 4 ~09:24 BRT com nova rodada Open-Meteo) e **divergem para alguns locais** "
-        "(ex.: Curitiba 'a' no Bot 2 vs 'moderada' no Bot 4; MS 'a' vs 'sem chuva relevante'). "
-        "Ambas são mostradas sem ajuste para máxima transparência."
-    )
+    if AUTO:
+        st.caption("As duas tabelas acima vêm da mesma atualização automática (Open-Meteo + INMET + ajustes por "
+                   "notícias). A classificação original da manhã (Bot 2) continua em data/clima/previsoes_2026-10-25/.")
+    else:
+        st.warning(
+            "⚠️ As duas camadas acima foram geradas em horários diferentes (Bot 2 com alertas INMET; "
+            "Bot 4 com nova rodada Open-Meteo) e **divergem para alguns locais**. "
+            "Ambas são mostradas sem ajuste para máxima transparência."
+        )
 
     st.markdown("---")
     st.subheader("Por estado e região")
     c1, c2 = st.columns(2)
     with c1:
         if not risco_uf.empty:
-            st.markdown("**Estados – classificação Bot 2**")
+            st.markdown("**Estados – classificação a/b/c**" + (f" (atualizado {ts_risco})" if AUTO else " (Bot 2)"))
             tabela(risco_uf, {
                 "uf": "UF", "regiao": "Região", "nivel_risco_predominante": "Nível",
-                "precipitacao_mm_media_estimada": "Precip. média (mm)", "observacoes": "Observações"},
+                "precipitacao_mm_media_estimada": "Precip. média (mm)", "pct_eleitorado_nivel_a": "% eleitorado coberto em a",
+                "nivel_risco_manha_bot2": "Manhã (Bot 2)", "mudanca_vs_manha": "Mudança", "observacoes": "Observações"},
                 height=400)
         if not impacto_uf.empty:
-            st.markdown("**Estados – agregado Bot 4 (impacto)**")
+            st.markdown("**Estados – agregado de impacto**" + (f" (atualizado {ts_atualizacao})" if ORIGEM.get("impacto_uf") == "atualizado" else " (Bot 4)"))
             tabela(impacto_uf, {
                 "uf": "UF", "regiao": "Região", "nivel_risco": "Risco",
-                "efeito_abstencao_pp_mid": "Efeito mid (pp)", "vulnerabilidade": "Vulnerabilidade",
-                "peso_eleitoral_pct": "Peso %"}, height=400)
+                "efeito_abstencao_pp_mid": "Efeito mid (pp)", "efeito_mid_manha_bot4": "Efeito mid manhã (Bot 4)",
+                "vulnerabilidade": "Vulnerabilidade", "peso_eleitoral_pct": "Peso %"}, height=400)
     with c2:
         if not risco_reg.empty:
-            st.markdown("**Grandes Regiões – classificação Bot 2**")
+            st.markdown("**Grandes Regiões – classificação a/b/c**" + (f" (atualizado {ts_risco})" if AUTO else " (Bot 2)"))
             tabela(risco_reg, {
                 "regiao": "Região", "nivel_risco_predominante": "Nível",
-                "precipitacao_mm_media_estimada": "Precip. média (mm)", "observacoes": "Observações"})
+                "precipitacao_mm_media_estimada": "Precip. média (mm)", "nivel_risco_manha_bot2": "Manhã (Bot 2)",
+                "mudanca_vs_manha": "Mudança", "observacoes": "Observações"})
         if not impacto_reg.empty:
-            st.markdown("**Grandes Regiões – efeito estimado (Bot 4)**")
+            st.markdown("**Grandes Regiões – efeito estimado**")
             fig_reg = px.bar(
                 impacto_reg, x="regiao", y="efeito_abstencao_pp_mid", color="nivel_risco",
                 color_discrete_map=mapa_cores(impacto_reg["nivel_risco"]),
@@ -421,11 +510,13 @@ elif pagina == "Impacto na Abstenção":
         "• Torrencial / tempestade / alagamento → +1,2 a +3,0 pp  \n"
         "Valores “mid” são o ponto central da faixa usada nas tabelas."
     )
-    st.caption(f"Fonte: {D.FONTES['impacto_bot4']} · atualizado {ts_atualizacao}")
+    st.caption(f"Fonte: {D.FONTES['impacto_auto' if ORIGEM.get('impacto_mun') == 'atualizado' else 'impacto_bot4']} · "
+               f"atualizado **{ts_atualizacao}**")
+    bloco_ajustes("Impacto")
 
     if not impacto_mun.empty:
         st.subheader("Municípios prioritários")
-        df = impacto_mun.sort_values("efeito_abstencao_pp_mid", ascending=False).copy()
+        df = impacto_mun.sort_values(["efeito_abstencao_pp_mid", "aptos"], ascending=False).copy()
         df["faixa"] = df.apply(
             lambda r: f"{r['efeito_abstencao_pp_lo']:.1f} – {r['efeito_abstencao_pp_hi']:.1f}", axis=1)
         # Ordem de grandeza em votos (Bot 1: +1 pp ≈ 1% dos aptos) – apenas aritmética sobre os CSVs
@@ -436,14 +527,14 @@ elif pagina == "Impacto na Abstenção":
             axis=1)
 
         fig = go.Figure()
-        for _, row in df.iterrows():
+        for _, row in df.sort_values("abst_extra_mid", ascending=False).head(25).iterrows():
             fig.add_trace(go.Bar(
                 name=row["municipio"], x=[row["municipio"]], y=[row["efeito_abstencao_pp_mid"]],
                 error_y=dict(type="data", symmetric=False,
                              array=[row["efeito_abstencao_pp_hi"] - row["efeito_abstencao_pp_mid"]],
                              arrayminus=[row["efeito_abstencao_pp_mid"] - row["efeito_abstencao_pp_lo"]]),
                 marker_color=cor_risco(row["nivel_risco"]), showlegend=False))
-        fig.update_layout(title="Efeito estimado na abstenção (ponto central + faixa de incerteza)",
+        fig.update_layout(title="Efeito estimado na abstenção (25 municípios com mais abstenções extras; ponto central + faixa)",
                           yaxis_title="Pontos percentuais", xaxis_tickangle=-40, height=450,
                           margin=dict(b=100))
         st.plotly_chart(fig, width="stretch")
@@ -452,7 +543,10 @@ elif pagina == "Impacto na Abstenção":
             "municipio": "Município", "uf": "UF", "nivel_risco": "Risco",
             "efeito_abstencao_pp_mid": "Efeito mid (pp)", "faixa": "Faixa (pp)",
             "abst_extra_mid": "Abstenções extras (mid, ordem de grandeza)",
-            "abst_extra_faixa": "Abstenções extras (faixa)", "vulnerabilidade": "Vulnerabilidade"})
+            "abst_extra_faixa": "Abstenções extras (faixa)", "mais_prejudicado": "Maior base local (1º turno)",
+            "efeito_abstencao_pp_mid_so_previsao": "Efeito mid só previsão (pp)",
+            "ajuste_noticias": "Ajuste por notícias", "ajuste_fontes": "Fontes do ajuste",
+            "efeito_mid_manha_bot4": "Efeito mid manhã (Bot 4)", "vulnerabilidade": "Vulnerabilidade"}, height=460)
         st.caption("Abstenções extras = aptos × efeito (pp) / 100, arredondado à centena. Ordem de grandeza, "
                    "não previsão.")
     else:
@@ -464,14 +558,15 @@ elif pagina == "Impacto na Abstenção":
         tabela(impacto_reg, {
             "regiao": "Região", "aptos": "Aptos", "peso_eleitoral_pct": "Peso %", "nivel_risco": "Risco",
             "efeito_abstencao_pp_mid": "Efeito mid", "efeito_abstencao_pp_lo": "Lo",
-            "efeito_abstencao_pp_hi": "Hi", "mais_prejudicado": "Maior base (1º turno)"})
+            "efeito_abstencao_pp_hi": "Hi", "efeito_mid_manha_bot4": "Mid manhã (Bot 4)",
+            "mais_prejudicado": "Maior base (1º turno)"})
     st.subheader("Visão por estado")
     if not impacto_uf.empty:
         tabela(impacto_uf.sort_values("efeito_abstencao_pp_mid", ascending=False), {
             "uf": "UF", "regiao": "Região", "aptos": "Aptos", "nivel_risco": "Risco",
             "efeito_abstencao_pp_mid": "Efeito mid", "efeito_abstencao_pp_lo": "Lo",
-            "efeito_abstencao_pp_hi": "Hi", "mais_prejudicado": "Maior base (1º turno)",
-            "observacao": "Observação"}, height=420)
+            "efeito_abstencao_pp_hi": "Hi", "efeito_mid_manha_bot4": "Mid manhã (Bot 4)",
+            "mais_prejudicado": "Maior base (1º turno)", "observacao": "Observação"}, height=420)
 
 # -----------------------------------------------------------------------------
 # PÁGINA: REDUTOS E DIFERENCIAL
@@ -529,7 +624,7 @@ elif pagina == "Redutos e Diferencial":
 # PÁGINA: SINAIS SOCIAIS
 # -----------------------------------------------------------------------------
 elif pagina == "Sinais Sociais":
-    st.title("📣 Sinais Sociais (X + fontes locais)")
+    st.title("📣 Sinais Sociais (X, Instagram + fontes locais)")
     st.warning(D.DISCLAIMER_SOCIAL)
     if social.empty:
         st.info(
@@ -539,6 +634,9 @@ elif pagina == "Sinais Sociais":
     else:
         st.caption(f"Fonte: {D.FONTES['social']} · último coletado "
                    f"{timestamps.get('Sinais sociais (último coletado)', '—')} · {len(social)} sinais")
+        redes_rot = {"x": "X", "instagram": "Instagram", "web": "web"}
+        redes = st.multiselect("Rede", ["X", "Instagram", "web"],
+                               help="X = x.com; Instagram = resultados públicos de busca web (sem login); web = portais/sites")
         c1, c2, c3 = st.columns(3)
         with c1:
             cidades = st.multiselect("Cidade", sorted(social["cidade"].dropna().astype(str).unique()))
@@ -549,6 +647,9 @@ elif pagina == "Sinais Sociais":
             tipos_fonte = st.multiselect("Tipo de fonte",
                                          sorted(social["tipo_fonte"].dropna().astype(str).unique()))
         s = social.copy()
+        s["rede"] = s["rede"].fillna("web").astype(str).str.lower().map(lambda x: redes_rot.get(x, x))
+        if redes:
+            s = s[s["rede"].isin(redes)]
         if cidades:
             s = s[s["cidade"].astype(str).isin(cidades)]
         if niveis:
@@ -567,11 +668,17 @@ elif pagina == "Sinais Sociais":
             st.plotly_chart(fig, width="stretch")
 
         st.dataframe(
-            s[["timestamp_post", "timestamp_coleta_utc", "cidade", "uf", "tipo", "nivel_risco_implicito",
+            s[["timestamp_post", "timestamp_coleta_utc", "rede", "cidade", "uf", "tipo", "nivel_risco_implicito",
                "confianca", "fonte", "tipo_fonte", "resumo", "link", "cidade_risco_previsto"]],
             width="stretch", hide_index=True,
             column_config={"link": st.column_config.LinkColumn("Link (fonte original)")})
 
+    log_soc = D.read_csv(D.SOCIAL_DIR / "log_coleta_social.csv")
+    if not log_soc.empty:
+        with st.expander("Log da coleta automática (X / Instagram)"):
+            st.caption("Cada linha é uma consulta. 'pulado' = sem credencial ou buscador bloqueou; "
+                       "'nada_encontrado' = execução sem sinal relevante.")
+            st.dataframe(log_soc.tail(40).iloc[::-1], width="stretch", hide_index=True)
     nome_md, txt_md = D.ultimo_resumo_social()
     if txt_md:
         with st.expander(f"Resumo mais recente do monitoramento ({nome_md})", expanded=social.empty is False):
@@ -600,8 +707,21 @@ elif pagina == "Metodologia e Limitações":
         | Bot 2 | Open-Meteo + alertas INMET + classificação do projeto | Risco de chuva por município/estado/região na janela 08h–17h |
         | Bot 3 | TSE 1º turno | Redutos eleitorais, margens, peso eleitoral |
         | Bot 4 | Cruzamento dos anteriores | Impacto diferencial e síntese |
-        | Social | X + portais locais públicos | Relatos de chuva/alagamento/mobilidade (não oficiais) |
+        | Social | X + Instagram (busca web pública) + portais locais | Relatos de chuva/alagamento/mobilidade (não oficiais) |
+        | Atualização automática | scripts/atualizar_clima.py e atualizar_impacto.py (GitHub Actions, a cada 30 min) | Executam os papéis dos Bots 2 e 4 com as mesmas regras |
+        | Ajustes por notícias | data/ajustes/ajustes_impacto_noticias.csv (Grok Bot, a cada 30 min) | Nível de risco mínimo por município com evidência de notícias |
         """
+    )
+    st.subheader("Atualização automática e ajustes por notícias")
+    st.markdown(
+        "- A cada 30 min (GitHub Actions) os scripts refazem o trabalho dos Bots 2 e 4: Open-Meteo horário para "
+        "~300 maiores colégios, avisos INMET (JSON; RSS e último aviso conhecido como reserva), reclassificação "
+        "a/b/c (≥ 20 mm na janela → a; 5–20 → b; < 5 → c; aviso INMET laranja/vermelho de chuva/tempestade eleva um "
+        "nível) e efeitos por classe do Bot 4.  \n"
+        "- **Ajuste por notícias**: se há registro ativo para o município, o nível usado é o maior entre previsão e "
+        "ajuste; municípios fora das listas entram se existirem nos dados TSE do 1º turno, com as votações de cada "
+        "candidato no município. Os cards mostram 'só previsão' e 'previsão + notícias'.  \n"
+        "- Se uma fonte falha, o último dado válido é mantido e marcado como desatualizado."
     )
 
     st.subheader("Timestamps declarados nos arquivos")

@@ -12,3 +12,7 @@ secrets.toml
 .pytest_cache/
 .DS_Store
 *.log
+
+# logs da atualização automática são versionados (auditoria)
+!data/logs/
+!data/logs/*.log

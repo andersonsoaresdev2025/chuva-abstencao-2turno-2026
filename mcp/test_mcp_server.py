@@ -55,7 +55,7 @@ async def _rodar():
             x = _json(await s.call_tool("impacto_agora", {}))
             for k in ("flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp"):
                 assert x[k]["min"] <= x[k]["mid"] <= x[k]["max"] and abs(x[k]["mid"]) < 0.5
-            assert x["calculado_em"] and x["fonte_precipitacao"] and len(x["municipios"]) == 15
+            assert x["calculado_em"] and x["fonte_precipitacao"] and len(x["municipios"]) >= 15
 
             x = _json(await s.call_tool("metodologia_e_limitacoes", {}))
             assert len(x["limitacoes"]) >= 5

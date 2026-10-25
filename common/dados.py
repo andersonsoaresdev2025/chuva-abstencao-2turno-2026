@@ -22,13 +22,19 @@ CLIMA_DIR = DATA / "clima" / "previsoes_2026-10-25"
 CORREL_DIR = DATA / "correlacao"
 REDUTOS_DIR = DATA / "redutos_1turno"
 SOCIAL_DIR = DATA / "social"
+# Atualização automática (scripts/atualizar_*.py executam os papéis dos Bots 2 e 4 a cada 30 min)
+ATUAL_CLIMA_DIR = DATA / "clima" / "atualizacoes"
+ATUAL_IMPACTO_DIR = DATA / "impacto" / "atualizacoes"
+AJUSTES_FILE = DATA / "ajustes" / "ajustes_impacto_noticias.csv"
+GEO_FILE = DATA / "geo" / "municipios_coordenadas.csv"
+LOGS_DIR = DATA / "logs"
 
 TZ_BRT = ZoneInfo("America/Sao_Paulo")
 
 SOCIAL_COLS = [
     "timestamp_coleta_utc", "timestamp_post", "cidade", "uf", "tipo",
     "nivel_risco_implicito", "confianca", "fonte", "tipo_fonte", "resumo",
-    "link", "cidade_risco_previsto",
+    "link", "cidade_risco_previsto", "rede",
 ]
 
 # Fontes declaradas por arquivo (texto exibido junto de cada resposta/tabela)
@@ -42,7 +48,13 @@ FONTES = {
     "redutos_bot3": "Bot 3 – TSE 1º turno 2026 (processado pelo Bot 0); arquivo data/redutos_1turno/",
     "correlacao_bot1": "Bot 1 – literatura internacional + análise 1º turno 2026 (Open-Meteo Archive/ERA5 + TSE); "
                        "arquivo data/correlacao/",
-    "social": "Monitoramento de redes sociais (X + fontes locais públicas); arquivo data/social/sinais_*.csv",
+    "social": "Monitoramento de redes sociais (X, Instagram via busca web pública, fontes locais); "
+              "arquivo data/social/sinais_*.csv",
+    "risco_auto": "scripts/atualizar_clima.py (papel do Bot 2, a cada 30 min) – Open-Meteo horário + avisos INMET "
+                  "+ ajustes por notícias; arquivo data/clima/atualizacoes/risco_chuva_*_latest.csv",
+    "impacto_auto": "scripts/atualizar_impacto.py (papel do Bot 4, a cada 30 min) – mesma regra por classe do Bot 4; "
+                    "arquivo data/impacto/atualizacoes/impacto_*_latest.csv",
+    "ajustes": "Ajustes por notícias (Grok Bot, revisão a cada 30 min); arquivo data/ajustes/ajustes_impacto_noticias.csv",
 }
 
 ORDEM_RISCO = {"torrencial": 0, "moderada": 1, "sem_chuva_relevante": 2}
@@ -101,24 +113,64 @@ def read_md(path: Path) -> str:
     return "_Arquivo não encontrado._"
 
 
-def carregar_tudo() -> dict[str, pd.DataFrame]:
-    d = {
-        "impacto_mun": read_csv(IMPACTO_DIR / "impacto_municipios.csv"),
-        "impacto_uf": read_csv(IMPACTO_DIR / "impacto_estados.csv"),
-        "impacto_reg": read_csv(IMPACTO_DIR / "impacto_regioes.csv"),
-        "risco_mun": read_csv(CLIMA_DIR / "risco_chuva_municipios.csv"),
-        "risco_uf": read_csv(CLIMA_DIR / "risco_chuva_estados.csv"),
-        "risco_reg": read_csv(CLIMA_DIR / "risco_chuva_regioes.csv"),
+def latest_ou_original(latest: Path, original: Path) -> tuple[pd.DataFrame, str]:
+    """Lê o *_latest.csv da atualização automática; se ausente/vazio, cai no arquivo original."""
+    df = read_csv(latest)
+    if not df.empty:
+        return df, "atualizado"
+    return read_csv(original), "original"
+
+
+def carregar_ajustes(somente_ativos: bool = True) -> pd.DataFrame:
+    from common import regras as R
+    df = read_csv(AJUSTES_FILE)
+    if df.empty:
+        return pd.DataFrame(columns=R.AJUSTES_COLS + ["letra_ajuste", "mm_ajuste"])
+    return R.ajustes_ativos(df) if somente_ativos else df
+
+
+def carregar_tudo() -> dict:
+    origem = {}
+    d = {}
+    pares = {
+        "impacto_mun": ("impacto_municipios_latest.csv", "impacto_municipios.csv", ATUAL_IMPACTO_DIR, IMPACTO_DIR),
+        "impacto_uf": ("impacto_estados_latest.csv", "impacto_estados.csv", ATUAL_IMPACTO_DIR, IMPACTO_DIR),
+        "impacto_reg": ("impacto_regioes_latest.csv", "impacto_regioes.csv", ATUAL_IMPACTO_DIR, IMPACTO_DIR),
+        "risco_mun": ("risco_chuva_municipios_latest.csv", "risco_chuva_municipios.csv", ATUAL_CLIMA_DIR, CLIMA_DIR),
+        "risco_uf": ("risco_chuva_estados_latest.csv", "risco_chuva_estados.csv", ATUAL_CLIMA_DIR, CLIMA_DIR),
+        "risco_reg": ("risco_chuva_regioes_latest.csv", "risco_chuva_regioes.csv", ATUAL_CLIMA_DIR, CLIMA_DIR),
+    }
+    for k, (lat, orig, dl, do) in pares.items():
+        d[k], origem[k] = latest_ou_original(dl / lat, do / orig)
+    d.update({
         "previsao": read_csv(CLIMA_DIR / "previsao_maiores_cidades_com_risco.csv"),
         "redutos_mun": read_csv(REDUTOS_DIR / "redutos_municipios.csv"),
         "redutos_uf": read_csv(REDUTOS_DIR / "redutos_estados.csv"),
         "redutos_reg": read_csv(REDUTOS_DIR / "redutos_regioes.csv"),
         "faixas_chuva": read_csv(CORREL_DIR / "resumo_por_faixa_chuva.csv"),
-    }
+        # camadas da manhã (originais dos Bots 2 e 4), para comparação
+        "risco_mun_manha": read_csv(CLIMA_DIR / "risco_chuva_municipios.csv"),
+        "impacto_mun_manha": read_csv(IMPACTO_DIR / "impacto_municipios.csv"),
+        "ajustes": carregar_ajustes(),
+    })
+    d["_origem"] = origem
     # UF "ZZ" = eleitores no exterior (sem região)
     if not d["impacto_uf"].empty and "regiao" in d["impacto_uf"].columns:
         d["impacto_uf"]["regiao"] = d["impacto_uf"]["regiao"].fillna("Exterior (ZZ)")
     return d
+
+
+def status_atualizacao() -> dict:
+    """Status gravado pelos scripts de atualização (fontes ok/falha, horários). {} se não houver."""
+    import json
+    out = {}
+    for nome, p in (("clima", ATUAL_CLIMA_DIR / "status_latest.json"),
+                    ("impacto", ATUAL_IMPACTO_DIR / "impacto_agora_latest.json")):
+        try:
+            out[nome] = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            out[nome] = {}
+    return out
 
 
 def _primeiro(df: pd.DataFrame, col: str) -> str | None:
@@ -131,23 +183,38 @@ def _primeiro(df: pd.DataFrame, col: str) -> str | None:
 def timestamps_dados(d: dict | None = None) -> dict[str, str]:
     """Timestamps declarados DENTRO dos arquivos (não mtime), por camada."""
     d = d or carregar_tudo()
+    og = d.get("_origem", {})
+    rot_imp = "Impacto (auto, papel Bot 4)" if og.get("impacto_mun") == "atualizado" else "Impacto (Bot 4)"
+    rot_ris = ("Risco de chuva a/b/c (auto, papel Bot 2)" if og.get("risco_mun") == "atualizado"
+               else "Risco de chuva a/b/c (Bot 2)")
     out = {
-        "Impacto (Bot 4)": _primeiro(d["impacto_mun"], "timestamp_atualizacao"),
-        "Risco de chuva a/b/c (Bot 2)": _primeiro(d["risco_mun"], "ultima_atualizacao"),
+        rot_imp: _primeiro(d["impacto_mun"], "timestamp_atualizacao"),
+        rot_ris: _primeiro(d["risco_mun"], "ultima_atualizacao"),
         "Previsão Open-Meteo maiores cidades (Bot 0)": _primeiro(d["previsao"], "timestamp_coleta"),
     }
+    if og.get("risco_mun") == "atualizado":
+        out["Classificação da manhã (Bot 2 original)"] = _primeiro(d.get("risco_mun_manha", pd.DataFrame()),
+                                                                    "ultima_atualizacao")
     corr = read_csv(CORREL_DIR / "analise_1turno_2026.csv")
     out["Correlação 1º turno (Bot 1)"] = _primeiro(corr, "timestamp")
     out["Redutos 1º turno (Bot 3)"] = "2026-10-25 ~06:30 BRT (resumo_executivo_redutos.md)"
+    aj = read_csv(AJUSTES_FILE)
+    out["Ajustes por notícias"] = (_primeiro(aj, "timestamp_brt") if not aj.empty else "nenhum ajuste registrado")
     soc = carregar_social()
     if not soc.empty:
         out["Sinais sociais (último coletado)"] = _primeiro(soc, "timestamp_coleta_utc")
     return {k: (v if v else "—") for k, v in out.items()}
 
 
+def ts_camada(d: dict, chave: str) -> str:
+    """Timestamp BRT declarado da camada 'impacto' ou 'risco'."""
+    col = {"impacto": ("impacto_mun", "timestamp_atualizacao"), "risco": ("risco_mun", "ultima_atualizacao")}[chave]
+    return _primeiro(d[col[0]], col[1]) or "—"
+
+
 def ultimo_timestamp_principal(d: dict | None = None) -> str:
-    ts = timestamps_dados(d)
-    return ts.get("Impacto (Bot 4)", "—")
+    d = d or carregar_tudo()
+    return ts_camada(d, "impacto")
 
 
 # -----------------------------------------------------------------------------
@@ -159,6 +226,16 @@ def arquivos_social() -> tuple[list[Path], list[Path]]:
     csvs = sorted(SOCIAL_DIR.glob("sinais_*.csv"), key=lambda p: (p.stat().st_mtime, p.name))
     mds = sorted(SOCIAL_DIR.glob("resumo_*.md"), key=lambda p: (p.stat().st_mtime, p.name))
     return csvs, mds
+
+
+def rede_do_link(link) -> str:
+    """Infere a rede para arquivos antigos sem a coluna `rede`: x, instagram ou web."""
+    u = "" if link is None or (isinstance(link, float) and pd.isna(link)) else str(link).lower()
+    if "x.com/" in u or "twitter.com/" in u:
+        return "x"
+    if "instagram.com/" in u:
+        return "instagram"
+    return "web"
 
 
 def carregar_social() -> pd.DataFrame:
@@ -174,6 +251,8 @@ def carregar_social() -> pd.DataFrame:
             if c not in df.columns:
                 df[c] = pd.NA
         df = df[SOCIAL_COLS].copy()
+        df["rede"] = df["rede"].where(df["rede"].notna() & (df["rede"].astype(str).str.strip() != ""),
+                                      df["link"].map(rede_do_link))
         df["arquivo_origem"] = p.name
         frames.append(df)
     if not frames:
@@ -200,12 +279,22 @@ DISCLAIMER_SOCIAL = (
     "Sinais de redes sociais e portais locais são **relatos não oficiais**, coletados "
     "automaticamente e filtrados por relevância e tipo de fonte (preferência para INMET, "
     "Defesa Civil, meteorologistas, veículos de imprensa e relatos locais consistentes). "
-    "Eles **não alteram automaticamente** as estimativas de impacto e podem conter erros, "
+    "Eles **não alteram automaticamente** as estimativas de impacto (só entram por meio da camada revisada "
+    "'ajuste por notícias', com fontes e confiança declaradas) e podem conter erros, "
     "atrasos ou desinformação. Sempre confira o link original e os canais oficiais "
     "(TSE, INMET, Defesa Civil)."
 )
 
 LIMITACOES = [
+    "Atualização automática (a cada 30 min) executa por script os papéis dos Bots 2 e 4 com regras fixas; "
+    "a classificação a/b/c usa a chuva da janela 08–17h (o Bot 4 da manhã usou o total do dia), então parte das "
+    "mudanças vs manhã decorre também do critério. Agregados estaduais extrapolam o nível predominante dos "
+    "municípios cobertos para o restante do eleitorado da UF.",
+    "Ajustes por notícias são julgamentos baseados em reportagens/relatos (confiança alta/média/baixa declarada); "
+    "podem superestimar o efeito (notícia de alagamento pontual) e só elevam o nível (nunca reduzem a previsão). "
+    "A intensidade usada é no mínimo o piso da classe (a = 20 mm, b = 5 mm).",
+    "Instagram: apenas resultados públicos de buscadores (sem login); a cobertura é pequena, os buscadores podem "
+    "bloquear consultas automáticas e os itens têm confiança baixa. X: coleta automática só com credencial de API.",
     "Cobertura climática incompleta: previsão horária detalhada (Open-Meteo) só para os 15 maiores "
     "colégios; a classificação a/b/c do Bot 2 cobre 29 municípios; interior e municípios menores "
     "têm classificação agregada ou extrapolada.",
@@ -221,8 +310,8 @@ LIMITACOES = [
     "As camadas foram geradas em horários diferentes (Bot 2 às 06:35 BRT; Bot 4 às 09:24 BRT com "
     "previsão Open-Meteo coletada às ~09:01). Há divergências de classificação entre elas para alguns "
     "locais (ex.: Curitiba, MS, MG, região Sudeste). Ambas são exibidas com seus timestamps.",
-    "Impacto estimado agora: cobre apenas os 15 maiores colégios (~20% do eleitorado); o resto do país "
-    "conta como zero. A chuva das horas decorridas vem do modelo horário Open-Meteo (não de pluviômetros) "
+    "Impacto estimado agora: com a atualização automática cobre ~300 maiores colégios (~54% do eleitorado; "
+    "sem o arquivo horário, só os 15 maiores, ~20%); o resto do país conta como zero. A chuva das horas decorridas vem do modelo horário Open-Meteo (não de pluviômetros) "
     "e a faixa lo–hi reflete só a incerteza do coeficiente do Bot 1.",
     "Correlação não é causalidade. Todos os efeitos são estimativas com faixa de incerteza, "
     "não previsões eleitorais.",

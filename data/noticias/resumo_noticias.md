@@ -1,6 +1,6 @@
 # Monitoramento de notícias — chuva × eleição (2º turno, 25/10/2026)
 
-**Coleta:** 2026-10-25 10:45 UTC (07:45 BRT) · **Notícias no consolidado:** 92 (nesta coleta: 91) · **Fontes consultadas:** 81 (falhas: 0)
+**Coleta:** 2026-10-25 10:50 UTC (07:50 BRT) · **Notícias no consolidado:** 94 (nesta coleta: 93) · **Fontes consultadas:** 81 (falhas: 0)
 
 Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RSS (pt-BR). Só entram itens realmente baixados, publicados em 25/10 (ou a partir de 24/10 18h BRT), que citam chuva/tempo severo **e** eleição — ou chuva forte em área sinalizada no dia da eleição.
 
@@ -19,14 +19,15 @@ Fontes: feeds RSS verificados dos portais em `portais.csv` + Google Notícias RS
 
 ## Distribuição
 
-Por tema: alerta 37, geral 25, locais de votação 16, mobilidade 7, alagamento 7
+Por tema: alerta 37, geral 26, locais de votação 17, mobilidade 7, alagamento 7
 
-Por UF: n 33, d 33, PR 25, SC 9, SP 7, MS 6, RJ 5, GO 2, RS 2, MG 1, AM 1, MT 1
+Por UF: n 34, d 34, PR 26, SC 9, SP 7, MS 6, RJ 5, GO 2, RS 2, MG 1, AM 1, MT 1
 
 ## Itens sinalizados (não verificados ou a checar)
 
 - Chuva muda locais de votação no Paraná neste domingo (25); veja onde votar — Massa.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMimwFBVV95cUxOSUVGMktNTkQtbHhySjcyMmZJdzd0ZkJBNFFNMmp4QXN4dlNYejBtbllPMW5MR1Z2VGk3SGkwNFZPTkVqQVB2dzVhQVF1TkpSbXd0eFpJYTdPVUhpZHBiN18xazlCOTVqUTMxOFlLNHVwaGlzMEM4MzV6YTJyNmR3N0lla0tLX2RoN3JGSVpaSXdWbFB1T3ZiNHNIRQ?oc=5)
 - Eleitores do Paraná devem conferir local de votação devido a temporais — paranahoje.com.br — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMingFBVV95cUxORGtTV2dPS2FrVGtfZTZ4QklHUFdpYVJpdU5rZWl1amtkV21QSGNCcDhjUkN5WUx2WTJzbVN1YjFRRUVZQ18tUkdJd0VvYXZ6TThRbXpEVDdNNXJQRmFUelMxRFFiZUgyT01qVk9IdkZnWDQ1azd5OVNRcnRObUx6R1hyTERzalhJbGhlbXlqOTZHRzJuMW1jNERNVjdmQQ?oc=5)
+- Chuva causa pequenos transtornos na 45ª Zona Eleitoral de SMOeste — Rede Peperi — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMipwFBVV95cUxNOVRmNGdDQnZjWXZSckk4Sm1ZYjZOa1hUX21ybUxxQkduR0hrSFBFWVVvQ09OX2QxVTYtVjhMR3Y1c1VtWXh5TEl0NkplRFFaMFhBU08yelJkLTd6Mk5BNHA4SGw0dWJqMGhKbUIta1J6WG9rdVFuWFU5LVRQWU9oV0FTSVprbEcxdjZwakU4cVJISWlCNGhDcktfeFFIVFpzWWVLcU5jVQ?oc=5)
 - Eleições 2026: Forte chuva altera locais de votação em Curitiba e Guaratuba para o segundo turno — Associação das Emissoras de Radiodifusão do Paraná — _fonte fora da lista verificada; publicado em 24/10 (véspera)_ — [link](https://news.google.com/rss/articles/CBMiwwFBVV95cUxOdHBJMjZpMjdPQTRRekdDSElDa01DQ01iTk1PVVZnZV9zSG9jQXJuc3dGc3FaMG9tdjBtOXhxOWxRNUJJZDB3SkE0WV92ZVRfX0Q4cGdsNFRWcS14dkowczJ0RUxQY3VjQl8xZjlQcFFfWGlGZ2Zua2tUbDlfMmNibk1BXzR3T1B4OEJraGdmMldzRGpfVHN3c0tIQzFqUk5HSmVKQXozSEFzUzN2VDZ4QWtEb1A0LTBRM3B1THlneHBjdnM?oc=5)
 - Alagamento interdita totalmente BR-376 no km 309 entre Ortigueira e Mauá da Serra — Mobilidade Curitiba — _fonte fora da lista verificada; publicado em 24/10 (véspera)_ — [link](https://news.google.com/rss/articles/CBMigwFBVV95cUxPQmxhR01yTlFqYnBJMFVkSmFPTUN1RV95UjlWZXJUYV9aRXlBbVB5U0w5WDRLeDVCTDRlQTZMS3F2SkZxS3dFRk5ya0FESTd5aHluYmlqRHc4NUxhekVDaGVla2FxaXpsNHUyNGRuZnVOV3FlYUxsd1VJOHV0ZW9UVFNEVQ?oc=5)
 - Chuvas provocam mudanças em locais de votação no Paraná - aRede — aRede — _fonte fora da lista verificada; publicado em 24/10 (véspera)_ — [link](https://news.google.com/rss/articles/CBMilgFBVV95cUxPZnV6YTRESFloOU5sWGpFSE5sUGFNbXJDY2FHbHlkaWVmdU5jaVI1N2x5c0VDLVBwck53THdKaDRvdDBNLWNFUVFvc2Znd2RiX1R5OEZTYU12RmRWQ21GY3BnaUpSZllBQXJPbk5yTExNY1lfcy14dG1seElITTFZTFBrVHNES0w1djVsZ04xd24yTnJpeHfSAZ4BQVVfeXFMTW44MXcwcDFmd3hOeHdUVGJjRlZ1WlQ2eEF6cHh1ck1Hblc1SXZxVnFCSzJlbWE4bS0yQU5KR01OTkpaZGFlLVc3NUVPelljZWNJaWhqN3doWWM0SmtDZzgzYzFOQWxYSHUtajZkblUwY1d0cnpNMlZJSW5CRXQyc19EWnhvQzFpWnFlY2xVTzFKbU9lYmZFM3EyekRlRXc?oc=5)
@@ -39,7 +40,6 @@ Por UF: n 33, d 33, PR 25, SC 9, SP 7, MS 6, RJ 5, GO 2, RS 2, MG 1, AM 1, MT 1
 - Com chuva, trator é utilizado para transporte de urna eletrônica no interior do Paraná — CBN Curitiba — _fonte fora da lista verificada; publicado em 24/10 (véspera)_ — [link](https://news.google.com/rss/articles/CBMivwFBVV95cUxQWTRVNEtGLWVnVWxITVBTQXo3QTdiMjZ0UU1hR19EcjhfNU1FNW1rQXNXZUtWcnNyYUtFT2djOFNhMjJaMTdxdnNaalB4TXJ4WFc4blE4dWRnS3dsYlZTMGxIdzJIQ25tSWpTNElKdnlhYmp2bXdYa1ZDclNBdDQ1WjVLeVh4Z0RRZi1RdmtWb1JvMVZQcGxOSmtxSk8xeFZOb0NHSXlzZlNGa1pjaDJsdjVqRlhqSlZsUzhJTFRKRQ?oc=5)
 - Alerta de chuva forte exige atenção de eleitores neste domingo — Sociedade ON — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMilAFBVV95cUxOYmh6VHpKVDJud0UwRk50OElxQUdKd0w5SXVtY21mZEd0dVItYmRTNUxWZFdZemdoRjN5b2JOcFlWUXp0SEkzZjZZLVloX25pZWJNTUctYWZOSk9WRTk0Y2RpeTlrNXU2M2hrWlRnYkFRY2JhcjJBX1EzWk5PMkJLM2ozVFJpbkw4YUFydHQ3cGduTVN6?oc=5)
 - Alerta Severo: Chuva Forte Atinge SP, Cidades Viznhas e Pode Impactar 2º Turno das Eleições — Povo na Rua — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMitgFBVV95cUxOVHVBMzJoUTAxQUZla3BBbW1uUzVzSnhlbUt3YllWaTBPcU81bHI1ZXRuckpBR3lvdTRvWkZZLUxMX0lMR3ZhTDVUUHNsWTdnSU9YZDZka2xUN2N3bGxjZGtDYVNweDlhV1N5eVV6d29oUWJjS3NQRVlDQWk5anVhaFBKdzVjd3RPOGJHcXVEenRZUVhmZWtfbkpkSjZ1eWVPTHdyMUh4aEc1VjFJZjdwRHYybmpfQQ?oc=5)
-- BH pode ter pancadas de chuva com trovoadas isoladas neste domingo de eleição; veja a previsão — Rádio Itatiaia — _fonte fora da lista verificada_ — [link](https://news.google.com/rss/articles/CBMi1wFBVV95cUxNSXNEdlV6QVJuYkp2cE5leGNqN0RhVTJJd3hWWmhyd3kyY1Q5Qnd0R1Zlc01GbFZ1RGp2YWQ3djU5WW1IWTBoQW0yYWVUdHgzTm12WjFnNHl0UjR3NTVTYUxBODJCbUI2LXV6akhXUWswUTFjU1ByX0ZFdXV1OU53WHpueFlvM2JEbjJ0Y05tRGt2cDkwTnhSWlp6T055eDRzMzktRy11bXZhaDlnckY3ejhQX19RYnE0aXJhd1I1ZW1ENlBGMHg3d3BhSmpMSkJaNC1Lb1ZtRQ?oc=5)
 
 ## Limitações
 

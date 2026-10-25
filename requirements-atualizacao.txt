@@ -1,0 +1,3 @@
+# Scripts de atualização automática (scripts/atualizar_*.py, coletar_social.py)
+-r dashboard/requirements.txt
+requests>=2.31

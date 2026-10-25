@@ -54,6 +54,17 @@ Todos os arquivos estão no computador compartilhado, sob `/workspace/artifacts/
 #### Geografia
 - `/workspace/artifacts/data/geo/` (shapefiles IBGE 2025)
 
+### Atualização automática (30 min) — papéis dos Bots 0–4 executados por scripts
+- `scripts/atualizar_tudo.sh` (orquestrador; GitHub Actions `.github/workflows/atualizar.yml`)
+- Clima atualizado: `clima/atualizacoes/risco_chuva_{municipios,estados,regioes}_latest.csv`, `precip_horaria_latest.csv`,
+  `inmet_avisos_latest.json`, `status_latest.json`, `resumo_latest.md` (+ versões `_<AAAAMMDD_HHMMUTC>.csv`)
+- Impacto atualizado: `impacto/atualizacoes/impacto_{municipios,estados,regioes}_latest.csv`, `impacto_agora_latest.json`,
+  `impacto_agora_historico.csv`
+- Ajustes por notícias: `ajustes/ajustes_impacto_noticias.csv`
+- Redes sociais (auto): `social/sinais_<data>_auto.csv`, `social/log_coleta_social.csv`
+- Coordenadas: `geo/municipios_coordenadas.csv` (kelvins/municipios-brasileiros, MIT)
+- Logs: `logs/atualizacao_<UTC>.log`
+
 ### Como usar
 Os arquivos são diretamente acessíveis no sistema de arquivos compartilhado. Use caminhos absolutos acima para leitura, análise ou atualização.
 

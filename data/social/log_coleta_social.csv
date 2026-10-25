@@ -6,7 +6,13 @@ timestamp_utc,rede,motor,consulta,status,n_resultados,n_relevantes,erro
 2026-10-25T10:41:57Z,instagram,todos,site:instagram.com chuva segundo turno votar,pulado,0,0,todos os buscadores bloquearam nesta execução
 2026-10-25T10:41:57Z,todas,-,-,nada_encontrado,0,0,nenhum sinal relevante nesta execução
 2026-10-25T10:50:00Z,x,mcp_x_grokbot,"(chuva OR alagamento OR temporal OR enchente) (""local de votação"" OR ""seção eleitoral"" OR votação OR eleitores) lang:pt",ok,20,1,
-2026-10-25T10:50:00Z,x,mcp_x_grokbot,"contas oficiais TRE-PR/TSE/Defesas Civis/INMET",ok,25,1,
-2026-10-25T10:50:00Z,x,mcp_x_grokbot,"chuva + TRE/urna/local de votação em SP/MS/SC/RS/PR",ok,2,1,
-2026-10-25T10:50:00Z,x,mcp_x_grokbot,"Guaratuba (votação OR eleitores OR TRE OR chuva)",ok,3,1,
-2026-10-25T10:50:00Z,x,mcp_x_grokbot,"escola alagada/sem energia/transporte + votar + chuva",ok,5,0,
+2026-10-25T10:50:00Z,x,mcp_x_grokbot,contas oficiais TRE-PR/TSE/Defesas Civis/INMET,ok,25,1,
+2026-10-25T10:50:00Z,x,mcp_x_grokbot,chuva + TRE/urna/local de votação em SP/MS/SC/RS/PR,ok,2,1,
+2026-10-25T10:50:00Z,x,mcp_x_grokbot,Guaratuba (votação OR eleitores OR TRE OR chuva),ok,3,1,
+2026-10-25T10:50:00Z,x,mcp_x_grokbot,escola alagada/sem energia/transporte + votar + chuva,ok,5,0,
+2026-10-25T10:50:36Z,x,api_v2,"(chuva OR tempestade OR alagamento OR temporal OR enchente) (eleição OR urna OR votação OR ""seção eleitoral"" OR ""segundo turno"" OR votar) lang:pt -is:retweet",pulado,0,0,sem credencial X_BEARER_TOKEN/TWITTER_BEARER_TOKEN
+2026-10-25T10:50:36Z,instagram,duckduckgo_html,site:instagram.com chuva segundo turno votar,bloqueado,0,0,duckduckgo_html: HTTP 202 (limite/anti-robô)
+2026-10-25T10:50:36Z,instagram,duckduckgo_lite,site:instagram.com chuva segundo turno votar,bloqueado,0,0,duckduckgo_lite: HTTP 202 (limite/anti-robô)
+2026-10-25T10:50:36Z,instagram,brave,site:instagram.com chuva segundo turno votar,bloqueado,0,0,brave: HTTP 429 (limite/anti-robô)
+2026-10-25T10:50:36Z,instagram,todos,site:instagram.com chuva segundo turno votar,pulado,0,0,todos os buscadores bloquearam nesta execução
+2026-10-25T10:50:36Z,todas,-,-,nada_encontrado,0,0,nenhum sinal relevante nesta execução

@@ -207,7 +207,7 @@ def impacto_agora() -> dict:
     (Lula − Flávio) e cobertura do eleitorado. Precipitação: Open-Meteo (fallback: previsão Bot 0).
     Antes das 08h = projeção do dia; após 17h = estimativa final. Não é contagem de votos nem boca de urna."""
     from common import impacto_agora as IA
-    r = IA.calcular_com_api()
+    r = IA.calcular_com_api(ajustes=None)  # só previsão
     out = {k: _limpo(v) if not isinstance(v, dict) else {kk: _limpo(vv) for kk, vv in v.items()}
            for k, v in r.items() if k not in ("municipios", "fontes", "coeficiente")}
     out["municipios"] = _registros(r["municipios"])
@@ -215,6 +215,11 @@ def impacto_agora() -> dict:
     out["metodo"] = IA.METODO_TXT
     out["aviso"] = IA.DISCLAIMER.replace("**", "")
     out["fonte"] = r["fontes"]
+    rn = IA.calcular_com_api(ajustes="auto")  # previsão + ajustes por notícias (igual se não houver ajuste)
+    out["previsao_mais_noticias"] = {k: {kk: _limpo(vv) for kk, vv in rn[k].items()} for k in (
+        "flavio_pp", "lula_pp", "margem_lula_menos_flavio_pp", "votos_perdidos_flavio", "votos_perdidos_lula",
+        "abstencao_nacional_pp")}
+    out["previsao_mais_noticias"]["n_ajustes_noticias"] = int(rn.get("n_ajustes_noticias", 0))
     return out
 
 
