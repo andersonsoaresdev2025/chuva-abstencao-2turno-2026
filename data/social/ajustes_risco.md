@@ -60,3 +60,8 @@
 - Monitorando sem ajuste: Juiz de Fora (MG), já "a" pela previsão (INMET laranja), perfil comunitário relata carona a idosos com dificuldade de chegar aos locais por causa da chuva, fonte única; Luzerna (SC), manchete do Ligado no Sul atribui a mudança a alagamentos, mas o texto não confirma o motivo.
 - Fora do escopo (não é chuva): falhas no transporte por ônibus em Salvador (TRE-BA mandou restabelecer a frota) e medidas de transporte do TRE-PA.
 - Descartados: 4 (número sem fonte primária, frase repetida sem local, duas especulações partidárias).
+
+## 2026-10-25 13:15 BRT
+- Sem novos ajustes e sem revogações. Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b) e Campinas (a, média) mantidos; 6 ajustes ativos.
+- Monitorando sem ajuste: **Belo Horizonte (MG)**, já "b" pela previsão, tempestade forte no início da tarde com alerta severo da Defesa Civil de BH (enxurrada/alagamento, depois granizo) e falta de luz em bairros (O Tempo, Metrópoles); ainda sem relato de efeito em locais de votação, e o TRE-MG não alterou locais em BH. 1º turno: Flávio 48,3% × Lula 41,4%. Rodovias no PR: PRF informa BR-153 (km 360 e 385) e BR-476 (km 15) totalmente bloqueadas por água, com rotas alternativas para eleitores; municípios não especificados, sem ajuste. Jundiaí (SP): 2 mortes por correnteza na madrugada, 79 mm, Linha 7-Rubi suspensa e restabelecida pela manhã; sem efeito em locais de votação relatado.
+- Descartados: 3 (boato de votação "amanhã", relatos anedóticos sem local, especulação partidária).
