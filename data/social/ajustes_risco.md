@@ -35,3 +35,9 @@
 - Curitiba (a), Guaratuba (b), Barracão (b, média) e Itapevi (a) mantidos; sem evidência contrária.
 - Monitorando sem ajuste: Guarulhos (SP), votação sem filas com bastante chuva e problemas no aeroporto (GRU Diário); Rio, zona oeste com chuva passando e filas pequenas (relato individual).
 - Descartados: 4 (números sem fonte, ironia/desinformação, humor, relato sem local).
+
+## 2026-10-25 11:20 BRT
+- **Itupeva (SP), 3524006 – ajuste atualizado: confiança média → alta.** Segunda fonte independente (Terra, citando TRE-SP) confirma a mudança dos dois locais da 65ª ZE e detalha 3.722 eleitores em 12 seções transferidos para o Centro de Convivência do Idoso. Nível a mantido. 1º turno: Flávio 60,4% × Lula 29,9% (Flávio mais exposto).
+- Curitiba (a), Guaratuba (b), Barracão (b, média) e Itapevi (a) mantidos; Terra informa 446 eleitores transferidos em Itapevi. Sem evidência contrária, sem revogações.
+- Monitorando sem ajuste: Júlio de Castilhos (RS), chuva sem filas e votação tranquila; Rio, relatos individuais contraditórios (seções vazias na Tijuca × movimento normal na Zona Norte). Nenhuma nova mudança de local relatada desde 10h45.
+- Descartados: 4 (generalizações sem dado, opinião partidária, resposta automatizada sem fonte primária).
