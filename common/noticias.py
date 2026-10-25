@@ -61,13 +61,14 @@ def carregar_noticias(d: Path | None = None) -> pd.DataFrame:
 
 def principais(df: pd.DataFrame, n: int = 8) -> pd.DataFrame:
     """Top n para 'Principais notícias agora': só portais da lista verificada e sem alegação a checar;
-    prioriza publicados no dia da eleição."""
+    dá bônus aos publicados no dia da eleição."""
     if df is None or df.empty:
         return pd.DataFrame(columns=COLS + ["alerta"])
     ok = df[(df["abrangencia"].isin(["nacional", "regional"])) & (~df["alerta"])].copy()
-    ok["_hoje"] = ok["publicado_brt"].astype(str).str.startswith("2026-10-25")
-    ok = ok.sort_values(["_hoje", "score", "publicado_utc"], ascending=[False, False, False])
-    return ok.drop(columns="_hoje").head(n).reset_index(drop=True)
+    hoje = ok["publicado_brt"].astype(str).str.startswith("2026-10-25")
+    ok["_rank"] = ok["score"] + hoje.astype(float) * 1.5  # bônus para o dia da eleição
+    ok = ok.sort_values(["_rank", "publicado_utc"], ascending=[False, False])
+    return ok.drop(columns="_rank").head(n).reset_index(drop=True)
 
 
 def carregar_portais(d: Path | None = None) -> pd.DataFrame:

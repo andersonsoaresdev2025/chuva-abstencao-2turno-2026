@@ -88,6 +88,11 @@ TEMAS = [  # ordem = prioridade
 SUSPEITO = ["eleicao adiada", "eleicao cancelada", "votacao suspensa em todo", "votacao cancelada",
             "urnas nao funcionam por causa da chuva", "metade do pais", "eleicao suspensa", "fraude"]
 
+# Usos figurados de "chuva" (não meteorológicos) — removidos do texto antes do filtro
+FIGURADO = ["faca chuva ou faca sol", "faca sol ou faca chuva", "chuva de votos", "chuva de criticas",
+            "chuva de memes", "chuva de likes", "chuva de ofertas", "chuva de reclamacoes", "chuva de fake",
+            "chuva de denuncias", "chuva de processos", "chuva de gols", "chuva de pedidos"]
+
 UF_NOME = {"sao paulo": "SP", "rio de janeiro": "RJ", "parana": "PR", "mato grosso do sul": "MS",
            "santa catarina": "SC", "rio grande do sul": "RS", "minas gerais": "MG", "espirito santo": "ES",
            "goias": "GO", "distrito federal": "DF", "bahia": "BA", "mato grosso": "MT"}
@@ -295,6 +300,8 @@ def processar(item: dict, origem: str, portal_feed: dict | None, portais, cidade
         titulo = titulo[: -len(" - " + item["fonte_nome"])].strip()
     texto = norm(titulo + " " + item.get("desc", ""))
     t_tit = norm(titulo)
+    for f in FIGURADO:
+        texto, t_tit = texto.replace(f, " "), t_tit.replace(f, " ")
     k_chuva, k_forte, k_ele = tem(texto, CHUVA), tem(texto, CHUVA_FORTE), tem(texto, ELEICAO)
     cidade, uf = detectar_local(texto, cidades, portal)
     em_area_alta = any(c.strip() in altas for c in cidade.split(";")) if cidade else False
