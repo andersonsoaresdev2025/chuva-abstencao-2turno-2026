@@ -11,7 +11,7 @@ UF e grande região. Projeto aberto, com fontes, timestamps, incerteza e limita�
 | | URL |
 |---|---|
 | Dashboard interativo (Streamlit) | _a publicar_ (STREAMLIT_URL) |
-| Site resumido (GitHub Pages) | https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/ |
+| Site resumido (GitHub Pages) | https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/ (publicado 2026-10-25 09:52 UTC) |
 | Repositório | https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026 |
 
 Status detalhado: [STATUS_PUBLICACAO.md](STATUS_PUBLICACAO.md).
