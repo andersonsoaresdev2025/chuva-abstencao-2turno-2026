@@ -22,6 +22,7 @@
 - Linha por execução abaixo; log completo em `data/logs/`.
 
 ## Rodadas do Grok Bot (30 min, dia da eleição)
+- 2026-10-25 11:15 UTC / 08:15 BRT: pipeline completo rodado 2x (ok; Actions não tinha rodado desde 07:52), 105 notícias na coleta, verificação X (6 buscas) + busca web, 7 sinais novos + 5 descartados, novo ajuste por notícias em Barracão (PR, nível b, TRE-PR + CNN), Curitiba e Guaratuba mantidos. Obs.: o log da rodada fica fora do commit do orquestrador e impede o pull --rebase (push segue ok).
 - 2026-10-25 10:55 UTC / 07:55 BRT: notícias coletadas (92 no consolidado), verificação X (5 buscas), 4 sinais novos + 5 descartados, ajustes por notícias ativos para Curitiba (a) e Guaratuba (b), impacto recalculado. Pipeline completo não rodado nesta rodada: código de atualização automática (atualizar_tudo.sh, workflow) estava sendo editado e ainda não commitado; só os arquivos de dados foram publicados.
 
 ## Configuração do Streamlit Community Cloud

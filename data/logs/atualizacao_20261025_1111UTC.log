@@ -30,3 +30,8 @@ OK: docs/index.html (127.3 KB)
 STATUS_PUBLICACAO.md atualizado
 Resumo: clima=ok(4s) impacto=ok(0s) social=ok(1s) noticias=ok(5s) site=ok(1s) testes=ok(14s)
 ===== git: commit → pull --rebase → push
+Commit: ff5b1d0
+error: cannot pull with rebase: You have unstaged changes.
+error: Please commit or stash them.
+pull --rebase falhou (tentativa 1)
+Push OK: ff5b1d0
