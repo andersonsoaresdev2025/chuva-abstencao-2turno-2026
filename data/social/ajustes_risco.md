@@ -87,3 +87,10 @@
 - Demais ajustes mantidos: Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b), Campinas (a, média); agora 7 ativos. Nenhuma nova mudança de local por chuva desde 12h20 (g1 mantém 6 locais alterados em SP, sem novos).
 - Monitorando sem ajuste: Poços de Caldas (MG), alagamento e deslizamento (g1), sem efeito em locais; Contagem (MG), vendaval com queda de árvore.
 - Descartados: 5 (agregador sem fonte primária, alegação genérica sem local, número anedótico em Maringá, resposta de IA, texto genérico repetido).
+
+## 2026-10-25 15:45 BRT
+- **Ajuste atualizado: Belo Horizonte (MG) segue em b, confiança elevada para alta.** A Rádio Itatiaia (15h09) informa alteração emergencial de seções de votação de uma escola de BH destelhada pelo temporal (escola e novo endereço não divulgados). Somado às medições da Defesa Civil de BH (7 a 26 mm em 2h até 13h45) e à queda de energia na PUC Minas. 1º turno em BH: Flávio 48,3% × Lula 41,4%, efeito tende a pesar um pouco mais para Flávio.
+- Demais ajustes mantidos: Curitiba (a), Guaratuba (b), Barracão (b, média), Itapevi (a), São Domingos (b), Campinas (a, média); 7 ativos.
+- Monitorando sem ajuste: Americana (SP), entrada da Escola Sesi (1.487 eleitores) alterada por alagamento, mesmo prédio (Folha); Piracicaba (SP), rio transbordou a 4,96 m, vias interditadas (EPTV), sem efeito em locais; BR-153 bloqueada em Rebouças (PR).
+- Fora do escopo (transporte, não chuva): PT pediu ao TSE prorrogação até 19h em Salvador, Feira de Santana e Lauro de Freitas; TRE-BA mandou prender o secretário de Mobilidade de Salvador (Folha).
+- Descartados: 5 (alegação genérica de campanha, especulação partidária, resposta de IA, senhas na BA sem confirmação oficial, relato anedótico em Petrópolis).
