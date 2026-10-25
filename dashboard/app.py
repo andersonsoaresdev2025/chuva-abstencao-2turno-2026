@@ -24,6 +24,31 @@ from common import dados as D  # noqa: E402
 from common import impacto_agora as IA  # noqa: E402
 from dashboard import noticias as NOT  # noqa: E402  (monitoramento de notícias)
 
+# O Streamlit Cloud reexecuta só app.py a cada push; módulos importados (common/*) ficam em cache no processo.
+# Recarrega-os quando o código mudou (arquivo modificado ou versão diferente), para não rodar código antigo.
+import importlib  # noqa: E402
+import os  # noqa: E402
+from common import regras as R  # noqa: E402
+
+VERSAO_CODIGO_ESPERADA = "2026-10-25-auto30"
+
+
+def _recarregar_se_mudou():
+    mods = [R, D, IA, NOT]
+    mudou = getattr(D, "VERSAO_CODIGO", None) != VERSAO_CODIGO_ESPERADA
+    for m in mods:
+        mt = os.path.getmtime(m.__file__)
+        if getattr(m, "_mtime_carregado", mt) != mt:
+            mudou = True
+    if mudou:
+        for m in mods:
+            importlib.reload(m)
+    for m in mods:
+        m._mtime_carregado = os.path.getmtime(m.__file__)
+
+
+_recarregar_se_mudou()
+
 # -----------------------------------------------------------------------------
 # Configuração da página
 # -----------------------------------------------------------------------------
