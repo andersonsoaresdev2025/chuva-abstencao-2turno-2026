@@ -5,6 +5,7 @@ name: Atualização automática (30 min)
 on:
   schedule:
     - cron: '*/30 9-22 * * *'   # 06:00–19:30 BRT (UTC-3), a cada 30 min
+    - cron: '15,45 9-22 * * *'  # reforço defasado: o cron do GitHub atrasa/pula horários em picos de carga
   workflow_dispatch: {}
 
 permissions:
@@ -38,12 +39,35 @@ jobs:
             dashboard/requirements.txt
             mcp/requirements.txt
 
+      # Com dois horários de cron, pula se a última atualização tem < 20 min (limite diário do Open-Meteo,
+      # ~300 locais por execução). Disparo manual sempre roda.
+      - name: Verificar intervalo mínimo
+        id: guarda
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, os, datetime as dt
+          rodar = "1"
+          try:
+              s = json.load(open("data/clima/atualizacoes/status_latest.json"))
+              t = dt.datetime.fromisoformat(s["executado_em_utc"])
+              idade = (dt.datetime.now(dt.timezone.utc) - t).total_seconds() / 60
+              if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and idade < 20:
+                  rodar = "0"
+              print(f"idade_min={idade:.0f}")
+          except Exception as e:
+              print("idade_min=?")
+          print(f"rodar={rodar}")
+          PY
+          cat "$GITHUB_OUTPUT"
+
       - name: Instalar dependências
+        if: steps.guarda.outputs.rodar == '1'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
 
       - name: Atualizar tudo (etapas não fatais)
+        if: steps.guarda.outputs.rodar == '1'
         env:
           PYTHON: python
           PUBLICAR: '0'          # o commit/push é feito no passo seguinte, como github-actions
@@ -51,6 +75,7 @@ jobs:
 
       - name: Commit e push (github-actions)
         id: push
+        if: steps.guarda.outputs.rodar == '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -60,7 +85,7 @@ jobs:
           fi
           git commit -q -m "Atualização automática $(date '+%Y-%m-%d %H:%M') BRT [actions]"
           for i in 1 2 3; do
-            git pull -q --rebase -X theirs origin main || git rebase --abort || true
+            git pull -q --rebase --autostash -X theirs origin main || git rebase --abort || true
             if git push -q origin HEAD:main; then echo "Push OK $(git rev-parse HEAD)"; break; fi
             sleep $((i * 10))
           done

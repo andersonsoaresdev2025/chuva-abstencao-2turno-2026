@@ -72,6 +72,10 @@ PYEOF
 echo "Resumo: ${RESUMO[*]}" | tee -a "$LOG"
 
 if [ "$PUBLICAR" = "1" ]; then
+  # A saída do git vai para um arquivo ignorado pelo git (data/logs/git_ultimo.txt): escrever no log versionado
+  # depois do `git add` deixaria a árvore suja e o `pull --rebase` falharia.
+  GITLOG="data/logs/git_ultimo.txt"
+  echo "git: commit → pull --rebase --autostash → push (saída em $GITLOG)" | tee -a "$LOG"
   {
     echo "===== git: commit → pull --rebase → push"
     BIG=$(find data docs -type f -size +50M -print)
@@ -84,10 +88,10 @@ if [ "$PUBLICAR" = "1" ]; then
     fi
     for i in 1 2 3; do
       # -X theirs no rebase = em conflito, prevalece o nosso commit (dado mais novo)
-      git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; echo "pull --rebase falhou (tentativa $i)"; }
+      git pull -q --rebase --autostash -X theirs origin main || { git rebase --abort 2>/dev/null; echo "pull --rebase falhou (tentativa $i)"; }
       if git push -q origin HEAD:main; then echo "Push OK: $(git rev-parse --short HEAD)"; break; fi
       echo "push rejeitado (tentativa $i)"; sleep $((i * 5))
     done
-  } 2>&1 | tee -a "$LOG"
+  } 2>&1 | tee "$GITLOG"
 fi
 exit 0

@@ -16,3 +16,4 @@ secrets.toml
 # logs da atualização automática são versionados (auditoria)
 !data/logs/
 !data/logs/*.log
+data/logs/git_ultimo.txt

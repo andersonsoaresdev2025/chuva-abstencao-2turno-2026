@@ -66,6 +66,13 @@ originais deles ficam intactos e servem de referência "manhã" e de fallback):
 - **Falhas:** nenhuma etapa derruba a execução. Se uma fonte falha, fica o último dado válido, marcado como
   desatualizado (`status_dado`, avisos no topo do dashboard e do site). Nada é inventado.
 - **Logs:** `data/logs/atualizacao_<UTC>.log` por execução e uma linha de status em `STATUS_PUBLICACAO.md`.
+- **Agendamento e reforço:** o workflow tem dois horários (`*/30` e `15,45`), porque o cron do GitHub Actions
+  atrasa ou pula execuções em horários de pico (e costuma ignorar os primeiros horários logo após o workflow ser
+  criado). Execuções agendadas com menos de 20 min desde a última atualização são puladas (limite diário do Open-Meteo).
+  **Reforço independente:** a rotina de 30 min do Grok Bot roda o pipeline (`scripts/atualizar_tudo.sh`) e revisa os
+  ajustes por notícias mesmo que o cron do GitHub falhe. O script não dispara o workflow (evita laços).
+- **Git:** o commit inclui `data/` (com o log da execução), `docs/` e `STATUS_PUBLICACAO.md`; a saída do próprio git vai
+  para `data/logs/git_ultimo.txt` (ignorado) e o `pull` usa `--rebase --autostash`.
 - **Cron local alternativo:** `*/30 * * * * cd <repo> && scripts/atualizar_tudo.sh` (não rode os dois ao mesmo tempo).
 Para preencher o link do Streamlit no site: `STREAMLIT_URL=https://... python scripts/build_site.py`
 (ou edite a constante `STREAMLIT_URL` em `scripts/build_site.py`).
