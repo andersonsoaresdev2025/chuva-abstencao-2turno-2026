@@ -31,6 +31,7 @@
 - 2026-10-25 10:55 UTC / 07:55 BRT: notícias coletadas (92 no consolidado), verificação X (5 buscas), 4 sinais novos + 5 descartados, ajustes por notícias ativos para Curitiba (a) e Guaratuba (b), impacto recalculado. Pipeline completo não rodado nesta rodada: código de atualização automática (atualizar_tudo.sh, workflow) estava sendo editado e ainda não commitado; só os arquivos de dados foram publicados.
 
 - 2026-10-25 14:20 UTC / 11:20 BRT: pipeline completo rodado 2× (11:14 e 11:16 BRT, tudo ok); verificação X (3 buscas) + web/Instagram público; 4 sinais novos + 4 descartados; ajuste Itupeva (SP) elevado para confiança alta (2ª fonte: Terra/TRE-SP, 3.722 eleitores); 5 ajustes ativos; impacto recalculado e publicado.
+- 2026-10-25 14:50 UTC / 11:50 BRT: pipeline completo rodado 2× (11:41 e 11:43 BRT, tudo ok); verificação X (2 buscas) + web; 7 sinais novos + 4 descartados; novos ajustes São Domingos (SC, b, alta; TRE-SC, 621 eleitores) e Campinas (SP, a, média; escola alagada em Sousas); 7 ajustes ativos; impacto recalculado e publicado.
 ## Configuração do Streamlit Community Cloud
 - Repository: `andersonsoaresdev2025/chuva-abstencao-2turno-2026`
 - Branch: `main`
