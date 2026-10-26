@@ -1,0 +1,7 @@
+# Dependências extras só para regenerar o relatório pós-eleição (não usadas pelo site nem pelo dashboard)
+pandas
+numpy
+statsmodels
+matplotlib
+markdown
+weasyprint

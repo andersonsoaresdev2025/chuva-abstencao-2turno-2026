@@ -69,3 +69,15 @@ Todos os arquivos estão no computador compartilhado, sob `/workspace/artifacts/
 Os arquivos são diretamente acessíveis no sistema de arquivos compartilhado. Use caminhos absolutos acima para leitura, análise ou atualização.
 
 **Status**: Dados essenciais e análises dos Bots 0–4 disponíveis e prontos para consumo contínuo.
+
+### Pós-eleição: resultado oficial × estimativa (adicionado após a totalização do TSE)
+- **Encerramento:** atualizações do dia da eleição encerradas às 17:10 BRT de 25/10/2026; workflow GitHub `atualizar.yml` desativado. Último snapshot (estimativa congelada): 17:09 BRT, `data/impacto/atualizacoes/impacto_agora_latest.json`.
+- **Pasta:** `data/resultado_2turno/` no repositório (https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/tree/main/data/resultado_2turno)
+  - `CONCLUSAO.md`: conclusão e limitações (proposta de coeficiente apenas como sugestão para discussão)
+  - `comparacao_municipios_2turno.md` / `.pdf`: relatório completo
+  - `comparacao_municipios_2turno.csv`: 304 municípios; `resumo.json`: números-chave; `uf_variacao.csv`
+  - `tse_2t/`: arquivos oficiais do TSE do 2º turno (eleição 6258): `ab_2t.json`, `ab_<uf>.json`, `municipios/*-u.json`
+  - `README.md`: fontes, URLs do TSE e como reproduzir (`scripts/pos_eleicao/`)
+- **Site:** https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/resultado_2turno.html (destaque na página inicial, seção `#resultado-oficial`)
+- **Dashboard:** página "Resultado oficial × estimativa" em https://chuva-abstencao-2026.streamlit.app/
+

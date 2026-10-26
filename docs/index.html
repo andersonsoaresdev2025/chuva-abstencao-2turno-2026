@@ -28,13 +28,22 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <h1>🌧️ Chuva × Abstenção Eleitoral</h1>
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
 <p id="atualizado" style="font-size:1.25rem;background:#fff;color:#12324f;display:inline-block;padding:6px 12px;border-radius:8px;margin:8px 0"><b>🕒 Atualizado em 2026-10-25 17:09 BRT</b></p>
-<p><b>Dados atualizados em:</b> risco a/b/c (atualização automática, papel do Bot 2) 2026-10-25 17:09 BRT · impacto (atualização automática, papel do Bot 4) 2026-10-25 17:09 BRT · ajustes por notícias 2026-10-25 17:15 · página gerada 2026-10-25 20:10 UTC / 2026-10-25 17:10 BRT</p>
-<p>Atualização automática a cada 30 min (08h–19h BRT). Open-Meteo: ok · INMET: ok</p>
+<p><b>Dados atualizados em:</b> risco a/b/c (atualização automática, papel do Bot 2) 2026-10-25 17:09 BRT · impacto (atualização automática, papel do Bot 4) 2026-10-25 17:09 BRT · ajustes por notícias 2026-10-25 17:15 · página gerada 2026-10-26 12:50 UTC / 2026-10-26 09:50 BRT</p>
+<p><b>Atualizações encerradas às 17:10 BRT de 25/10/2026</b>: os painéis abaixo mostram a estimativa congelada às 17:09 BRT, mantida como registro histórico. Open-Meteo: ok · INMET: ok</p>
 <a class="cta" href="https://chuva-abstencao-2026.streamlit.app/" id="streamlit-link">Abrir dashboard interativo</a>
+<a class="cta" style="background:#27ae60" href="resultado_2turno.html" id="resultado-link">Resultado oficial × estimativa</a>
 <a class="cta" style="background:#34495e" href="https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#agora">Agora</a><a href="#ajustes">Ajustes por notícias</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#resultado-oficial"><b>Resultado oficial × estimativa</b></a><a href="#agora">Agora</a><a href="#ajustes">Ajustes por notícias</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
+
+<section id="resultado-oficial" style="border:2px solid #27ae60">
+<h2>🗳️ Resultado oficial × estimativa (pós-eleição)</h2>
+<p>Com a totalização do TSE, comparamos município a município a estimativa publicada no dia da eleição com o resultado oficial. <b>Direção compatível com o modelo, magnitude de cerca de um terço</b> do coeficiente usado; com peso pelo eleitorado o efeito não se distingue de zero, e as grandes capitais contradizem o modelo.</p>
+<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div class="kpi"><span class="muted">Abstenção nacional (TSE)</span><b>21,08% → 19,22%</b>1º → 2º turno (−1,87 p.p.)</div><div class="kpi"><span class="muted">Estimativa final (17:09 BRT)</span><b>+0,34 p.p.</b>538.510 abstenções extras (faixa 307.720 a 769.300)</div><div class="kpi"><span class="muted">Observado acima da média da UF</span><b>−187.621</b>eleitores, soma dos 304 municípios cobertos</div><div class="kpi"><span class="muted">Inclinação sem peso</span><b>+0,22 p.p. / 10 mm</b>IC 95% +0,14 a +0,31: direção compatível com o modelo</div><div class="kpi"><span class="muted">Coeficiente implícito</span><b>0,022 p.p./mm</b>contra 0,07 usado (32%): cerca de um terço</div><div class="kpi"><span class="muted">Inclinação com peso (eleitorado)</span><b>+0,08 p.p. / 10 mm</b>IC 95% −0,17 a +0,34: não se distingue de zero</div></div>
+<p><a class="cta" style="background:#27ae60" href="resultado_2turno.html">Ver a comparação completa</a> <a class="cta" style="background:#34495e" href="https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/blob/main/data/resultado_2turno/CONCLUSAO.md">Conclusão (GitHub)</a></p>
+<p class="muted">Os painéis abaixo mostram a estimativa <b>congelada às 17:09 BRT</b> de 25/10/2026, mantida sem alteração como registro histórico.</p>
+</section>
 
 <section id="agora">
 <h2>⏱️ Impacto estimado agora — estimativa final do dia</h2>
@@ -51,7 +60,7 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <div class="kpi"><b>+0,05 p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa +0,03 a +0,07 · abstenção nacional +0,33 p.p.<br><span class="muted"><b>Previsão + notícias:</b> +0,05 p.p.</span></div>
 <div class="kpi"><b>54,1%</b>do eleitorado coberto (304 maiores colégios; demais = 0) · 9 ajuste(s) por notícias</div>
 </div>
-<p class="alert" id="snapshot-agora">🕒 <b>Snapshot de 17:09 BRT</b> · próxima atualização ~17:39 BRT · mesmos números do dashboard (arquivo publicado impacto_agora_latest.json).</p>
+<p class="alert" id="snapshot-agora">🕒 <b>Snapshot de 17:09 BRT</b> · <b>estimativa final do dia da eleição, congelada</b> (atualizações encerradas às 17:10 BRT de 25/10/2026) e mantida sem alteração como registro histórico · <a href="resultado_2turno.html">compare com o resultado oficial</a> · mesmos números do dashboard (arquivo publicado impacto_agora_latest.json).</p>
 <p class="muted">Calculado em 17:09 BRT (2026-10-25 20:09 UTC) pela atualização automática; janela: 9,0 h desde 08h · Precipitação: Open-Meteo horário de 304 municípios (arquivo da atualização automática, obtido às 17:09 BRT; horas decorridas = estimativa do modelo, não pluviômetro). Versão interativa no <a href="https://chuva-abstencao-2026.streamlit.app/">dashboard</a>.</p>
 
 <p class="muted"><b>Como é calculado:</b> Para cada município coberto (≈300 maiores colégios do arquivo horário atualizado a cada 30 min; sem esse arquivo, os 15 maiores colégios), somamos a chuva desde 08h até agora (Open-Meteo; se a API falhar, a previsão do Bot 0 pró-rata pelas horas decorridas) e aplicamos o coeficiente do Bot 1: +0,7 p.p. de abstenção por cm de chuva (faixa 0,4–1,0). As abstenções extras (aptos × efeito) são divididas entre Flávio e Lula pela votação de cada um no município no 1º turno (mesma suposição do Bot 4), e o resultado é comparado com os votos nacionais dos dois no 1º turno. Municípios fora da cobertura contam como zero. Ajustes por notícias ativos elevam a chuva do município ao maior valor entre modelo e ajuste (versão &#x27;previsão + notícias&#x27;). Antes das 08h mostramos a projeção do dia; após 17h, a estimativa final.</p>
@@ -153,6 +162,6 @@ footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
 <p class="muted">Código sob licença MIT; dados de análise sob CC BY 4.0; dados de origem pública mantêm os termos originais.</p>
 </section>
 </main>
-<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-25 20:10 UTC / 2026-10-25 17:10 BRT por scripts/build_site.py</footer>
+<footer>Chuva × Abstenção Eleitoral · 2º Turno 2026 · Página gerada em 2026-10-26 12:50 UTC / 2026-10-26 09:50 BRT por scripts/build_site.py</footer>
 </body>
 </html>

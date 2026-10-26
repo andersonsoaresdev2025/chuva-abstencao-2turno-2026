@@ -13,6 +13,25 @@ UF e grande região. Projeto aberto, com fontes, timestamps, incerteza e limita�
 | Dashboard interativo (Streamlit) | https://chuva-abstencao-2026.streamlit.app/ |
 | Site resumido (GitHub Pages) | https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/ (publicado 2026-10-25 09:52 UTC) |
 | Repositório | https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026 |
+| **Resultado oficial × estimativa (pós-eleição)** | https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/resultado_2turno.html · dashboard, página "Resultado oficial × estimativa" |
+| Conclusão e documentos pós-eleição | [data/resultado_2turno/CONCLUSAO.md](data/resultado_2turno/CONCLUSAO.md) · [data/resultado_2turno/](data/resultado_2turno/) |
+
+> **Encerramento.** As atualizações do dia da eleição foram encerradas às **17:10 BRT de 25/10/2026** e o workflow
+> do GitHub Actions (`atualizar.yml`) foi **desativado**. O painel "Impacto estimado agora" do site e do dashboard
+> mostra a estimativa **congelada às 17:09 BRT**, mantida sem alteração como registro histórico.
+
+## Resultado oficial × estimativa (pós-eleição)
+Comparação, município a município (304 municípios cobertos), da estimativa final de 17:09 BRT com o resultado
+oficial do TSE (eleição 6258, totalização final). Em resumo: **direção compatível com o modelo, magnitude de cerca de
+um terço** (inclinação sem peso +0,22 p.p. por 10 mm, IC +0,14 a +0,31; coeficiente implícito 0,022 p.p./mm contra
+0,07 usado); com peso pelo eleitorado o efeito não se distingue de zero, e São Paulo e Rio de Janeiro ficaram abaixo
+da média de suas UFs. A estimativa e o coeficiente do dia da eleição **não foram alterados**; a revisão do coeficiente
+em `CONCLUSAO.md` é uma sugestão para discussão.
+
+- Relatório: `data/resultado_2turno/comparacao_municipios_2turno.md` e `.pdf`; dados: `comparacao_municipios_2turno.csv`
+  (304 linhas) e `resumo.json`; fontes e arquivos brutos do TSE: `data/resultado_2turno/README.md` e `tse_2t/`.
+- Reprodução: `scripts/pos_eleicao/` (`montar.py`, `gerar.py`, `pdf.py`, `baixar_tse.py`; dependências extras em
+  `scripts/pos_eleicao/requirements.txt`). Site e dashboard leem só os arquivos gerados (`common/resultado_2t.py`).
 
 Status detalhado: [STATUS_PUBLICACAO.md](STATUS_PUBLICACAO.md).
 
@@ -24,8 +43,10 @@ mcp/                servidor MCP (FastMCP, stdio) + teste
 common/dados.py     leitura compartilhada dos CSVs (dashboard, site e MCP)
 scripts/            atualizar_tudo.sh (orquestrador 30 min), atualizar_clima.py, atualizar_impacto.py,
                     coletar_social.py, coletar_noticias.py, build_site.py, update_and_publish.sh (atalho)
+common/resultado_2t.py  leitura da comparação pós-eleição (site e dashboard)
+scripts/pos_eleicao/    reprodução do relatório pós-eleição
 common/regras.py    regras a/b/c, efeitos por classe e ajustes por notícias (compartilhadas)
-.github/workflows/atualizar.yml   GitHub Actions: atualização automática a cada 30 min
+.github/workflows/atualizar.yml   GitHub Actions: atualização automática a cada 30 min (desativado após 17:10 BRT de 25/10/2026)
 data/               dados processados (ver abaixo)
 tests/              testes do dashboard (streamlit.testing AppTest)
 Documento_Instrucoes_v2*.md, AGENTS.md, checklist_execucao.md   documentos do projeto
@@ -45,6 +66,9 @@ PUBLICAR=0 scripts/atualizar_tudo.sh         # idem, sem git (só gera os arquiv
 `scripts/update_and_publish.sh` continua existindo, mas apenas chama `scripts/atualizar_tudo.sh` — use o orquestrador.
 
 ## Atualização automática (a cada 30 min)
+> Encerrada às 17:10 BRT de 25/10/2026; workflow `atualizar.yml` desativado. A descrição abaixo fica como registro de
+> como o projeto funcionou no dia da eleição.
+
 **Os papéis dos Bots 0–4 são executados por estes scripts** (os bots originais não são chamados; os arquivos
 originais deles ficam intactos e servem de referência "manhã" e de fallback):
 

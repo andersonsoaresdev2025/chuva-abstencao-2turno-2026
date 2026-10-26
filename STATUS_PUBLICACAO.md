@@ -1,6 +1,10 @@
 # Status de Publicação – Chuva × Abstenção Eleitoral (2º Turno 2026)
 
-Última atualização: **2026-10-25 13:15 UTC / 2026-10-25 10:15 BRT**
+Última atualização: **pós-eleição, comparação com o resultado oficial publicada**
+
+> **Encerramento.** As atualizações do dia da eleição terminaram às **17:10 BRT de 25/10/2026** (último snapshot: 17:09 BRT).
+> O workflow do GitHub Actions `atualizar.yml` está **desativado** (disabled_manually). A estimativa de 17:09 BRT fica
+> congelada no site e no dashboard como registro histórico.
 
 | Entregável | Status | URL | Atualizado (UTC / BRT) | Observações |
 |---|---|---|---|---|
@@ -11,8 +15,9 @@
 | MCP (stdio) | pronto local | – (roda localmente: `python mcp/chuva_mcp_server.py`) | 2026-10-25 09:51 UTC / 2026-10-25 06:51 BRT | 6 ferramentas (inclui `impacto_agora`); teste ponta a ponta passa |
 | Sinais sociais (data/social) | integrado | página "Sinais Sociais" do dashboard e seção do site | 2026-10-25 09:51 UTC / 2026-10-25 06:51 BRT | Coleta 2026-10-25 09:45 UTC (35 sinais) |
 | Monitoramento de notícias (data/noticias) | publicado | página "Notícias" do dashboard + quadro "Principais notícias agora" na Visão Geral + seção #noticias do site | 2026-10-25 10:22 UTC / 2026-10-25 07:22 BRT | 44 portais verificados (13 nacionais, 31 regionais); coletor `scripts/coletar_noticias.py` (RSS + Google Notícias), roda em `scripts/update_and_publish.sh` |
+| Resultado oficial × estimativa (pós-eleição) | publicado | site: https://andersonsoaresdev2025.github.io/chuva-abstencao-2turno-2026/resultado_2turno.html · dashboard: página "Resultado oficial × estimativa" · dados: https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/tree/main/data/resultado_2turno | após a totalização final do TSE (25/10/2026 23:26) | 304 municípios; relatório .md/.pdf, CSV, resumo.json, CONCLUSAO.md, arquivos brutos do TSE; estimativa e coeficiente do dia da eleição não alterados |
 
-## Atualização automática
+## Atualização automática (encerrada às 17:10 BRT de 25/10/2026; workflow desativado)
 - **Quem executa:** os papéis dos Bots 0–4 são executados por scripts (`scripts/atualizar_clima.py`, `scripts/atualizar_impacto.py`,
   `scripts/coletar_social.py`, `scripts/coletar_noticias.py`, `scripts/build_site.py`), orquestrados por `scripts/atualizar_tudo.sh`.
 - **Onde:** GitHub Actions `.github/workflows/atualizar.yml`, a cada 30 min (06h00–19h30 BRT) + disparo manual; commit como

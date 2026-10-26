@@ -17,3 +17,4 @@ secrets.toml
 !data/logs/
 !data/logs/*.log
 data/logs/git_ultimo.txt
+data/resultado_2turno/.base_cache.pkl

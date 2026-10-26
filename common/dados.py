@@ -15,10 +15,28 @@ from zoneinfo import ZoneInfo
 
 import pandas as pd
 
-VERSAO_CODIGO = "2026-10-25-snapshot"  # conferido pelo dashboard para recarregar módulos após deploy
+VERSAO_CODIGO = "2026-10-25-resultado2t"  # conferido pelo dashboard para recarregar módulos após deploy
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATA = REPO_ROOT / "data"
+
+# Encerramento das atualizações do dia da eleição. A última execução publicou o snapshot de 17:09 BRT;
+# as atualizações automáticas foram encerradas às 17:10 BRT de 25/10/2026 (workflow desativado).
+# Snapshots gerados a partir das 17:00 BRT do dia 25 são tratados como a estimativa final, congelada.
+ENCERRAMENTO_TXT = "atualizações encerradas às 17:10 BRT de 25/10/2026"
+ENCERRAMENTO_TXT_INICIAL = "Atualizações encerradas às 17:10 BRT de 25/10/2026"
+INICIO_ESTIMATIVA_FINAL_UTC = datetime(2026, 10, 25, 20, 0, tzinfo=timezone.utc)  # 17:00 BRT
+RESULTADO_2T_DIR = DATA / "resultado_2turno"
+REPO_BLOB = "https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/blob/main/data/resultado_2turno"
+REPO_TREE = "https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026/tree/main/data/resultado_2turno"
+
+
+def estimativa_congelada(gerado_utc) -> bool:
+    """True se o snapshot é a estimativa final do dia da eleição (mantida sem alteração como registro histórico)."""
+    try:
+        return gerado_utc is not None and gerado_utc >= INICIO_ESTIMATIVA_FINAL_UTC
+    except TypeError:
+        return False
 IMPACTO_DIR = DATA / "impacto"
 CLIMA_DIR = DATA / "clima" / "previsoes_2026-10-25"
 CORREL_DIR = DATA / "correlacao"

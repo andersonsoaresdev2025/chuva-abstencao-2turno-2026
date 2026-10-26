@@ -29,8 +29,9 @@ from dashboard import noticias as NOT  # noqa: E402  (monitoramento de notícias
 import importlib  # noqa: E402
 import os  # noqa: E402
 from common import regras as R  # noqa: E402
+from common import resultado_2t as RES  # noqa: E402
 
-VERSAO_CODIGO_ESPERADA = "2026-10-25-snapshot"
+VERSAO_CODIGO_ESPERADA = "2026-10-25-resultado2t"
 
 
 def _recarregar_se_mudou():
@@ -40,8 +41,8 @@ def _recarregar_se_mudou():
     os módulos são buscados pelo nome (importados de novo se sumiram) e nunca recarregados
     a partir de uma referência antiga. Qualquer falha aqui não derruba o app.
     """
-    global R, D, IA, NOT
-    nomes = ["common.regras", "common.dados", "common.impacto_agora", "dashboard.noticias"]
+    global R, D, IA, NOT, RES
+    nomes = ["common.regras", "common.dados", "common.impacto_agora", "dashboard.noticias", "common.resultado_2t"]
     try:
         mods = [sys.modules.get(n) for n in nomes]
         mudou = any(m is None for m in mods)
@@ -58,7 +59,7 @@ def _recarregar_se_mudou():
                 mods.append(importlib.reload(m) if m is not None else importlib.import_module(n))
         for m in mods:
             m._mtime_carregado = os.path.getmtime(m.__file__)
-        R, D, IA, NOT = mods
+        R, D, IA, NOT, RES = mods
     except Exception:  # noqa: BLE001 – recarga é só otimização; segue com os módulos já importados
         pass
 
@@ -275,13 +276,20 @@ def bloco_impacto_agora():
     obtida = f" (dados obtidos às {r['precip_obtida_em_brt']})" if r.get("precip_obtida_em_brt") else ""
     janela = ("dia inteiro 08h–17h (previsão)" if r["modo"] == "projecao" else
               f"{r['horas_decorridas']:.1f} h desde 08h".replace(".", ","))
-    st.info(f"🕒 **Snapshot de {snap['snapshot_hhmm_brt']} BRT** · próxima atualização ~{snap['proxima_atualizacao_hhmm_brt']} BRT "
-            "· mesmos números do site (arquivo publicado impacto_agora_latest.json).")
+    congelada = D.estimativa_congelada(IA._gerado(snap))
+    if congelada:
+        st.info(f"🕒 **Snapshot de {snap['snapshot_hhmm_brt']} BRT** · estimativa final do dia da eleição, congelada "
+                f"({D.ENCERRAMENTO_TXT}) e mantida sem alteração como registro histórico · mesmos números do site "
+                "(arquivo publicado impacto_agora_latest.json). Compare com o resultado oficial na página "
+                "\"Resultado oficial × estimativa\".")
+    else:
+        st.info(f"🕒 **Snapshot de {snap['snapshot_hhmm_brt']} BRT** · próxima atualização ~{snap['proxima_atualizacao_hhmm_brt']} BRT "
+                "· mesmos números do site (arquivo publicado impacto_agora_latest.json).")
     try:
         idade = (D.agora_utc() - IA._gerado(snap)).total_seconds() / 60
     except Exception:  # noqa: BLE001
         idade = 0
-    if idade > 50:
+    if idade > 50 and not congelada:
         st.warning(f"Snapshot com {idade:.0f} min (a atualização automática deveria rodar a cada 30 min): dado desatualizado.")
     st.caption(
         f"Fonte do snapshot: {snap.get('_origem_snapshot', '?')} · janela considerada: "
@@ -342,6 +350,7 @@ AUTO = ORIGEM.get("risco_mun") == "atualizado"
 
 PAGINAS = [
     "Visão Geral",
+    "Resultado oficial × estimativa",
     "Risco de Chuva",
     "Impacto na Abstenção",
     "Redutos e Diferencial",
@@ -385,8 +394,11 @@ _rot_r = "risco a/b/c (atualização automática, papel Bot 2)" if AUTO else "ri
 st.info(
     f"🕒 **Dados atualizados em:** {_rot_r} **{ts_risco}** · {_rot_i} **{ts_atualizacao}** · "
     f"ajustes por notícias {timestamps.get('Ajustes por notícias', '—')} · agora {D.fmt_utc_brt()}. "
-    "Atualização automática a cada 30 min. Estimativas com incerteza — não é previsão eleitoral oficial."
+    f"{D.ENCERRAMENTO_TXT_INICIAL}: a estimativa ficou congelada às 17:09 BRT. "
+    "Estimativas com incerteza; não é previsão eleitoral oficial."
 )
+st.success("🗳️ **Resultado oficial × estimativa (pós-eleição):** a comparação município a município com o resultado "
+           "do TSE está na página \"Resultado oficial × estimativa\" do menu.")
 _cl = STATUS.get("clima", {})
 if _cl:
     _om, _in = _cl.get("open_meteo", {}), _cl.get("inmet", {})
@@ -474,6 +486,141 @@ if pagina == "Visão Geral":
             social.head(5)[["timestamp_post", "rede", "cidade", "uf", "nivel_risco_implicito", "fonte", "resumo", "link"]],
             width="stretch", hide_index=True,
             column_config={"link": st.column_config.LinkColumn("Link")})
+
+# -----------------------------------------------------------------------------
+# PÁGINA: RESULTADO OFICIAL × ESTIMATIVA (pós-eleição)
+# -----------------------------------------------------------------------------
+elif pagina == "Resultado oficial × estimativa":
+    st.title("🗳️ Resultado oficial × estimativa (pós-eleição)")
+    st.markdown(
+        "Comparação, município a município, entre a estimativa de efeito da chuva publicada no dia da eleição "
+        "e o resultado oficial do TSE (eleição 6258, totalização final)."
+    )
+    st.warning(
+        "A estimativa comparada é a **congelada às 17:09 BRT** de 25/10/2026 (painel \"Impacto estimado agora\"), "
+        f"mantida sem alteração como registro histórico ({D.ENCERRAMENTO_TXT}). O coeficiente do modelo não foi alterado. "
+        "A variação da abstenção do 1º para o 2º turno **não** é a abstenção causada pela chuva."
+    )
+    try:
+        res_df, res_resumo = RES.carregar_csv(), RES.carregar_resumo()
+        res_conc = RES.carregar_conclusao()
+    except Exception as e:  # noqa: BLE001
+        st.error(f"Arquivos da comparação pós-eleição não encontrados em data/resultado_2turno/: {e}")
+        st.stop()
+
+    cards = RES.numeros_chave(res_resumo)
+    for linha in (cards[:3], cards[3:]):
+        cols = st.columns(3)
+        for col, (rot, val, det) in zip(cols, linha):
+            with col:
+                st.metric(rot, val)
+                st.caption(det)
+    st.caption(f"Universo: {res_resumo['n_municipios']} municípios cobertos pela estimativa final, "
+               f"{RES.br(res_resumo['aptos_cobertos_2t'], 0)} eleitores aptos no 2º turno "
+               f"({RES.br(res_resumo['pct_eleitorado_coberto'], 1)}% do eleitorado nacional). "
+               "Medida observada: variação 1º→2º turno do município menos a variação da UF.")
+
+    st.markdown("**Documentos:** " + " · ".join(f"[{k}]({v})" for k, v in RES.LINKS.items()))
+
+    tab_g, tab_t, tab_m, tab_c = st.tabs(["Gráficos", "Faixas, capitais e ajustes", "Tabela por município", "Conclusão e limitações"])
+
+    dfp = res_df.copy()
+    dfp["faixa_chuva"] = dfp["chuva_08_17h_mm_modelo"].map(RES.faixa_chuva)
+    with tab_g:
+        g1, g2 = st.columns(2)
+        with g1:
+            fig = px.scatter(
+                dfp, x="chuva_08_17h_mm_modelo", y="variacao_descontada_media_uf_pp", size="aptos_2t", color="uf",
+                hover_name="municipio", size_max=40,
+                labels={"chuva_08_17h_mm_modelo": "Chuva 08–17h (mm, Open-Meteo)",
+                        "variacao_descontada_media_uf_pp": "Variação descontada da UF (p.p.)", "aptos_2t": "Aptos 2º turno"},
+                title="Chuva × variação da abstenção (tamanho = eleitorado)")
+            fig.add_hline(y=0, line_dash="dot", line_color="gray")
+            st.plotly_chart(fig, width="stretch")
+        with g2:
+            lim = float(max(dfp["efeito_estimado_pp_mid"].max(), dfp["variacao_descontada_media_uf_pp"].max()))
+            fig2 = px.scatter(
+                dfp, x="efeito_estimado_pp_mid", y="variacao_descontada_media_uf_pp", size="aptos_2t", color="uf",
+                hover_name="municipio", size_max=40,
+                labels={"efeito_estimado_pp_mid": "Efeito estimado às 17:09 (p.p.)",
+                        "variacao_descontada_media_uf_pp": "Observado: variação descontada da UF (p.p.)"},
+                title="Estimado × observado (linha = acerto perfeito)")
+            fig2.add_trace(go.Scatter(x=[0, lim], y=[0, lim], mode="lines", line=dict(dash="dash", color="gray"),
+                                      name="estimado = observado", showlegend=False))
+            st.plotly_chart(fig2, width="stretch")
+        with st.expander("Gráficos estáticos do relatório (PNG)"):
+            for nome in ("grafico_chuva_vs_variacao.png", "grafico_estimado_vs_observado.png"):
+                p = RES.DIR / nome
+                if p.exists():
+                    st.image(str(p))
+
+    with tab_t:
+        st.subheader("Faixas de chuva (08–17h)")
+        fx = pd.DataFrame([{
+            "Faixa": f["faixa_mm"] + " mm", "Municípios": f["n"], "Aptos": RES.br(f["aptos"], 0),
+            "Observado, ponderado (p.p.)": RES.br(f["var_desc_media_pond_pp"], 2, True),
+            "Observado, média simples (p.p.)": RES.br(f["var_desc_media_simples_pp"], 2, True),
+            "Estimado, ponderado (p.p.)": RES.br(f["efeito_estimado_pond_pp"], 2, True),
+            "Abst. extras estimadas": RES.br(f["abst_extras_estimadas"], 0),
+            "Observado acima da média da UF": RES.br(f["abst_acima_media_uf"], 0),
+        } for f in res_resumo["faixas_chuva"]])
+        st.dataframe(fx, hide_index=True, width="stretch")
+
+        def _tab_mun(lista):
+            return pd.DataFrame([{
+                "Município": f"{m['municipio']} ({m['uf']})", "Aptos 2T": RES.br(m["aptos_2t"], 0),
+                "Chuva (mm)": RES.br(m["chuva_mm"], 1), "Chuva usada (mm)": RES.br(m["chuva_usada_mm"], 1),
+                "Abstenção 1T → 2T (%)": f"{RES.br(m['abst_pct_1t'])} → {RES.br(m['abst_pct_2t'])}",
+                "Observado: var. descontada (p.p.)": RES.br(m["var_desc_uf_pp"], 2, True),
+                "Estimado (p.p.)": RES.br(m["estimado_pp"], 2, True),
+                "Abst. extras estimadas": RES.br(m["abst_extras_estimadas"], 0),
+                "Observado acima da média da UF": RES.br(m["abst_acima_media_uf"], 0),
+            } for m in lista])
+        st.subheader("Capitais e grandes cidades")
+        st.dataframe(_tab_mun(res_resumo["capitais_destaque"]), hide_index=True, width="stretch")
+        st.caption("São Paulo e Rio de Janeiro, que dominam o total estimado, ficaram abaixo da média de suas UFs.")
+        st.subheader("Os 9 municípios com ajuste por notícias")
+        st.dataframe(_tab_mun(res_resumo["ajustados"]), hide_index=True, width="stretch")
+        st.caption("Resultado misto: 6 de 9 acima da média da UF; o estimado ficou acima do observado em 7 de 9. "
+                   "Em Barracão a evidência registrada é de um temporal de 23/10, anterior ao dia da eleição.")
+        st.subheader("Municípios com 30 mm ou mais")
+        st.dataframe(_tab_mun(res_resumo["chuva_30mm_ou_mais"]), hide_index=True, width="stretch")
+
+    with tab_m:
+        f1, f2, f3, f4 = st.columns([2, 2, 1, 2])
+        with f1:
+            ufs_sel = st.multiselect("UF", sorted(dfp["uf"].unique()), key="res2t_uf")
+        with f2:
+            fx_sel = st.multiselect("Faixa de chuva", [f[2] for f in RES.FAIXAS], key="res2t_faixa")
+        with f3:
+            so_aj = st.checkbox("Só ajustados", key="res2t_aj")
+        with f4:
+            busca = st.text_input("Buscar município", key="res2t_busca")
+        tab = dfp
+        if ufs_sel:
+            tab = tab[tab["uf"].isin(ufs_sel)]
+        if fx_sel:
+            tab = tab[tab["faixa_chuva"].isin(fx_sel)]
+        if so_aj:
+            tab = tab[tab["ajuste_noticias"] == "sim"]
+        if busca:
+            alvo = D.norm(busca)
+            tab = tab[tab["municipio"].map(lambda nome: alvo in D.norm(nome))]
+        cols_show = {
+            "municipio": "Município", "uf": "UF", "aptos_2t": "Aptos 2T", "abstencao_pct_1t": "Abst. 1T %",
+            "abstencao_pct_2t": "Abst. 2T %", "variacao_pp": "Variação (p.p.)", "variacao_media_uf_pp": "Variação UF (p.p.)",
+            "variacao_descontada_media_uf_pp": "Var. descontada (p.p.)", "chuva_08_17h_mm_modelo": "Chuva (mm)",
+            "chuva_usada_mm_com_ajuste": "Chuva usada (mm)", "ajuste_noticias": "Ajuste", "efeito_estimado_pp_mid": "Estimado (p.p.)",
+            "abstencoes_extras_estimadas_mid": "Abst. extras est.", "abstencoes_observadas_acima_media_uf_eleitores": "Obs. acima da UF",
+            "diferenca_observado_menos_estimado_pp": "Obs. − est. (p.p.)", "pct_flavio_2t_validos": "Flávio 2T %",
+            "pct_lula_2t_validos": "Lula 2T %"}
+        st.caption(f"{len(tab)} de {len(dfp)} municípios")
+        st.dataframe(tab[list(cols_show)].rename(columns=cols_show), hide_index=True, width="stretch", height=480)
+        st.download_button("⬇️ Baixar CSV completo (304 municípios)", res_df.to_csv(index=False).encode("utf-8"),
+                           file_name=RES.CSV, mime="text/csv", key="res2t_dl")
+
+    with tab_c:
+        st.markdown(res_conc)
 
 # -----------------------------------------------------------------------------
 # PÁGINA: RISCO DE CHUVA
@@ -827,6 +974,8 @@ elif pagina == "Metodologia e Limitações":
         """
     )
     st.subheader("Atualização automática e ajustes por notícias")
+    st.info(f"{D.ENCERRAMENTO_TXT_INICIAL} (workflow do GitHub desativado). O último snapshot, de 17:09 BRT, "
+            "fica como registro histórico; a comparação com o resultado oficial está na página \"Resultado oficial × estimativa\".")
     st.markdown(
         "- A cada 30 min (GitHub Actions) os scripts refazem o trabalho dos Bots 2 e 4: Open-Meteo horário para "
         "~300 maiores colégios, avisos INMET (JSON; RSS e último aviso conhecido como reserva), reclassificação "

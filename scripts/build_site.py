@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT))
 from common import dados as D  # noqa: E402
 from common import impacto_agora as IA  # noqa: E402
 from common import noticias as NOTI  # noqa: E402
+from common import resultado_2t as RES  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # PREENCHER APÓS A PUBLICAÇÃO (ou exportar as variáveis de ambiente)
@@ -29,6 +30,9 @@ STREAMLIT_URL = os.environ.get("STREAMLIT_URL", "https://chuva-abstencao-2026.st
 REPO_URL = os.environ.get("REPO_URL", "https://github.com/andersonsoaresdev2025/chuva-abstencao-2turno-2026")
 
 OUT = ROOT / "docs" / "index.html"
+OUT_RES = ROOT / "docs" / RES.SITE_PAGINA
+IMG_RES = ROOT / "docs" / "resultado_2turno"
+GRAFICOS_RES = ("grafico_chuva_vs_variacao.png", "grafico_estimado_vs_observado.png")
 COR = {"torrencial": "#c0392b", "moderada": "#e67e22", "sem_chuva_relevante": "#27ae60"}
 
 
@@ -198,6 +202,11 @@ def secao_agora() -> str:
         if not n_aj:
             return '<br><span class="muted">Previsão + notícias: igual (nenhum ajuste ativo)</span>'
         return f'<br><span class="muted"><b>Previsão + notícias:</b> {pp(rn[chave]["mid"])} p.p.{extra}</span>'
+    if D.estimativa_congelada(IA._gerado(snap)):
+        prox = (f'<b>estimativa final do dia da eleição, congelada</b> ({esc(D.ENCERRAMENTO_TXT)}) e mantida sem alteração '
+                f'como registro histórico · <a href="{RES.SITE_PAGINA}">compare com o resultado oficial</a>')
+    else:
+        prox = f"próxima atualização ~{esc(snap['proxima_atualizacao_hhmm_brt'])} BRT"
     fb = ('<p class="alert">Open-Meteo indisponível na atualização: usada a previsão do Bot 0 (CSV) pró-rata.</p>'
           if r["usou_fallback"] else "")
     return f"""<section id="agora">
@@ -215,12 +224,129 @@ def secao_agora() -> str:
 <div class="kpi"><b>{pp(m['mid'])} p.p.</b>Efeito na margem (Lula − Flávio) · só previsão · faixa {pp(m['min'])} a {pp(m['max'])} · abstenção nacional {pp(ab['mid'])} p.p.{noti('margem_lula_menos_flavio_pp')}</div>
 <div class="kpi"><b>{num(r['cobertura_pct_eleitorado'], 1)}%</b>do eleitorado coberto ({r['n_municipios_cobertos']} maiores colégios; demais = 0){' · ' + str(n_aj) + ' ajuste(s) por notícias' if n_aj else ''}</div>
 </div>
-<p class="alert" id="snapshot-agora">🕒 <b>Snapshot de {esc(snap['snapshot_hhmm_brt'])} BRT</b> · próxima atualização ~{esc(snap['proxima_atualizacao_hhmm_brt'])} BRT · mesmos números do dashboard (arquivo publicado impacto_agora_latest.json).</p>
+<p class="alert" id="snapshot-agora">🕒 <b>Snapshot de {esc(snap['snapshot_hhmm_brt'])} BRT</b> · {prox} · mesmos números do dashboard (arquivo publicado impacto_agora_latest.json).</p>
 <p class="muted">Calculado em {esc(r['calculado_em_brt'])} ({esc(r['calculado_em_utc'])}) pela atualização automática; janela: {'dia inteiro 08h–17h (previsão)' if r['modo'] == 'projecao' else num(r['horas_decorridas'], 1) + ' h desde 08h'} · Precipitação: {esc(r['fonte_precipitacao'])}. Versão interativa no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a>.</p>
 {fb}
 <p class="muted"><b>Como é calculado:</b> {esc(IA.METODO_TXT)}</p>
 <p class="alert">{esc(IA.DISCLAIMER.replace('**', ''))}</p>
 </section>"""
+
+
+CSS_RES = """
+:root{--a:#c0392b;--b:#e67e22;--c:#27ae60;--fg:#1d2733;--mut:#5c6b7a;--bg:#f6f8fa;--card:#fff;--line:#e3e8ee}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg);line-height:1.5}
+header{background:#12324f;color:#fff;padding:20px 16px}header h1{margin:0 0 4px;font-size:1.5rem}header p{margin:4px 0;opacity:.9}header a{color:#fff}
+nav{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:6px 12px;overflow-x:auto;white-space:nowrap;z-index:5}
+nav a{display:inline-block;margin-right:14px;color:#12324f;text-decoration:none;font-size:.92rem;padding:4px 0}
+main{max-width:1100px;margin:0 auto;padding:12px}section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+h2{font-size:1.2rem;margin:0 0 8px}h3{font-size:1rem;margin:14px 0 6px}h4{font-size:.95rem;margin:12px 0 4px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.kpi{background:var(--bg);border-radius:8px;padding:10px}.kpi b{font-size:1.4rem;display:block}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{background:#eef2f6}
+td.n{text-align:right;white-space:nowrap}
+caption{caption-side:bottom;text-align:left;color:var(--mut);font-size:.8rem;padding-top:4px}
+.muted{color:var(--mut);font-size:.88rem}.alert{background:#fff4e5;border-left:4px solid var(--b);padding:10px 12px;border-radius:6px}
+.cta{display:inline-block;background:#e67e22;color:#fff;padding:8px 14px;border-radius:6px;text-decoration:none;font-weight:600;margin:6px 6px 0 0}
+img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:6px}.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+footer{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}
+"""
+
+
+def _kpis_res(resumo: dict) -> str:
+    return '<div class="kpis" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">' + "".join(
+        f'<div class="kpi"><span class="muted">{esc(r)}</span><b>{esc(v)}</b>{esc(d)}</div>'
+        for r, v, d in RES.numeros_chave(resumo)) + "</div>"
+
+
+def _links_res() -> str:
+    return "<ul>" + "".join(f'<li><a href="{html.escape(u, quote=True)}">{esc(k)}</a></li>' for k, u in RES.LINKS.items()) + "</ul>"
+
+
+def secao_resultado_home() -> str:
+    """Bloco de destaque na página inicial apontando para a página pós-eleição (números de resumo.json)."""
+    try:
+        resumo = RES.carregar_resumo()
+    except Exception:  # noqa: BLE001 – a home nunca quebra por falta do pós-eleição
+        return ""
+    return f"""<section id="resultado-oficial" style="border:2px solid #27ae60">
+<h2>🗳️ Resultado oficial × estimativa (pós-eleição)</h2>
+<p>Com a totalização do TSE, comparamos município a município a estimativa publicada no dia da eleição com o resultado oficial. <b>Direção compatível com o modelo, magnitude de cerca de um terço</b> do coeficiente usado; com peso pelo eleitorado o efeito não se distingue de zero, e as grandes capitais contradizem o modelo.</p>
+{_kpis_res(resumo)}
+<p><a class="cta" style="background:#27ae60" href="{RES.SITE_PAGINA}">Ver a comparação completa</a> <a class="cta" style="background:#34495e" href="{html.escape(RES.LINKS['Conclusão (CONCLUSAO.md)'], quote=True)}">Conclusão (GitHub)</a></p>
+<p class="muted">Os painéis abaixo mostram a estimativa <b>congelada às 17:09 BRT</b> de 25/10/2026, mantida sem alteração como registro histórico.</p>
+</section>"""
+
+
+def build_resultado() -> str:
+    """Página pública docs/resultado_2turno.html (lê só data/resultado_2turno/)."""
+    resumo, df = RES.carregar_resumo(), RES.carregar_csv()
+    conc = RES.md_para_html(RES.carregar_conclusao(), nivel_base=2)
+    b = RES.br
+    fx = "".join(
+        f"<tr><td>{esc(f['faixa_mm'])} mm</td><td class=n>{f['n']}</td><td class=n>{b(f['aptos'], 0)}</td>"
+        f"<td class=n>{b(f['var_desc_media_pond_pp'], 2, True)}</td><td class=n>{b(f['var_desc_media_simples_pp'], 2, True)}</td>"
+        f"<td class=n>{b(f['efeito_estimado_pond_pp'], 2, True)}</td><td class=n>{b(f['abst_extras_estimadas'], 0)}</td>"
+        f"<td class=n>{b(f['abst_acima_media_uf'], 0)}</td></tr>" for f in resumo["faixas_chuva"])
+
+    def tab_mun(lista, legenda):
+        linhas = "".join(
+            f"<tr><td>{esc(m['municipio'])} ({esc(m['uf'])})</td><td class=n>{b(m['aptos_2t'], 0)}</td>"
+            f"<td class=n>{b(m['chuva_mm'], 1)}</td><td class=n>{b(m['chuva_usada_mm'], 1)}</td>"
+            f"<td class=n>{b(m['abst_pct_1t'])}% → {b(m['abst_pct_2t'])}%</td><td class=n>{b(m['var_desc_uf_pp'], 2, True)}</td>"
+            f"<td class=n>{b(m['estimado_pp'], 2, True)}</td><td class=n>{b(m['abst_extras_estimadas'], 0)}</td>"
+            f"<td class=n>{b(m['abst_acima_media_uf'], 0)}</td></tr>" for m in lista)
+        return ('<div class="tw"><table><thead><tr><th>Município</th><th>Aptos 2T</th><th>Chuva (mm)</th><th>Chuva usada (mm)</th>'
+                '<th>Abstenção 1T → 2T</th><th>Observado: var. descontada (p.p.)</th><th>Estimado (p.p.)</th>'
+                '<th>Abst. extras estimadas</th><th>Observado acima da média da UF</th></tr></thead>'
+                f'<tbody>{linhas}</tbody><caption>{esc(legenda)}</caption></table></div>')
+    figs = "".join(f'<figure style="margin:0"><img src="resultado_2turno/{g}" alt="{esc(t)}" loading="lazy"><figcaption class="muted">{esc(t)}</figcaption></figure>'
+                   for g, t in zip(GRAFICOS_RES, ("Chuva (08–17h) × variação da abstenção descontada da UF, 304 municípios (tamanho = eleitorado)",
+                                                 "Efeito estimado às 17:09 BRT × variação observada (azul = SP)")))
+    s_sp, s_w = RES.inclinacao(resumo, "SP"), RES.inclinacao(resumo, ponderado=True)
+    gerado = D.fmt_utc_brt()
+    return f"""<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resultado oficial × estimativa (pós-eleição) – Chuva × Abstenção 2026</title>
+<meta name="description" content="Comparação município a município entre a estimativa de efeito da chuva na abstenção (congelada às 17:09 BRT de 25/10/2026) e o resultado oficial do TSE no 2º turno.">
+<style>{CSS_RES}</style>
+</head>
+<body>
+<header>
+<h1>🗳️ Resultado oficial × estimativa (pós-eleição)</h1>
+<p>Chuva × Abstenção Eleitoral · 2º turno de 25/10/2026 · Flávio Bolsonaro × Lula</p>
+<p>Resultado: TSE, eleição 6258, totalização final · Estimativa: snapshot de {esc(resumo.get('snapshot_estimativa'))}</p>
+<a class="cta" style="background:#34495e" href="index.html">← Página principal</a>
+<a class="cta" href="{html.escape(STREAMLIT_URL, quote=True)}">Dashboard interativo</a>
+<a class="cta" style="background:#27ae60" href="{html.escape(RES.TREE, quote=True)}">Dados e documentos (GitHub)</a>
+</header>
+<nav><a href="#numeros">Números-chave</a><a href="#graficos">Gráficos</a><a href="#faixas">Faixas de chuva</a><a href="#capitais">Capitais</a><a href="#ajustes">Ajustes por notícias</a><a href="#chuva30">30 mm ou mais</a><a href="#conclusao">Conclusão e limitações</a><a href="#downloads">Downloads</a></nav>
+<main>
+<section id="numeros">
+<h2>Números-chave</h2>
+<p class="alert" id="estimativa-congelada">A estimativa comparada é a publicada no dia da eleição e <b>congelada às 17:09 BRT</b> (painel “Impacto estimado agora” da página principal e do dashboard), mantida sem alteração como registro histórico; {esc(D.ENCERRAMENTO_TXT)}. O coeficiente do modelo não foi alterado.</p>
+{_kpis_res(resumo)}
+<p class="muted">Universo: {resumo['n_municipios']} municípios cobertos pela estimativa final, {b(resumo['aptos_cobertos_2t'], 0)} eleitores aptos no 2º turno ({b(resumo['pct_eleitorado_coberto'], 1)}% do eleitorado nacional); abstenção nesses municípios {b(resumo['abst_cobertos_pct_1t'])}% → {b(resumo['abst_cobertos_pct_2t'])}%. Medida observada: variação da abstenção do 1º para o 2º turno no município menos a variação da UF inteira. Essa variação <b>não</b> é a abstenção causada pela chuva. Inclinações por regressão com erro-padrão robusto (HC1), IC de 95%. Só SP ({s_sp['n']} municípios): {b(s_sp['b'], 2, True)} p.p./10 mm (IC {b(s_sp['lo'], 2, True)} a {b(s_sp['hi'], 2, True)}). Com peso: {b(s_w['b'], 2, True)} (IC {b(s_w['lo'], 2, True)} a {b(s_w['hi'], 2, True)}).</p>
+</section>
+<section id="graficos"><h2>Gráficos</h2><div class="figs">{figs}</div></section>
+<section id="faixas">
+<h2>Faixas de chuva (08–17h, Open-Meteo)</h2>
+<div class="tw"><table><thead><tr><th>Faixa</th><th>Municípios</th><th>Aptos 2T</th><th>Observado, ponderado (p.p.)</th><th>Observado, média simples (p.p.)</th><th>Estimado, ponderado (p.p.)</th><th>Abst. extras estimadas</th><th>Observado acima da média da UF</th></tr></thead><tbody>{fx}</tbody>
+<caption>Observado = variação da abstenção 1T→2T descontada a variação da UF; ponderado pelo eleitorado. Estimado = efeito publicado às 17:09 BRT (previsão + notícias).</caption></table></div>
+</section>
+<section id="capitais"><h2>Capitais e grandes cidades</h2>{tab_mun(resumo['capitais_destaque'], 'São Paulo e Rio de Janeiro, que dominam o total estimado, ficaram abaixo da média de suas UFs; Guarulhos foi o caso que bateu.')}</section>
+<section id="ajustes"><h2>Os 9 municípios com ajuste por notícias</h2>{tab_mun(resumo['ajustados'], 'Resultado misto: 6 de 9 acima da média da UF; o estimado ficou acima do observado em 7 de 9. Em Barracão a evidência registrada é de um temporal de 23/10, anterior ao dia da eleição.')}</section>
+<section id="chuva30"><h2>Municípios com 30 mm ou mais</h2>{tab_mun(resumo['chuva_30mm_ou_mais'], 'Todos acima da média da UF, mas bem abaixo do estimado.')}</section>
+<section id="conclusao">{conc}</section>
+<section id="downloads"><h2>Downloads e documentos</h2>{_links_res()}
+<p class="muted">Tabela completa por município ({len(df)} linhas) no CSV; versão filtrável no <a href="{html.escape(STREAMLIT_URL, quote=True)}">dashboard</a> (página “Resultado oficial × estimativa”). Arquivos brutos do TSE e scripts de reprodução na pasta do GitHub.</p></section>
+</main>
+<footer>Chuva × Abstenção Eleitoral · Resultado oficial × estimativa · Página gerada em {esc(gerado)} por scripts/build_site.py a partir de data/resultado_2turno/</footer>
+</body>
+</html>
+"""
 
 
 def build() -> str:
@@ -284,6 +410,12 @@ def build() -> str:
     lim = "".join(f"<li>{esc(t)}</li>" for t in D.LIMITACOES)
     ts_html = "".join(f"<tr><td>{esc(k)}</td><td>{esc(v)}</td></tr>" for k, v in ts.items())
     gerado = D.fmt_utc_brt()
+    snap_h = IA.carregar_snapshot(remoto=False)
+    congelada = bool(snap_h) and D.estimativa_congelada(IA._gerado(snap_h))
+    aviso_atualizacao = (f"<b>{esc(D.ENCERRAMENTO_TXT_INICIAL)}</b>: os painéis abaixo mostram a estimativa "
+                         "congelada às 17:09 BRT, mantida como registro histórico." if congelada
+                         else "Atualização automática a cada 30 min (08h–19h BRT).")
+    resultado_html = secao_resultado_home()
 
     return f"""<!doctype html>
 <html lang="pt-BR">
@@ -316,12 +448,15 @@ footer{{text-align:center;color:var(--mut);font-size:.8rem;padding:20px}}
 <p>Segundo turno – 25 de outubro de 2026 · Flávio Bolsonaro × Lula</p>
 <p id="atualizado" style="font-size:1.25rem;background:#fff;color:#12324f;display:inline-block;padding:6px 12px;border-radius:8px;margin:8px 0"><b>🕒 Atualizado em {esc(ts_r)}</b></p>
 <p><b>Dados atualizados em:</b> risco a/b/c ({rot_r}) {esc(ts_r)} · impacto ({rot_i}) {esc(ts_i)} · ajustes por notícias {esc(ts.get('Ajustes por notícias'))} · página gerada {esc(gerado)}</p>
-<p>Atualização automática a cada 30 min (08h–19h BRT). {fontes_ok}</p>
+<p>{aviso_atualizacao} {fontes_ok}</p>
 <a class="cta" href="{html.escape(STREAMLIT_URL, quote=True)}" id="streamlit-link">Abrir dashboard interativo</a>
+<a class="cta" style="background:#27ae60" href="{RES.SITE_PAGINA}" id="resultado-link">Resultado oficial × estimativa</a>
 <a class="cta" style="background:#34495e" href="{html.escape(REPO_URL, quote=True)}">Código e dados (GitHub)</a>
 </header>
-<nav><a href="#agora">Agora</a><a href="#ajustes">Ajustes por notícias</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
+<nav><a href="#resultado-oficial"><b>Resultado oficial × estimativa</b></a><a href="#agora">Agora</a><a href="#ajustes">Ajustes por notícias</a><a href="#mensagem">Mensagem</a><a href="#risco">Risco</a><a href="#impacto">Impacto</a><a href="#redutos">Redutos</a><a href="#noticias">Notícias</a><a href="#social">Sinais sociais</a><a href="#metodologia">Metodologia</a><a href="#limitacoes">Limitações</a><a href="#fontes">Fontes</a></nav>
 <main>
+
+{resultado_html}
 
 {secao_agora()}
 
@@ -458,6 +593,13 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(build(), encoding="utf-8")
     (OUT.parent / ".nojekyll").touch()
+    if (RES.DIR / "resumo.json").exists():
+        import shutil
+        IMG_RES.mkdir(parents=True, exist_ok=True)
+        for g in GRAFICOS_RES:
+            shutil.copy2(RES.DIR / g, IMG_RES / g)
+        OUT_RES.write_text(build_resultado(), encoding="utf-8")
+        print(f"OK: {OUT_RES.relative_to(ROOT)} ({OUT_RES.stat().st_size/1024:.1f} KB)")
     print(f"OK: {OUT.relative_to(ROOT)} ({OUT.stat().st_size/1024:.1f} KB)")
 
 
